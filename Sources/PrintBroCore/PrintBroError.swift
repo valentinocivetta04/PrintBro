@@ -8,7 +8,6 @@ public enum PrintBroError: LocalizedError, Equatable {
     case duplexSoloPDF
     case duplexConRango
     case duplexConCopias
-    case duplexConVariasPorHoja
     case estadoInvalido
     case rangoInvalido(String)
     case presetSinNombre
@@ -39,8 +38,6 @@ public enum PrintBroError: LocalizedError, Equatable {
             "El doble faz manual imprime el documento entero: sacá el rango de páginas."
         case .duplexConCopias:
             "El doble faz manual imprime una sola copia: imprimí el documento de nuevo para hacer otra."
-        case .duplexConVariasPorHoja:
-            "El doble faz manual todavía no admite varias páginas por hoja: dejalo en 1 página por hoja."
         case .estadoInvalido:
             "Esa acción no se puede hacer en este momento."
         }

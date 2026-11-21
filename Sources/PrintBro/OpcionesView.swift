@@ -76,7 +76,7 @@ struct OpcionesView: View {
                 Picker("Páginas por hoja", selection: $modelo.paginasPorHoja) {
                     ForEach(PrintJob.paginasPorHojaPosibles, id: \.self) { Text($0, format: .number).tag($0) }
                 }
-                .disabled(modelo.dobleFaz)
+                .disabled(modelo.folleto)
             }
 
             Section {

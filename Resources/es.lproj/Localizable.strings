@@ -58,8 +58,8 @@
 "Imprimir las pares en orden inverso" = "Imprimir las pares en orden inverso";
 "La impresora no imprime de los dos lados sola. PrintBro manda primero las páginas impares. Cuando terminan, girás la pila, la volvés a poner en la bandeja y tocás Continuar para imprimir las pares." = "La impresora no imprime de los dos lados sola. PrintBro manda primero las páginas impares. Cuando terminan, girás la pila, la volvés a poner en la bandeja y tocás Continuar para imprimir las pares.";
 "La predeterminada del sistema" = "La predeterminada del sistema";
-"Listo: el documento tiene una sola página, no hizo falta girar la hoja." = "Listo: el documento tiene una sola página, no hizo falta girar la hoja.";
 "Listo: el trabajo se mandó a la impresora." = "Listo: el trabajo se mandó a la impresora.";
+"Listo: sale una sola cara, no hizo falta girar la hoja." = "Listo: sale una sola cara, no hizo falta girar la hoja.";
 "Listo: se imprimieron las dos caras." = "Listo: se imprimieron las dos caras.";
 "Miniaturas de las páginas" = "Miniaturas de las páginas";
 "Modo simulación: no se imprime nada" = "Modo simulación: no se imprime nada";

@@ -18,6 +18,8 @@ public final class DuplexManual {
     public private(set) var estado = EstadoDuplex.idle
     public let trabajo: PrintJob
     public let paginas: Int
+    /// Caras que salen de la impresora: con 2 por hoja, 5 páginas son 3 caras.
+    public let caras: Int
     private let servicio: PrinterService
     private let defaults: UserDefaults
 
@@ -30,11 +32,12 @@ public final class DuplexManual {
         guard trabajo.archivo.pathExtension.lowercased() == "pdf" else { throw PrintBroError.duplexSoloPDF }
         guard trabajo.rangoPaginas == nil else { throw PrintBroError.duplexConRango }
         guard trabajo.copias <= 1 else { throw PrintBroError.duplexConCopias }
-        // Bloqueado hasta probar en papel cómo combina number-up con page-set.
-        guard trabajo.paginasPorHoja <= 1 else { throw PrintBroError.duplexConVariasPorHoja }
         guard paginas > 0 else { throw PrintBroError.pdfIlegible }
         self.trabajo = trabajo
         self.paginas = paginas
+        // Verificado en papel (2026-11-21): CUPS aplica page-set después de number-up,
+        // así que impares/pares cuentan caras impresas, no páginas del PDF.
+        caras = (paginas + max(trabajo.paginasPorHoja, 1) - 1) / max(trabajo.paginasPorHoja, 1)
         self.servicio = servicio
         self.defaults = defaults
         ordenInverso = defaults.object(forKey: Self.claveOrdenInverso) as? Bool ?? true
@@ -54,14 +57,17 @@ public final class DuplexManual {
             estado = .idle
             throw error
         }
-        // Con una sola página no hay dorso que imprimir.
-        if paginas == 1 {
+        // Con una sola cara no hay dorso que imprimir.
+        if caras == 1 {
             estado = .listo
             return
         }
-        let aviso = paginas % 2 == 1
-            ? "El documento tiene \(paginas) páginas: la última hoja va a quedar sin dorso."
-            : nil
+        var aviso: String?
+        if caras % 2 == 1 {
+            aviso = trabajo.paginasPorHoja > 1
+                ? "Salen \(caras) caras: la última hoja va a quedar sin dorso."
+                : "El documento tiene \(paginas) páginas: la última hoja va a quedar sin dorso."
+        }
         estado = .esperandoGiro(aviso: aviso)
     }
 

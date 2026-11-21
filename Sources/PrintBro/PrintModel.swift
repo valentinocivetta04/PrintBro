@@ -66,19 +66,23 @@ final class PrintModel {
     var valoresDriver: [String: String] = [:]
     var dobleFaz = false {
         didSet {
-            // El doble faz manual imprime el documento entero, una copia, una página por hoja.
+            // El doble faz manual imprime el documento entero, una copia.
             if dobleFaz {
                 copias = 1
-                paginasPorHoja = 1
                 paginas = .todas
             } else {
                 folleto = false
             }
         }
     }
-    /// El folleto siempre va con doble faz manual.
+    /// El folleto siempre va con doble faz manual y arma sus propias 2 páginas por cara.
     var folleto = false {
-        didSet { if folleto { dobleFaz = true } }
+        didSet {
+            if folleto {
+                dobleFaz = true
+                paginasPorHoja = 1
+            }
+        }
     }
     /// PDFs temporales (folleto, imágenes convertidas). Se borran al terminar el trabajo.
     private var temporales: [URL] = []
@@ -406,8 +410,8 @@ final class PrintModel {
         case .imprimiendoPares:
             fase = .imprimiendoPares
         case .listo:
-            fase = .listo(duplex.paginas == 1
-                ? String(localized: "Listo: el documento tiene una sola página, no hizo falta girar la hoja.")
+            fase = .listo(duplex.caras == 1
+                ? String(localized: "Listo: sale una sola cara, no hizo falta girar la hoja.")
                 : String(localized: "Listo: se imprimieron las dos caras."))
             self.duplex = nil
             borrarTemporales()

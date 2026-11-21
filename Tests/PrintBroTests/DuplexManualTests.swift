@@ -130,12 +130,40 @@ private func nuevosDefaults() -> UserDefaults {
         "El doble faz manual imprime una sola copia: imprimí el documento de nuevo para hacer otra.")
 }
 
-@Test func rechazaVariasPaginasPorHoja() {
+private func duplexVariasPorHoja(paginas: Int, porHoja: Int) throws -> (DuplexManual, FakeRunner) {
+    let runner = FakeRunner()
     var trabajo = PrintJob(archivo: URL(fileURLWithPath: "/tmp/a.pdf"), impresora: "B")
-    trabajo.paginasPorHoja = 2
-    #expect(throws: PrintBroError.duplexConVariasPorHoja) {
-        try DuplexManual(trabajo: trabajo, paginas: 4, servicio: PrinterService(runner: FakeRunner()))
-    }
+    trabajo.paginasPorHoja = porHoja
+    let duplex = try DuplexManual(trabajo: trabajo, paginas: paginas, servicio: PrinterService(runner: runner),
+                                  defaults: UserDefaults(suiteName: "printbro.tests.\(UUID().uuidString)")!)
+    return (duplex, runner)
+}
+
+// Verificado en papel: page-set se aplica después de number-up (cuenta caras, no páginas).
+@Test func variasPorHojaCuentaCaras() throws {
+    let (duplex, runner) = try duplexVariasPorHoja(paginas: 4, porHoja: 2)
+    #expect(duplex.caras == 2)
+    try duplex.empezar()
+    #expect(duplex.estado == .esperandoGiro(aviso: nil))
+    #expect(runner.llamadas[0].argumentos == ["-d", "B", "-o", "number-up=2", "-o", "page-set=odd", "/tmp/a.pdf"])
+    try duplex.continuar()
+    #expect(runner.llamadas[1].argumentos ==
+        ["-d", "B", "-o", "number-up=2", "-o", "page-set=even", "-o", "outputorder=reverse", "/tmp/a.pdf"])
+}
+
+@Test func variasPorHojaConCarasImparesAvisa() throws {
+    let (duplex, _) = try duplexVariasPorHoja(paginas: 6, porHoja: 2)
+    #expect(duplex.caras == 3)
+    try duplex.empezar()
+    #expect(duplex.estado == .esperandoGiro(aviso: "Salen 3 caras: la última hoja va a quedar sin dorso."))
+}
+
+@Test func variasPorHojaEnUnaSolaCaraNoPideGiro() throws {
+    let (duplex, runner) = try duplexVariasPorHoja(paginas: 2, porHoja: 2)
+    #expect(duplex.caras == 1)
+    try duplex.empezar()
+    #expect(duplex.estado == .listo)
+    #expect(runner.llamadas.count == 1)
 }
 
 @Test func cuentaPaginasConPDFKit() throws {
