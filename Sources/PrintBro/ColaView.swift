@@ -33,6 +33,8 @@ struct ColaView: View {
                 }
             }
         }
+        // Sin esto el estado vacío no ocupa todo el alto y la barra queda en el medio.
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .safeAreaInset(edge: .bottom, spacing: 0) {
             HStack {
                 Text("Se actualiza cada 2 segundos.")
