@@ -17,7 +17,7 @@ struct ContentView: View {
         } detail: {
             detalle
         }
-        .navigationTitle(AppInfo.nombre)
+        .navigationTitle("PrintBro")
         .fileImporter(isPresented: $modelo.mostrarImportador,
                       allowedContentTypes: [.pdf, .png, .jpeg, .heic, .plainText]) { resultado in
             if case .success(let url) = resultado { modelo.abrir(url) }

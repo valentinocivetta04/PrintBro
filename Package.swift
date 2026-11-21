@@ -7,6 +7,6 @@ let package = Package(
     targets: [
         .target(name: "PrintBroCore"),
         .executableTarget(name: "PrintBro", dependencies: ["PrintBroCore"]),
-        .testTarget(name: "PrintBroTests", dependencies: ["PrintBro", "PrintBroCore"]),
+        .testTarget(name: "PrintBroTests", dependencies: ["PrintBroCore"]),
     ]
 )
