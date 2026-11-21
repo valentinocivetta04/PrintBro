@@ -71,9 +71,17 @@ final class PrintModel {
                 copias = 1
                 paginasPorHoja = 1
                 paginas = .todas
+            } else {
+                folleto = false
             }
         }
     }
+    /// El folleto siempre va con doble faz manual.
+    var folleto = false {
+        didSet { if folleto { dobleFaz = true } }
+    }
+    /// PDFs temporales (folleto, imágenes convertidas). Se borran al terminar el trabajo.
+    private var temporales: [URL] = []
     var ordenInverso: Bool {
         didSet { UserDefaults.standard.set(ordenInverso, forKey: Self.claveOrdenInverso) }
     }
@@ -209,31 +217,50 @@ final class PrintModel {
 
     func imprimir() {
         guard puedeImprimir, let archivo else { return }
-        let trabajo: PrintJob
+        var trabajo: PrintJob
+        var paginasAImprimir = paginasDocumento ?? 0
         do {
             trabajo = try armarTrabajo(archivo)
+            if folleto {
+                let temporal = try Folleto.generar(desde: archivo)
+                temporales.append(temporal)
+                trabajo.archivo = temporal
+                trabajo.ajustarAPagina = true
+                trabajo.orientacion = nil
+                paginasAImprimir = Folleto.orden(paginas: paginasAImprimir).count / 2
+            }
         } catch {
+            borrarTemporales()
             mensajeError = error.localizedDescription
             return
         }
         guard dobleFaz else {
             fase = .enviando
             let servicio = self.servicio
-            enSegundoPlano({ try servicio.imprimir(trabajo) }) { [weak self] ok in
+            let trabajoFinal = trabajo
+            enSegundoPlano({ try servicio.imprimir(trabajoFinal) }) { [weak self] ok in
+                // lp ya copió el archivo a la cola de CUPS: el temporal se puede borrar.
+                self?.borrarTemporales()
                 self?.fase = ok ? .listo(String(localized: "Listo: el trabajo se mandó a la impresora.")) : .nada
             }
             return
         }
         do {
-            let nuevo = try DuplexManual(trabajo: trabajo, paginas: paginasDocumento ?? 0, servicio: servicio)
+            let nuevo = try DuplexManual(trabajo: trabajo, paginas: paginasAImprimir, servicio: servicio)
             nuevo.ordenInverso = ordenInverso
             duplex = nuevo
             fase = .imprimiendoImpares
             let caja = Caja(valor: nuevo)
             enSegundoPlano({ try caja.valor.empezar() }) { [weak self] _ in self?.sincronizarDuplex() }
         } catch {
+            borrarTemporales()
             mensajeError = error.localizedDescription
         }
+    }
+
+    private func borrarTemporales() {
+        for url in temporales { try? FileManager.default.removeItem(at: url) }
+        temporales = []
     }
 
     func continuarDuplex() {
@@ -255,6 +282,7 @@ final class PrintModel {
         case .idle, .cancelado:
             fase = .nada
             self.duplex = nil
+            borrarTemporales()
         case .imprimiendoImpares:
             fase = .imprimiendoImpares
         case .esperandoGiro(let aviso):
@@ -266,6 +294,7 @@ final class PrintModel {
                 ? String(localized: "Listo: el documento tiene una sola página, no hizo falta girar la hoja.")
                 : String(localized: "Listo: se imprimieron las dos caras."))
             self.duplex = nil
+            borrarTemporales()
         }
     }
 

@@ -25,6 +25,7 @@
 "Cómo usar PrintBro" = "Cómo usar PrintBro";
 "Diseño" = "Diseño";
 "Doble faz manual" = "Doble faz manual";
+"Dos páginas por cara, en hojas apaisadas. Al terminar, doblá la pila al medio." = "Dos páginas por cara, en hojas apaisadas. Al terminar, doblá la pila al medio.";
 "Driver" = "Driver";
 "Ej.: 1-3, 5, 8-10" = "Ej.: 1-3, 5, 8-10";
 "El driver es de Brother." = "El driver es de Brother.";
@@ -32,6 +33,7 @@
 "Elegir archivo… (⌘O)" = "Elegir archivo… (⌘O)";
 "Enviando a la impresora…" = "Enviando a la impresora…";
 "Esperá a que termine de salir la primera tanda antes de sacar las hojas." = "Esperá a que termine de salir la primera tanda antes de sacar las hojas.";
+"Folleto (doblado al medio)" = "Folleto (doblado al medio)";
 "Girá las hojas, volvelas a poner en la bandeja y tocá Continuar" = "Girá las hojas, volvelas a poner en la bandeja y tocá Continuar";
 "Horizontal" = "Horizontal";
 "Impresora" = "Impresora";
@@ -67,6 +69,7 @@
 "Rango" = "Rango";
 "Rango de páginas" = "Rango de páginas";
 "Rango inválido: %@" = "Rango inválido: %@";
+"Reordena las páginas para doblar las hojas al medio" = "Reordena las páginas para doblar las hojas al medio";
 "Si el documento tiene una cantidad impar de páginas, la última hoja queda sin dorso." = "Si el documento tiene una cantidad impar de páginas, la última hoja queda sin dorso.";
 "Solo cambia la que elige PrintBro al abrir. No toca la configuración del sistema." = "Solo cambia la que elige PrintBro al abrir. No toca la configuración del sistema.";
 "Solo disponible para PDF." = "Solo disponible para PDF.";

@@ -63,11 +63,16 @@ struct OpcionesView: View {
                     .disabled(!modelo.esPDF)
                 Toggle("Imprimir las pares en orden inverso", isOn: $modelo.ordenInverso)
                     .disabled(!modelo.dobleFaz)
+                Toggle("Folleto (doblado al medio)", isOn: $modelo.folleto)
+                    .disabled(!modelo.esPDF)
+                    .accessibilityHint(Text("Reordena las páginas para doblar las hojas al medio"))
             } header: {
                 Text("Doble faz manual")
             } footer: {
                 if modelo.archivo != nil && !modelo.esPDF {
                     Text("Solo disponible para PDF.")
+                } else if modelo.folleto {
+                    Text("Dos páginas por cara, en hojas apaisadas. Al terminar, doblá la pila al medio.")
                 } else {
                     Text("Primero salen las impares. Después girás las hojas y salen las pares.")
                 }

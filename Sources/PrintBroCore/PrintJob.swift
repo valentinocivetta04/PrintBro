@@ -19,6 +19,8 @@ public struct PrintJob: Sendable, Equatable {
     public var paginasPorHoja = 1
     /// Clave y valor tal como los da lpoptions -l.
     public var opcionesDriver: [String: String] = [:]
+    /// Escala el contenido al papel (folletos e imágenes).
+    public var ajustarAPagina = false
 
     public init(archivo: URL, impresora: String) {
         self.archivo = archivo
@@ -36,6 +38,7 @@ public struct PrintJob: Sendable, Equatable {
         }
         if let tamanioPapel { args += ["-o", "PageSize=\(tamanioPapel)"] }
         if paginasPorHoja > 1 { args += ["-o", "number-up=\(paginasPorHoja)"] }
+        if ajustarAPagina { args += ["-o", "fit-to-page"] }
         // Ordenadas para que los argumentos salgan siempre iguales.
         for clave in opcionesDriver.keys.sorted() {
             args += ["-o", "\(clave)=\(opcionesDriver[clave]!)"]
