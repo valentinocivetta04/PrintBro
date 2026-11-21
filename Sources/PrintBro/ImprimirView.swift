@@ -24,9 +24,16 @@ struct ImprimirView: View {
             OpcionesView()
                 .frame(width: 350)
         }
+        .safeAreaInset(edge: .top, spacing: 0) {
+            if let motivos = modelo.estadoImpresora?.motivos, !motivos.isEmpty {
+                FranjaAvisosView(motivos: motivos)
+            }
+        }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             BarraImpresionView()
         }
+        // El estado cambia poco: cada 10 segundos alcanza, y solo mientras se ve la pantalla.
+        .task { await modelo.refrescarMientrasSeVe(cada: 10) { modelo.actualizarEstado() } }
         .sheet(isPresented: mostrandoGiro) {
             GiroHojasSheet()
                 .interactiveDismissDisabled()
