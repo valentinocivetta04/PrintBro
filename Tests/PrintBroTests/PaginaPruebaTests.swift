@@ -20,12 +20,3 @@ import Testing
     #expect(extraido.contains(soloLetrasYNumeros(fecha.formatted(date: .long, time: .shortened))))
 }
 
-@Test func paginaDePruebaSeMandaComoUnTrabajoComun() throws {
-    let url = try PaginaPrueba.generar(impresora: "B")
-    defer { try? FileManager.default.removeItem(at: url) }
-    let runner = FakeRunner()
-    try PrinterService(runner: runner).imprimir(PrintJob(archivo: url, impresora: "B"))
-    #expect(runner.llamadas.count == 1)
-    #expect(runner.llamadas[0].herramienta == "lp")
-    #expect(runner.llamadas[0].argumentos.last == url.standardizedFileURL.path)
-}

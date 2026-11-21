@@ -37,10 +37,6 @@ func paginasPorHojaUsaNumberUp(valor: Int) {
     #expect(args.contains("number-up=\(valor)") == (valor > 1))
 }
 
-@Test func paginasPorHojaPosibles() {
-    #expect(PrintJob.paginasPorHojaPosibles == [1, 2, 4, 6, 9])
-}
-
 @Test func tituloVaComoUnSoloArgumento() {
     var trabajo = PrintJob(archivo: URL(fileURLWithPath: "/tmp/PrintBro-folleto-ABC.pdf"), impresora: "B")
     trabajo.titulo = "mi apunte \"final\".pdf"

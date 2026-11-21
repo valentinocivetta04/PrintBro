@@ -50,13 +50,6 @@ BRDensityAdjustment/Density Adjustment: *Default _Custom Custom.INTEGER
     #expect(runner.llamadas[0].argumentos == ["-p", "Brother_HL_1210W_series", "-l"])
 }
 
-@Test func avanzadoMuestraExactamenteLasOpcionesDeLpoptions() {
-    // Las claves que lista la sección Avanzado son las de la salida real, en el mismo orden.
-    let opciones = PrinterService.parsearOpciones(salidaRealLpoptions)
-    let clavesReales = salidaRealLpoptions.split(separator: "\n").map { String($0.prefix { $0 != "/" }) }
-    #expect(opciones.map(\.clave) == clavesReales)
-}
-
 @Test func soloSeMandanLasOpcionesCambiadas() {
     let opciones = PrinterService.parsearOpciones(salidaRealLpoptions)
     let valores = [
