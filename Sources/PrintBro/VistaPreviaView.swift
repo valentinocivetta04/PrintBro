@@ -38,14 +38,20 @@ struct VistaPreviaView: View {
             PDFKitView(url: archivo)
                 .accessibilityLabel(Text("Vista previa del PDF"))
         case "txt":
-            ScrollView {
-                Text((try? String(contentsOf: archivo, encoding: .utf8)) ?? "")
-                    .font(.body.monospaced())
-                    .textSelection(.enabled)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding()
+            // Si no es UTF-8 (o no se puede leer) se avisa en vez de mostrar una vista vacía.
+            if let texto = try? String(contentsOf: archivo, encoding: .utf8) {
+                ScrollView {
+                    Text(texto)
+                        .font(.body.monospaced())
+                        .textSelection(.enabled)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
+                }
+                .accessibilityLabel(Text("Vista previa del texto"))
+            } else {
+                ContentUnavailableView("No se pudo mostrar la vista previa", systemImage: "eye.slash",
+                                       description: Text("No se pudo leer el archivo como texto UTF-8."))
             }
-            .accessibilityLabel(Text("Vista previa del texto"))
         default:
             if let imagen = NSImage(contentsOf: archivo) {
                 Image(nsImage: imagen)

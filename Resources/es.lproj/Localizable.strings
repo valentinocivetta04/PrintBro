@@ -112,6 +112,7 @@
 "No se encontró «%@». Puede que lo hayas movido o borrado." = "No se encontró «%@». Puede que lo hayas movido o borrado.";
 "No se pudo completar" = "No se pudo completar";
 "No se pudo leer el PDF." = "No se pudo leer el PDF.";
+"No se pudo leer el archivo como texto UTF-8." = "No se pudo leer el archivo como texto UTF-8.";
 "No se pudo leer la imagen." = "No se pudo leer la imagen.";
 "No se pudo mostrar la vista previa" = "No se pudo mostrar la vista previa";
 "Nombre" = "Nombre";
