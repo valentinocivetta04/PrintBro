@@ -6,22 +6,24 @@ enum AppInfo {
 
 @main
 struct PrintBroApp: App {
-    var body: some Scene {
-        WindowGroup(AppInfo.nombre) {
-            ContentView()
-        }
-    }
-}
+    @NSApplicationDelegateAdaptor(AppDelegate.self) private var delegate
 
-struct ContentView: View {
-    var body: some View {
-        VStack(spacing: 8) {
-            Text("Bienvenido a PrintBro")
-                .font(.title)
-            Text("Elegí un PDF para imprimir.")
-                .foregroundStyle(.secondary)
+    var body: some Scene {
+        Window(AppInfo.nombre, id: "principal") {
+            ContentView()
+                .environment(delegate.modelo)
         }
-        .padding(40)
-        .frame(minWidth: 420, minHeight: 260)
+        .defaultSize(width: 1080, height: 720)
+        .commands { PrintBroCommands(modelo: delegate.modelo) }
+
+        Window("Ayuda de PrintBro", id: "ayuda") {
+            AyudaView()
+        }
+        .windowResizability(.contentSize)
+
+        Settings {
+            AjustesView()
+                .environment(delegate.modelo)
+        }
     }
 }
