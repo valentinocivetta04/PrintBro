@@ -5,6 +5,7 @@ struct ImpresoraView: View {
     @Environment(PrintModel.self) private var modelo
 
     var body: some View {
+        @Bindable var modelo = modelo
         Group {
             if let impresora = modelo.impresoraActual {
                 Form {
@@ -60,10 +61,21 @@ struct ImpresoraView: View {
                     }
 
                     Section {
+                        HStack {
+                            Button("Imprimir página de prueba") { modelo.confirmandoPaginaPrueba = true }
+                                .disabled(modelo.imprimiendoPaginaPrueba)
+                            if modelo.imprimiendoPaginaPrueba { ProgressView().controlSize(.small) }
+                        }
                         Button("Volver a buscar impresoras") { modelo.recargarImpresoras() }
                     }
                 }
                 .formStyle(.grouped)
+                .alert("¿Imprimir una página de prueba?", isPresented: $modelo.confirmandoPaginaPrueba) {
+                    Button("Imprimir") { modelo.imprimirPaginaPrueba() }
+                    Button("Cancelar", role: .cancel) {}
+                } message: {
+                    Text("Sale una sola hoja con el nombre de la impresora y la fecha.")
+                }
             } else {
                 ContentUnavailableView {
                     Label("No hay impresoras", systemImage: "printer")

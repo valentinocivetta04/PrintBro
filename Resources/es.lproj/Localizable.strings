@@ -79,6 +79,7 @@
 "Imprimir" = "Imprimir";
 "Imprimir (⌘P)" = "Imprimir (⌘P)";
 "Imprimir las pares en orden inverso" = "Imprimir las pares en orden inverso";
+"Imprimir página de prueba" = "Imprimir página de prueba";
 "La cola no está aceptando trabajos." = "La cola no está aceptando trabajos.";
 "La impresión falló" = "La impresión falló";
 "La impresora no imprime de los dos lados sola. PrintBro manda primero las páginas impares. Cuando terminan, girás la pila, la volvés a poner en la bandeja y tocás Continuar para imprimir las pares." = "La impresora no imprime de los dos lados sola. PrintBro manda primero las páginas impares. Cuando terminan, girás la pila, la volvés a poner en la bandeja y tocás Continuar para imprimir las pares.";
@@ -106,6 +107,8 @@
 "Predeterminada del sistema" = "Predeterminada del sistema";
 "Presets" = "Presets";
 "Primero salen las impares. Después girás las hojas y salen las pares." = "Primero salen las impares. Después girás las hojas y salen las pares.";
+"Página de prueba" = "Página de prueba";
+"Página de prueba de PrintBro" = "Página de prueba de PrintBro";
 "Páginas" = "Páginas";
 "Páginas por hoja" = "Páginas por hoja";
 "Rango" = "Rango";
@@ -118,6 +121,7 @@
 "Retenido" = "Retenido";
 "Revisá la impresora." = "Revisá la impresora.";
 "Revisá que esté prendida y en la misma red WiFi que la Mac." = "Revisá que esté prendida y en la misma red WiFi que la Mac.";
+"Sale una sola hoja con el nombre de la impresora y la fecha." = "Sale una sola hoja con el nombre de la impresora y la fecha.";
 "Se actualiza cada 2 segundos." = "Se actualiza cada 2 segundos.";
 "Se cancelan también los trabajos que no mandaste desde PrintBro." = "Se cancelan también los trabajos que no mandaste desde PrintBro.";
 "Se canceló «%@»." = "Se canceló «%@».";
@@ -147,3 +151,4 @@
 "«%@» ya salió de la impresora (simulación)." = "«%@» ya salió de la impresora (simulación).";
 "«%@» ya salió de la impresora." = "«%@» ya salió de la impresora.";
 "¿Cancelar todos los trabajos de la cola?" = "¿Cancelar todos los trabajos de la cola?";
+"¿Imprimir una página de prueba?" = "¿Imprimir una página de prueba?";

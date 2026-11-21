@@ -155,6 +155,30 @@ final class PrintModel {
         }
     }
 
+    var confirmandoPaginaPrueba = false
+    private(set) var imprimiendoPaginaPrueba = false
+
+    /// Una hoja con el nombre de la impresora y la fecha. El PDF temporal se borra cuando lp termina.
+    func imprimirPaginaPrueba() {
+        guard !impresora.isEmpty, !imprimiendoPaginaPrueba else { return }
+        let url: URL
+        do {
+            url = try PaginaPrueba.generar(impresora: impresora)
+        } catch {
+            mensajeError = error.localizedDescription
+            return
+        }
+        imprimiendoPaginaPrueba = true
+        let servicio = self.servicio
+        let trabajo = PrintJob(archivo: url, impresora: impresora)
+        let idAntes = Seguimiento.ultimoId(de: impresora)
+        enSegundoPlano({ try servicio.imprimir(trabajo) }) { [weak self] ok in
+            try? FileManager.default.removeItem(at: url)
+            self?.imprimiendoPaginaPrueba = false
+            if ok { self?.seguir(despuesDe: idAntes, archivo: String(localized: "Página de prueba")) }
+        }
+    }
+
     /// Repite `accion` cada `segundos` hasta que SwiftUI cancela la tarea (la pantalla se deja de ver).
     func refrescarMientrasSeVe(cada segundos: Double, _ accion: () -> Void) async {
         while !Task.isCancelled {
