@@ -1,3 +1,4 @@
+import PrintBroCore
 import SwiftUI
 
 struct OpcionesView: View {
@@ -52,7 +53,7 @@ struct OpcionesView: View {
                     }
                 }
                 Picker("Páginas por hoja", selection: $modelo.paginasPorHoja) {
-                    ForEach([1, 2, 4, 6, 9, 16], id: \.self) { Text($0, format: .number).tag($0) }
+                    ForEach(PrintJob.paginasPorHojaPosibles, id: \.self) { Text($0, format: .number).tag($0) }
                 }
                 .disabled(modelo.dobleFaz)
             }

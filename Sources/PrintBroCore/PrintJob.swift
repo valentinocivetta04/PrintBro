@@ -5,6 +5,9 @@ public enum Orientacion: Sendable {
 }
 
 public struct PrintJob: Sendable, Equatable {
+    /// Valores de number-up que ofrece la app.
+    public static let paginasPorHojaPosibles = [1, 2, 4, 6, 9]
+
     public var archivo: URL
     public var impresora: String
     public var copias = 1

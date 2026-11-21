@@ -28,6 +28,19 @@ import Testing
     ])
 }
 
+@Test(arguments: PrintJob.paginasPorHojaPosibles)
+func paginasPorHojaUsaNumberUp(valor: Int) {
+    var trabajo = PrintJob(archivo: URL(fileURLWithPath: "/tmp/a.pdf"), impresora: "B")
+    trabajo.paginasPorHoja = valor
+    let args = trabajo.argumentosLP()
+    // Con 1 no hace falta mandar number-up.
+    #expect(args.contains("number-up=\(valor)") == (valor > 1))
+}
+
+@Test func paginasPorHojaPosibles() {
+    #expect(PrintJob.paginasPorHojaPosibles == [1, 2, 4, 6, 9])
+}
+
 @Test func orientacionVertical() {
     var trabajo = PrintJob(archivo: URL(fileURLWithPath: "/tmp/a.pdf"), impresora: "B")
     trabajo.orientacion = .vertical
