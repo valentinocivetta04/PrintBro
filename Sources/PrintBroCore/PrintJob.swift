@@ -43,8 +43,8 @@ public struct PrintJob: Sendable, Equatable {
         if paginasPorHoja > 1 { args += ["-o", "number-up=\(paginasPorHoja)"] }
         if ajustarAPagina { args += ["-o", "fit-to-page"] }
         // Ordenadas para que los argumentos salgan siempre iguales.
-        for clave in opcionesDriver.keys.sorted() {
-            args += ["-o", "\(clave)=\(opcionesDriver[clave]!)"]
+        for (clave, valor) in opcionesDriver.sorted(by: { $0.key < $1.key }) {
+            args += ["-o", "\(clave)=\(valor)"]
         }
         args += extra
         if let titulo { args += ["-t", titulo] }
