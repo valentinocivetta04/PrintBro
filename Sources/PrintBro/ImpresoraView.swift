@@ -51,15 +51,6 @@ struct ImpresoraView: View {
                         }
                     }
 
-                    Section("Opciones que ofrece el driver") {
-                        ForEach(modelo.opciones, id: \.clave) { opcion in
-                            LabeledContent(opcion.etiqueta) {
-                                Text(opcion.valores.joined(separator: ", "))
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                    }
-
                     Section {
                         HStack {
                             Button("Imprimir página de prueba") { modelo.confirmandoPaginaPrueba = true }
