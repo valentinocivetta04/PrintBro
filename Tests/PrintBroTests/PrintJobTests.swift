@@ -41,6 +41,17 @@ func paginasPorHojaUsaNumberUp(valor: Int) {
     #expect(PrintJob.paginasPorHojaPosibles == [1, 2, 4, 6, 9])
 }
 
+@Test func tituloVaComoUnSoloArgumento() {
+    var trabajo = PrintJob(archivo: URL(fileURLWithPath: "/tmp/PrintBro-folleto-ABC.pdf"), impresora: "B")
+    trabajo.titulo = "mi apunte \"final\".pdf"
+    #expect(trabajo.argumentosLP() == ["-d", "B", "-t", "mi apunte \"final\".pdf", "/tmp/PrintBro-folleto-ABC.pdf"])
+}
+
+@Test func sinTituloNoMandaMenosT() {
+    let trabajo = PrintJob(archivo: URL(fileURLWithPath: "/tmp/a.pdf"), impresora: "B")
+    #expect(!trabajo.argumentosLP().contains("-t"))
+}
+
 @Test func orientacionVertical() {
     var trabajo = PrintJob(archivo: URL(fileURLWithPath: "/tmp/a.pdf"), impresora: "B")
     trabajo.orientacion = .vertical

@@ -170,7 +170,9 @@ final class PrintModel {
         }
         imprimiendoPaginaPrueba = true
         let servicio = self.servicio
-        let trabajo = PrintJob(archivo: url, impresora: impresora)
+        var paraEnviar = PrintJob(archivo: url, impresora: impresora)
+        paraEnviar.titulo = String(localized: "Página de prueba")
+        let trabajo = paraEnviar
         let idAntes = Seguimiento.ultimoId(de: impresora)
         enSegundoPlano({ try servicio.imprimir(trabajo) }) { [weak self] ok in
             try? FileManager.default.removeItem(at: url)
@@ -408,6 +410,8 @@ final class PrintModel {
                 trabajo.archivo = temporal
                 trabajo.ajustarAPagina = true
             }
+            // Si se manda un temporal, la cola muestra igual el nombre del archivo elegido.
+            if trabajo.archivo != archivo { trabajo.titulo = archivo.lastPathComponent }
         } catch {
             borrarTemporales()
             mensajeError = error.localizedDescription

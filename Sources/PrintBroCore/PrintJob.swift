@@ -21,6 +21,9 @@ public struct PrintJob: Sendable, Equatable {
     public var opcionesDriver: [String: String] = [:]
     /// Escala el contenido al papel (folletos e imágenes).
     public var ajustarAPagina = false
+    /// Nombre que muestra la cola. Hace falta cuando se manda un PDF temporal
+    /// (folleto, imagen, página de prueba): sin esto CUPS muestra el nombre del temporal.
+    public var titulo: String?
 
     public init(archivo: URL, impresora: String) {
         self.archivo = archivo
@@ -44,6 +47,7 @@ public struct PrintJob: Sendable, Equatable {
             args += ["-o", "\(clave)=\(opcionesDriver[clave]!)"]
         }
         args += extra
+        if let titulo { args += ["-t", titulo] }
         // Ruta absoluta: nunca empieza con "-", así lp no la confunde con una opción.
         args.append(archivo.standardizedFileURL.path)
         return args
