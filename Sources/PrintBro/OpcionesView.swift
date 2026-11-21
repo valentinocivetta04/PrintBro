@@ -78,13 +78,19 @@ struct OpcionesView: View {
                 }
             }
 
-            if !modelo.opcionesExtra.isEmpty {
-                Section("Opciones del driver") {
-                    ForEach(modelo.opcionesExtra, id: \.clave) { opcion in
+            if !modelo.opciones.isEmpty {
+                // Una fila por opción que devuelve lpoptions -l, sin agregar ni sacar nada.
+                Section {
+                    ForEach(modelo.opciones, id: \.clave) { opcion in
                         Picker(opcion.etiqueta, selection: valor(de: opcion.clave)) {
                             ForEach(opcion.valores, id: \.self) { Text($0).tag($0) }
                         }
+                        .help(opcion.clave)
                     }
+                } header: {
+                    Text("Avanzado")
+                } footer: {
+                    Text("Opciones que ofrece el driver de la impresora, con los nombres que trae el driver.")
                 }
             }
         }
@@ -93,7 +99,11 @@ struct OpcionesView: View {
     }
 
     private func valor(de clave: String) -> Binding<String> {
-        Binding(get: { modelo.valoresDriver[clave] ?? "" },
+        // El tamaño es el mismo valor que el Picker "Tamaño de papel" de Diseño.
+        if clave == "PageSize" {
+            return Binding(get: { modelo.tamanioPapel }, set: { modelo.tamanioPapel = $0 })
+        }
+        return Binding(get: { modelo.valoresDriver[clave] ?? "" },
                 set: { modelo.valoresDriver[clave] = $0 })
     }
 }

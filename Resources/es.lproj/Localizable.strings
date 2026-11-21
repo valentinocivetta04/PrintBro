@@ -12,6 +12,7 @@
 "Agregá la impresora en Configuración del Sistema > Impresoras y escáneres." = "Agregá la impresora en Configuración del Sistema > Impresoras y escáneres.";
 "Archivos de Word, Excel o Pages" = "Archivos de Word, Excel o Pages";
 "Automática" = "Automática";
+"Avanzado" = "Avanzado";
 "Ayuda de PrintBro" = "Ayuda de PrintBro";
 "Cancelar" = "Cancelar";
 "Cierra el documento elegido" = "Cierra el documento elegido";
@@ -57,8 +58,8 @@
 "No se pudo completar" = "No se pudo completar";
 "No se pudo mostrar la vista previa" = "No se pudo mostrar la vista previa";
 "Nombre" = "Nombre";
-"Opciones del driver" = "Opciones del driver";
 "Opciones que ofrece el driver" = "Opciones que ofrece el driver";
+"Opciones que ofrece el driver de la impresora, con los nombres que trae el driver." = "Opciones que ofrece el driver de la impresora, con los nombres que trae el driver.";
 "Orientación" = "Orientación";
 "PDF, imagen (PNG, JPG, HEIC) o texto plano." = "PDF, imagen (PNG, JPG, HEIC) o texto plano.";
 "Por ahora podés ver los trabajos en Configuración del Sistema > Impresoras y escáneres." = "Por ahora podés ver los trabajos en Configuración del Sistema > Impresoras y escáneres.";

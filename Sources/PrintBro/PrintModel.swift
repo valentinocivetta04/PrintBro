@@ -311,12 +311,8 @@ final class PrintModel {
         }
         trabajo.tamanioPapel = tamanioPapel.isEmpty ? nil : tamanioPapel
         trabajo.paginasPorHoja = paginasPorHoja
-        // Solo se mandan las opciones que el usuario cambió.
-        for opcion in opcionesExtra {
-            if let valor = valoresDriver[opcion.clave], valor != opcion.porDefecto {
-                trabajo.opcionesDriver[opcion.clave] = valor
-            }
-        }
+        // PageSize va aparte (tamanioPapel); del resto solo lo que el usuario cambió.
+        trabajo.opcionesDriver = PrinterService.opcionesCambiadas(opcionesExtra, valores: valoresDriver)
         return trabajo
     }
 

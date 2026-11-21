@@ -70,6 +70,18 @@ public struct PrinterService: Sendable {
         }
     }
 
+    /// De lo que eligió el usuario, solo las opciones que difieren del valor por defecto del driver
+    /// (y que el driver realmente ofrece).
+    public static func opcionesCambiadas(_ opciones: [OpcionDriver], valores: [String: String]) -> [String: String] {
+        var cambiadas: [String: String] = [:]
+        for opcion in opciones {
+            if let valor = valores[opcion.clave], valor != opcion.porDefecto, opcion.valores.contains(valor) {
+                cambiadas[opcion.clave] = valor
+            }
+        }
+        return cambiadas
+    }
+
     /// Devuelve un aviso si el driver no es de Brother (ej. DYMO o genérico), nil si está bien.
     public static func avisoDriver(_ marcaYModelo: String) -> String? {
         if marcaYModelo.localizedCaseInsensitiveContains("brother") { return nil }
