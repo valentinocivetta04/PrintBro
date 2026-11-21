@@ -101,6 +101,7 @@ final class PrintModel {
     private(set) var fase = Fase.nada
     var mensajeError: String?
     var mostrarImportador = false
+    private(set) var estadoImpresora: EstadoImpresora?
     private let almacenHistorial = HistorialStore()
     private(set) var historial: [EntradaHistorial] = []
     private let almacenPresets = PresetStore()
@@ -120,6 +121,21 @@ final class PrintModel {
         recargarImpresoras()
         presets = almacenPresets.todos()
         historial = almacenHistorial.todas()
+    }
+
+    // MARK: Estado de la impresora
+
+    /// Lectura local de CUPS (rápida): se llama desde .task de las pantallas mientras se ven.
+    func actualizarEstado() {
+        estadoImpresora = impresora.isEmpty ? nil : PrinterService.estado(de: impresora)
+    }
+
+    /// Repite `accion` cada `segundos` hasta que SwiftUI cancela la tarea (la pantalla se deja de ver).
+    func refrescarMientrasSeVe(cada segundos: Double, _ accion: () -> Void) async {
+        while !Task.isCancelled {
+            accion()
+            try? await Task.sleep(for: .seconds(segundos))
+        }
     }
 
     // MARK: Historial
