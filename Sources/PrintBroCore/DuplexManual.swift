@@ -29,6 +29,9 @@ public final class DuplexManual {
     public init(trabajo: PrintJob, paginas: Int, servicio: PrinterService, defaults: UserDefaults = .standard) throws {
         guard trabajo.archivo.pathExtension.lowercased() == "pdf" else { throw PrintBroError.duplexSoloPDF }
         guard trabajo.rangoPaginas == nil else { throw PrintBroError.duplexConRango }
+        guard trabajo.copias <= 1 else { throw PrintBroError.duplexConCopias }
+        // Bloqueado hasta probar en papel cómo combina number-up con page-set.
+        guard trabajo.paginasPorHoja <= 1 else { throw PrintBroError.duplexConVariasPorHoja }
         guard paginas > 0 else { throw PrintBroError.pdfIlegible }
         self.trabajo = trabajo
         self.paginas = paginas

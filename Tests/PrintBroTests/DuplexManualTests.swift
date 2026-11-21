@@ -120,6 +120,24 @@ private func nuevosDefaults() -> UserDefaults {
     }
 }
 
+@Test func rechazaVariasCopias() {
+    var trabajo = PrintJob(archivo: URL(fileURLWithPath: "/tmp/a.pdf"), impresora: "B")
+    trabajo.copias = 2
+    #expect(throws: PrintBroError.duplexConCopias) {
+        try DuplexManual(trabajo: trabajo, paginas: 4, servicio: PrinterService(runner: FakeRunner()))
+    }
+    #expect(PrintBroError.duplexConCopias.errorDescription ==
+        "El doble faz manual imprime una sola copia: imprimí el documento de nuevo para hacer otra.")
+}
+
+@Test func rechazaVariasPaginasPorHoja() {
+    var trabajo = PrintJob(archivo: URL(fileURLWithPath: "/tmp/a.pdf"), impresora: "B")
+    trabajo.paginasPorHoja = 2
+    #expect(throws: PrintBroError.duplexConVariasPorHoja) {
+        try DuplexManual(trabajo: trabajo, paginas: 4, servicio: PrinterService(runner: FakeRunner()))
+    }
+}
+
 @Test func cuentaPaginasConPDFKit() throws {
     let url = FileManager.default.temporaryDirectory.appendingPathComponent("printbro-\(UUID().uuidString).pdf")
     defer { try? FileManager.default.removeItem(at: url) }
