@@ -150,7 +150,10 @@ final class PrintModel {
             opciones = []
             mensajeError = error.localizedDescription
         }
-        tamanioPapel = opciones.first { $0.clave == "PageSize" }?.porDefecto ?? tamanios.first ?? ""
+        // A4 si el driver lo ofrece (el driver de Brother trae Letter por defecto).
+        tamanioPapel = tamanios.contains("A4")
+            ? "A4"
+            : opciones.first { $0.clave == "PageSize" }?.porDefecto ?? tamanios.first ?? ""
         valoresDriver = [:]
         for opcion in opcionesExtra {
             valoresDriver[opcion.clave] = opcion.porDefecto ?? opcion.valores.first
