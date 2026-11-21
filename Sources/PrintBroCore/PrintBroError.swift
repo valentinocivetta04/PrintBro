@@ -12,9 +12,12 @@ public enum PrintBroError: LocalizedError, Equatable {
     case estadoInvalido
     case rangoInvalido(String)
     case presetSinNombre
+    case imagenIlegible
 
     public var errorDescription: String? {
         switch self {
+        case .imagenIlegible:
+            "No se pudo leer la imagen."
         case .presetSinNombre:
             "Poné un nombre para el preset."
         case .rangoInvalido(let detalle):

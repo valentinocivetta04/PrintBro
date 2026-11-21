@@ -307,6 +307,11 @@ final class PrintModel {
                 trabajo.ajustarAPagina = true
                 trabajo.orientacion = nil
                 paginasAImprimir = Folleto.orden(paginas: paginasAImprimir).count / 2
+            } else if ImagenAPDF.esImagen(archivo) {
+                let temporal = try ImagenAPDF.convertir(archivo)
+                temporales.append(temporal)
+                trabajo.archivo = temporal
+                trabajo.ajustarAPagina = true
             }
         } catch {
             borrarTemporales()
