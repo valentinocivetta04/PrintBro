@@ -126,7 +126,17 @@ final class PrintModel {
 
     var puedeImprimir: Bool {
         archivo != nil && !impresora.isEmpty && !ocupado && !mostrandoGiro
-            && (paginas == .todas || !rango.trimmingCharacters(in: .whitespaces).isEmpty)
+    }
+
+    /// Mensaje para mostrar bajo el campo de rango mientras se escribe (nil si está bien).
+    var errorRango: String? {
+        guard paginas == .rango else { return nil }
+        do {
+            _ = try RangoPaginas.validar(rango, total: paginasDocumento)
+            return nil
+        } catch {
+            return error.localizedDescription
+        }
     }
 
     // MARK: Impresoras
@@ -199,7 +209,13 @@ final class PrintModel {
 
     func imprimir() {
         guard puedeImprimir, let archivo else { return }
-        let trabajo = armarTrabajo(archivo)
+        let trabajo: PrintJob
+        do {
+            trabajo = try armarTrabajo(archivo)
+        } catch {
+            mensajeError = error.localizedDescription
+            return
+        }
         guard dobleFaz else {
             fase = .enviando
             let servicio = self.servicio
@@ -253,11 +269,11 @@ final class PrintModel {
         }
     }
 
-    private func armarTrabajo(_ archivo: URL) -> PrintJob {
+    private func armarTrabajo(_ archivo: URL) throws -> PrintJob {
         var trabajo = PrintJob(archivo: archivo, impresora: impresora)
         trabajo.copias = copias
         if paginas == .rango {
-            trabajo.rangoPaginas = rango.replacingOccurrences(of: " ", with: "")
+            trabajo.rangoPaginas = try RangoPaginas.validar(rango, total: paginasDocumento)
         }
         trabajo.orientacion = switch orientacion {
         case .automatica: nil

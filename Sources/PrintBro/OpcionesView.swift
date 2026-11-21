@@ -14,7 +14,7 @@ struct OpcionesView: View {
                 }
             }
 
-            Section("Copias y páginas") {
+            Section {
                 Stepper("Copias: \(modelo.copias)", value: $modelo.copias, in: 1...99)
                     .disabled(modelo.dobleFaz)
                     .accessibilityValue(Text(modelo.copias, format: .number))
@@ -25,7 +25,18 @@ struct OpcionesView: View {
                 .pickerStyle(.segmented)
                 .disabled(modelo.dobleFaz)
                 if modelo.paginas == .rango {
-                    TextField("Rango de páginas", text: $modelo.rango, prompt: Text("Ej.: 1-3, 5"))
+                    TextField("Rango de páginas", text: $modelo.rango, prompt: Text("Ej.: 1-3, 5, 8-10"))
+                }
+            } header: {
+                Text("Copias y páginas")
+            } footer: {
+                if let error = modelo.errorRango {
+                    Label {
+                        Text(error)
+                    } icon: {
+                        Image(systemName: "exclamationmark.triangle.fill").symbolRenderingMode(.multicolor)
+                    }
+                    .accessibilityLabel(Text("Rango inválido: \(error)"))
                 }
             }
 

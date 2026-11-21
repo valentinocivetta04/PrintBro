@@ -10,9 +10,12 @@ public enum PrintBroError: LocalizedError, Equatable {
     case duplexConCopias
     case duplexConVariasPorHoja
     case estadoInvalido
+    case rangoInvalido(String)
 
     public var errorDescription: String? {
         switch self {
+        case .rangoInvalido(let detalle):
+            detalle
         case .convertirAPDF(let ext):
             "Los archivos .\(ext) no se pueden imprimir directo: convertilo a PDF primero."
         case .formatoNoSoportado(let ext):
