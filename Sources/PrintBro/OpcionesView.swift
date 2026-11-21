@@ -11,7 +11,7 @@ struct OpcionesView: View {
                 HStack {
                     Menu("Cargar") {
                         ForEach(modelo.presets) { preset in
-                            Button(preset.nombre) { modelo.cargarPreset(preset) }
+                            Button(preset.nombre) { modelo.aplicar(preset.configuracion) }
                         }
                     }
                     .disabled(modelo.presets.isEmpty)

@@ -264,10 +264,6 @@ final class PrintModel {
         }
     }
 
-    func cargarPreset(_ preset: Preset) {
-        aplicar(preset.configuracion)
-    }
-
     func borrarPreset(_ preset: Preset) {
         do {
             try almacenPresets.borrar(nombre: preset.nombre)
