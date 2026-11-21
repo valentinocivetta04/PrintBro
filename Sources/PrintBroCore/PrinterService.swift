@@ -39,6 +39,20 @@ public struct PrinterService: Sendable {
         }
     }
 
+    /// Estado actual de una cola (printer-state, printer-state-reasons...) con la API C de CUPS.
+    public static func estado(de nombre: String) -> EstadoImpresora? {
+        var dests: UnsafeMutablePointer<cups_dest_t>?
+        let cantidad = cupsGetDests(&dests)
+        defer { cupsFreeDests(cantidad, dests) }
+        guard let dest = cupsGetDest(nombre, nil, cantidad, dests) else { return nil }
+        var opciones: [String: String] = [:]
+        for i in 0..<Int(dest.pointee.num_options) {
+            let opcion = dest.pointee.options[i]
+            opciones[String(cString: opcion.name)] = String(cString: opcion.value)
+        }
+        return EstadoImpresora(nombre: nombre, opciones: opciones)
+    }
+
     /// Opciones que ofrece el driver de la cola (lpoptions -l).
     public func opciones(de impresora: String) throws -> [OpcionDriver] {
         let r = try runner.run("lpoptions", ["-p", impresora, "-l"])
