@@ -12,6 +12,7 @@
 "Acá vas a ver los últimos 20 trabajos que mandes desde PrintBro." = "Acá vas a ver los últimos 20 trabajos que mandes desde PrintBro.";
 "Advertencia: %@" = "Advertencia: %@";
 "Agregá la impresora en Configuración del Sistema > Impresoras y escáneres." = "Agregá la impresora en Configuración del Sistema > Impresoras y escáneres.";
+"Archivo" = "Archivo";
 "Archivos de Word, Excel o Pages" = "Archivos de Word, Excel o Pages";
 "Atasco de papel" = "Atasco de papel";
 "Automática" = "Automática";
@@ -21,7 +22,11 @@
 "Borrar" = "Borrar";
 "Borrar un preset" = "Borrar un preset";
 "Cambiá el cartucho de tóner." = "Cambiá el cartucho de tóner.";
+"Cancela los trabajos seleccionados" = "Cancela los trabajos seleccionados";
+"Cancelado" = "Cancelado";
 "Cancelar" = "Cancelar";
+"Cancelar todos" = "Cancelar todos";
+"Cancelar trabajo" = "Cancelar trabajo";
 "Cargar" = "Cargar";
 "Cargar preset" = "Cargar preset";
 "Cargá papel en la bandeja." = "Cargá papel en la bandeja.";
@@ -35,7 +40,9 @@
 "Convertilos a PDF primero (Archivo > Exportar como PDF en la app donde los abriste)." = "Convertilos a PDF primero (Archivo > Exportar como PDF en la app donde los abriste).";
 "Copias y páginas" = "Copias y páginas";
 "Copias: %lld" = "Copias: %lld";
+"Cuando mandes algo a imprimir, va a aparecer acá hasta que termine." = "Cuando mandes algo a imprimir, va a aparecer acá hasta que termine.";
 "Cómo usar PrintBro" = "Cómo usar PrintBro";
+"Detenido" = "Detenido";
 "Diseño" = "Diseño";
 "Doble faz manual" = "Doble faz manual";
 "Dos páginas por cara, en hojas apaisadas. Al terminar, doblá la pila al medio." = "Dos páginas por cara, en hojas apaisadas. Al terminar, doblá la pila al medio.";
@@ -44,9 +51,12 @@
 "El driver es de Brother." = "El driver es de Brother.";
 "Elegir archivo…" = "Elegir archivo…";
 "Elegir archivo… (⌘O)" = "Elegir archivo… (⌘O)";
+"En espera" = "En espera";
 "Enviando a la impresora…" = "Enviando a la impresora…";
 "Esperá a que termine de salir la primera tanda antes de sacar las hojas." = "Esperá a que termine de salir la primera tanda antes de sacar las hojas.";
 "Estado" = "Estado";
+"Falló" = "Falló";
+"Fecha" = "Fecha";
 "Folleto (doblado al medio)" = "Folleto (doblado al medio)";
 "Girá las hojas, volvelas a poner en la bandeja y tocá Continuar" = "Girá las hojas, volvelas a poner en la bandeja y tocá Continuar";
 "Guarda impresora, copias, diseño, doble faz y opciones avanzadas. Si ya existe uno con ese nombre, lo reemplaza." = "Guarda impresora, copias, diseño, doble faz y opciones avanzadas. Si ya existe uno con ese nombre, lo reemplaza.";
@@ -75,8 +85,10 @@
 "Listo: se imprimieron las dos caras." = "Listo: se imprimieron las dos caras.";
 "Miniaturas de las páginas" = "Miniaturas de las páginas";
 "Modo simulación: no se imprime nada" = "Modo simulación: no se imprime nada";
+"N.º" = "N.º";
 "No" = "No";
 "No hay impresoras" = "No hay impresoras";
+"No hay trabajos en la cola" = "No hay trabajos en la cola";
 "No imprime las hojas pares" = "No imprime las hojas pares";
 "No se pudo completar" = "No se pudo completar";
 "No se pudo mostrar la vista previa" = "No se pudo mostrar la vista previa";
@@ -87,7 +99,6 @@
 "Orientación" = "Orientación";
 "PDF, imagen (PNG, JPG, HEIC) o texto plano." = "PDF, imagen (PNG, JPG, HEIC) o texto plano.";
 "Pausada" = "Pausada";
-"Por ahora podés ver los trabajos en Configuración del Sistema > Impresoras y escáneres." = "Por ahora podés ver los trabajos en Configuración del Sistema > Impresoras y escáneres.";
 "Predeterminada del sistema" = "Predeterminada del sistema";
 "Presets" = "Presets";
 "Primero salen las impares. Después girás las hojas y salen las pares." = "Primero salen las impares. Después girás las hojas y salen las pares.";
@@ -100,8 +111,11 @@
 "Reimprimir" = "Reimprimir";
 "Reimprimir %@" = "Reimprimir %@";
 "Reordena las páginas para doblar las hojas al medio" = "Reordena las páginas para doblar las hojas al medio";
+"Retenido" = "Retenido";
 "Revisá la impresora." = "Revisá la impresora.";
 "Revisá que esté prendida y en la misma red WiFi que la Mac." = "Revisá que esté prendida y en la misma red WiFi que la Mac.";
+"Se actualiza cada 2 segundos." = "Se actualiza cada 2 segundos.";
+"Se cancelan también los trabajos que no mandaste desde PrintBro." = "Se cancelan también los trabajos que no mandaste desde PrintBro.";
 "Si el documento tiene una cantidad impar de páginas, la última hoja queda sin dorso." = "Si el documento tiene una cantidad impar de páginas, la última hoja queda sin dorso.";
 "Sin avisos." = "Sin avisos.";
 "Sin conexión" = "Sin conexión";
@@ -113,10 +127,10 @@
 "Sí" = "Sí";
 "Tamaño de papel" = "Tamaño de papel";
 "Tapa abierta" = "Tapa abierta";
+"Terminado" = "Terminado";
 "Todas" = "Todas";
 "Todavía imprime. Conseguí un cartucho de repuesto." = "Todavía imprime. Conseguí un cartucho de repuesto.";
 "Todavía no hay trabajos" = "Todavía no hay trabajos";
-"Todavía no hay vista de la cola" = "Todavía no hay vista de la cola";
 "Tóner bajo" = "Tóner bajo";
 "Vertical" = "Vertical";
 "Vista previa de la imagen" = "Vista previa de la imagen";
@@ -124,3 +138,4 @@
 "Vista previa del texto" = "Vista previa del texto";
 "Volver a buscar impresoras" = "Volver a buscar impresoras";
 "Zona para soltar un archivo" = "Zona para soltar un archivo";
+"¿Cancelar todos los trabajos de la cola?" = "¿Cancelar todos los trabajos de la cola?";

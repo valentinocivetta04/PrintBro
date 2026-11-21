@@ -102,6 +102,9 @@ final class PrintModel {
     var mensajeError: String?
     var mostrarImportador = false
     private(set) var estadoImpresora: EstadoImpresora?
+    private(set) var trabajosCola: [TrabajoCola] = []
+    var seleccionCola: Set<Int> = []
+    var confirmandoCancelarTodos = false
     private let almacenHistorial = HistorialStore()
     private(set) var historial: [EntradaHistorial] = []
     private let almacenPresets = PresetStore()
@@ -128,6 +131,27 @@ final class PrintModel {
     /// Lectura local de CUPS (rápida): se llama desde .task de las pantallas mientras se ven.
     func actualizarEstado() {
         estadoImpresora = impresora.isEmpty ? nil : PrinterService.estado(de: impresora)
+    }
+
+    func actualizarCola() {
+        if simulacion { FileHandle.standardError.write(Data("[simulación] consulta cola\n".utf8)) }
+        trabajosCola = impresora.isEmpty ? [] : PrinterService.trabajos(de: impresora)
+        seleccionCola = seleccionCola.intersection(trabajosCola.map(\.id))
+    }
+
+    func cancelarSeleccionados() {
+        let elegidos = trabajosCola.filter { seleccionCola.contains($0.id) }
+        let servicio = self.servicio
+        enSegundoPlano({ for trabajo in elegidos { try servicio.cancelar(trabajo) } }) { [weak self] _ in
+            self?.actualizarCola()
+        }
+    }
+
+    func cancelarTodos() {
+        let servicio = self.servicio, impresora = self.impresora
+        enSegundoPlano({ try servicio.cancelarTodos(de: impresora) }) { [weak self] _ in
+            self?.actualizarCola()
+        }
     }
 
     /// Repite `accion` cada `segundos` hasta que SwiftUI cancela la tarea (la pantalla se deja de ver).

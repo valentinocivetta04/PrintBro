@@ -1,12 +1,62 @@
+import PrintBroCore
 import SwiftUI
 
-// La lista de trabajos necesita leer la cola desde PrintBroCore (cupsGetJobs2); queda para otra parte.
 struct ColaView: View {
+    @Environment(PrintModel.self) private var modelo
+
     var body: some View {
-        ContentUnavailableView {
-            Label("Todavía no hay vista de la cola", systemImage: "tray.full")
-        } description: {
-            Text("Por ahora podés ver los trabajos en Configuración del Sistema > Impresoras y escáneres.")
+        @Bindable var modelo = modelo
+        Group {
+            if modelo.trabajosCola.isEmpty {
+                ContentUnavailableView {
+                    Label("No hay trabajos en la cola", systemImage: "tray")
+                } description: {
+                    Text("Cuando mandes algo a imprimir, va a aparecer acá hasta que termine.")
+                }
+            } else {
+                Table(modelo.trabajosCola, selection: $modelo.seleccionCola) {
+                    TableColumn("N.º") { trabajo in
+                        Text(trabajo.id, format: .number)
+                    }
+                    .width(50)
+                    TableColumn("Archivo") { trabajo in
+                        Text(trabajo.archivo).lineLimit(1).truncationMode(.middle)
+                    }
+                    TableColumn("Estado") { trabajo in
+                        Label(trabajo.estado.titulo, systemImage: trabajo.estado.simbolo)
+                    }
+                    .width(140)
+                    TableColumn("Fecha") { trabajo in
+                        Text(trabajo.fecha, format: .dateTime.day().month().hour().minute().second())
+                    }
+                    .width(150)
+                }
+            }
         }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            HStack {
+                Text("Se actualiza cada 2 segundos.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Button("Cancelar trabajo") { modelo.cancelarSeleccionados() }
+                    .disabled(modelo.seleccionCola.isEmpty)
+                    .accessibilityHint(Text("Cancela los trabajos seleccionados"))
+                Button("Cancelar todos", role: .destructive) { modelo.confirmandoCancelarTodos = true }
+                    .disabled(modelo.trabajosCola.isEmpty)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
+            .background(.bar)
+            .overlay(alignment: .top) { Divider() }
+        }
+        .confirmationDialog("¿Cancelar todos los trabajos de la cola?", isPresented: $modelo.confirmandoCancelarTodos) {
+            Button("Cancelar todos", role: .destructive) { modelo.cancelarTodos() }
+            Button("No", role: .cancel) {}
+        } message: {
+            Text("Se cancelan también los trabajos que no mandaste desde PrintBro.")
+        }
+        // Consulta solo mientras la pantalla se ve: SwiftUI cancela la tarea al salir.
+        .task { await modelo.refrescarMientrasSeVe(cada: 2) { modelo.actualizarCola() } }
     }
 }
