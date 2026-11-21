@@ -6,7 +6,7 @@ public enum RangoPaginas {
     public static func validar(_ texto: String, total: Int? = nil) throws -> String {
         let limpio = texto.replacingOccurrences(of: " ", with: "")
         guard !limpio.isEmpty else {
-            throw PrintBroError.rangoInvalido("Escribí qué páginas querés, por ejemplo 1-3,5.")
+            throw PrintBroError.rangoInvalido(String(localized: "Escribí qué páginas querés, por ejemplo 1-3,5."))
         }
         for parte in limpio.split(separator: ",", omittingEmptySubsequences: false) {
             let numeros = parte.split(separator: "-", omittingEmptySubsequences: false)
@@ -16,10 +16,10 @@ public enum RangoPaginas {
                   let desde = Int(numeros[0]), let hasta = Int(numeros[numeros.count - 1]),
                   desde >= 1, desde <= hasta
             else {
-                throw PrintBroError.rangoInvalido("«\(parte)» no es válido. Usá números y guiones, por ejemplo 1-3,5,8-10.")
+                throw PrintBroError.rangoInvalido(String(localized: "«\(parte)» no es válido. Usá números y guiones, por ejemplo 1-3,5,8-10."))
             }
             if let total, hasta > total {
-                throw PrintBroError.rangoInvalido("El documento tiene \(total) páginas y «\(parte)» se pasa.")
+                throw PrintBroError.rangoInvalido(String(localized: "El documento tiene \(total) páginas y «\(parte)» se pasa."))
             }
         }
         return limpio

@@ -1,6 +1,9 @@
 /* Textos de la interfaz de PrintBro (español rioplatense). La clave es el texto original. */
 
+"%lld copias" = "%lld copias";
+"%lld por hoja" = "%lld por hoja";
 "%lld páginas" = "%lld páginas";
+"1 copia" = "1 copia";
 "1 página" = "1 página";
 "1. Soltá un archivo en la ventana o elegilo con Archivo > Abrir… (⌘O)." = "1. Soltá un archivo en la ventana o elegilo con Archivo > Abrir… (⌘O).";
 "2. Ajustá copias, páginas, orientación, papel y las opciones del driver." = "2. Ajustá copias, páginas, orientación, papel y las opciones del driver.";
@@ -49,11 +52,20 @@
 "Dos páginas por cara, en hojas apaisadas. Al terminar, doblá la pila al medio." = "Dos páginas por cara, en hojas apaisadas. Al terminar, doblá la pila al medio.";
 "Driver" = "Driver";
 "Ej.: 1-3, 5, 8-10" = "Ej.: 1-3, 5, 8-10";
+"El doble faz manual imprime el documento entero: sacá el rango de páginas." = "El doble faz manual imprime el documento entero: sacá el rango de páginas.";
+"El doble faz manual imprime una sola copia: imprimí el documento de nuevo para hacer otra." = "El doble faz manual imprime una sola copia: imprimí el documento de nuevo para hacer otra.";
+"El doble faz manual solo funciona con PDF." = "El doble faz manual solo funciona con PDF.";
+"El documento tiene %lld páginas y «%@» se pasa." = "El documento tiene %lld páginas y «%@» se pasa.";
+"El documento tiene %lld páginas: la última hoja va a quedar sin dorso." = "El documento tiene %lld páginas: la última hoja va a quedar sin dorso.";
+"El driver de esta cola es «%@», no es de Brother. Los trabajos pueden figurar como completados sin imprimir nada." = "El driver de esta cola es «%@», no es de Brother. Los trabajos pueden figurar como completados sin imprimir nada.";
 "El driver es de Brother." = "El driver es de Brother.";
+"El formato .%@ no está soportado. Usá PDF, imagen (png, jpg, heic) o texto plano." = "El formato .%@ no está soportado. Usá PDF, imagen (png, jpg, heic) o texto plano.";
 "Elegir archivo…" = "Elegir archivo…";
 "Elegir archivo… (⌘O)" = "Elegir archivo… (⌘O)";
 "En espera" = "En espera";
 "Enviando a la impresora…" = "Enviando a la impresora…";
+"Esa acción no se puede hacer en este momento." = "Esa acción no se puede hacer en este momento.";
+"Escribí qué páginas querés, por ejemplo 1-3,5." = "Escribí qué páginas querés, por ejemplo 1-3,5.";
 "Esperá a que termine de salir la primera tanda antes de sacar las hojas." = "Esperá a que termine de salir la primera tanda antes de sacar las hojas.";
 "Estado" = "Estado";
 "Falló" = "Falló";
@@ -82,12 +94,14 @@
 "Imprimir página de prueba" = "Imprimir página de prueba";
 "La cola no está aceptando trabajos." = "La cola no está aceptando trabajos.";
 "La impresión falló" = "La impresión falló";
+"La impresión falló: %@" = "La impresión falló: %@";
 "La impresora no imprime de los dos lados sola. PrintBro manda primero las páginas impares. Cuando terminan, girás la pila, la volvés a poner en la bandeja y tocás Continuar para imprimir las pares." = "La impresora no imprime de los dos lados sola. PrintBro manda primero las páginas impares. Cuando terminan, girás la pila, la volvés a poner en la bandeja y tocás Continuar para imprimir las pares.";
 "La predeterminada del sistema" = "La predeterminada del sistema";
 "Lista" = "Lista";
 "Listo: el trabajo se mandó a la impresora." = "Listo: el trabajo se mandó a la impresora.";
 "Listo: sale una sola cara, no hizo falta girar la hoja." = "Listo: sale una sola cara, no hizo falta girar la hoja.";
 "Listo: se imprimieron las dos caras." = "Listo: se imprimieron las dos caras.";
+"Los archivos .%@ no se pueden imprimir directo: convertilo a PDF primero." = "Los archivos .%@ no se pueden imprimir directo: convertilo a PDF primero.";
 "Miniaturas de las páginas" = "Miniaturas de las páginas";
 "Modo simulación: no se imprime nada" = "Modo simulación: no se imprime nada";
 "N.º" = "N.º";
@@ -95,7 +109,10 @@
 "No hay impresoras" = "No hay impresoras";
 "No hay trabajos en la cola" = "No hay trabajos en la cola";
 "No imprime las hojas pares" = "No imprime las hojas pares";
+"No se encontró «%@». Puede que lo hayas movido o borrado." = "No se encontró «%@». Puede que lo hayas movido o borrado.";
 "No se pudo completar" = "No se pudo completar";
+"No se pudo leer el PDF." = "No se pudo leer el PDF.";
+"No se pudo leer la imagen." = "No se pudo leer la imagen.";
 "No se pudo mostrar la vista previa" = "No se pudo mostrar la vista previa";
 "Nombre" = "Nombre";
 "Nombre del preset" = "Nombre del preset";
@@ -104,6 +121,7 @@
 "Orientación" = "Orientación";
 "PDF, imagen (PNG, JPG, HEIC) o texto plano." = "PDF, imagen (PNG, JPG, HEIC) o texto plano.";
 "Pausada" = "Pausada";
+"Poné un nombre para el preset." = "Poné un nombre para el preset.";
 "Predeterminada del sistema" = "Predeterminada del sistema";
 "Presets" = "Presets";
 "Primero salen las impares. Después girás las hojas y salen las pares." = "Primero salen las impares. Después girás las hojas y salen las pares.";
@@ -122,6 +140,7 @@
 "Revisá la impresora." = "Revisá la impresora.";
 "Revisá que esté prendida y en la misma red WiFi que la Mac." = "Revisá que esté prendida y en la misma red WiFi que la Mac.";
 "Sale una sola hoja con el nombre de la impresora y la fecha." = "Sale una sola hoja con el nombre de la impresora y la fecha.";
+"Salen %lld caras: la última hoja va a quedar sin dorso." = "Salen %lld caras: la última hoja va a quedar sin dorso.";
 "Se actualiza cada 2 segundos." = "Se actualiza cada 2 segundos.";
 "Se cancelan también los trabajos que no mandaste desde PrintBro." = "Se cancelan también los trabajos que no mandaste desde PrintBro.";
 "Se canceló «%@»." = "Se canceló «%@».";
@@ -147,6 +166,11 @@
 "Vista previa del texto" = "Vista previa del texto";
 "Volver a buscar impresoras" = "Volver a buscar impresoras";
 "Zona para soltar un archivo" = "Zona para soltar un archivo";
+"desconocido" = "desconocido";
+"doble faz" = "doble faz";
+"folleto" = "folleto";
+"páginas %@" = "páginas %@";
+"«%@» no es válido. Usá números y guiones, por ejemplo 1-3,5,8-10." = "«%@» no es válido. Usá números y guiones, por ejemplo 1-3,5,8-10.";
 "«%@» no se pudo imprimir. Revisá la impresora." = "«%@» no se pudo imprimir. Revisá la impresora.";
 "«%@» ya salió de la impresora (simulación)." = "«%@» ya salió de la impresora (simulación).";
 "«%@» ya salió de la impresora." = "«%@» ya salió de la impresora.";

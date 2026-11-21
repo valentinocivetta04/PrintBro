@@ -99,8 +99,8 @@ public struct PrinterService: Sendable {
     /// Devuelve un aviso si el driver no es de Brother (ej. DYMO o genérico), nil si está bien.
     public static func avisoDriver(_ marcaYModelo: String) -> String? {
         if marcaYModelo.localizedCaseInsensitiveContains("brother") { return nil }
-        let nombre = marcaYModelo.isEmpty ? "desconocido" : marcaYModelo
-        return "El driver de esta cola es «\(nombre)», no es de Brother. Los trabajos pueden figurar como completados sin imprimir nada."
+        let nombre = marcaYModelo.isEmpty ? String(localized: "desconocido") : marcaYModelo
+        return String(localized: "El driver de esta cola es «\(nombre)», no es de Brother. Los trabajos pueden figurar como completados sin imprimir nada.")
     }
 
     /// Manda el trabajo a lp. `extra` suma opciones como page-set para el doble faz.

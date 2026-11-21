@@ -16,14 +16,14 @@ public struct EntradaHistorial: Codable, Equatable, Sendable, Identifiable {
     /// Resumen corto de las opciones, para la lista.
     public var resumen: String {
         let c = configuracion
-        var partes = [c.copias == 1 ? "1 copia" : "\(c.copias) copias"]
-        if let rango = c.rangoPaginas { partes.append("páginas \(rango)") }
+        var partes = [c.copias == 1 ? String(localized: "1 copia") : String(localized: "\(c.copias) copias")]
+        if let rango = c.rangoPaginas { partes.append(String(localized: "páginas \(rango)")) }
         if let papel = c.tamanioPapel { partes.append(papel) }
-        if c.paginasPorHoja > 1 { partes.append("\(c.paginasPorHoja) por hoja") }
+        if c.paginasPorHoja > 1 { partes.append(String(localized: "\(c.paginasPorHoja) por hoja")) }
         if c.folleto {
-            partes.append("folleto")
+            partes.append(String(localized: "folleto"))
         } else if c.dobleFaz {
-            partes.append("doble faz")
+            partes.append(String(localized: "doble faz"))
         }
         return partes.joined(separator: " · ")
     }

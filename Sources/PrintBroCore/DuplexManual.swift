@@ -65,8 +65,8 @@ public final class DuplexManual {
         var aviso: String?
         if caras % 2 == 1 {
             aviso = trabajo.paginasPorHoja > 1
-                ? "Salen \(caras) caras: la última hoja va a quedar sin dorso."
-                : "El documento tiene \(paginas) páginas: la última hoja va a quedar sin dorso."
+                ? String(localized: "Salen \(caras) caras: la última hoja va a quedar sin dorso.")
+                : String(localized: "El documento tiene \(paginas) páginas: la última hoja va a quedar sin dorso.")
         }
         estado = .esperandoGiro(aviso: aviso)
     }
