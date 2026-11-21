@@ -29,6 +29,16 @@ struct BarraImpresionView: View {
                 .controlSize(.small)
             Text(texto)
                 .accessibilityAddTraits(.updatesFrequently)
+        } else if let aviso = modelo.avisoTrabajo {
+            Label(aviso, systemImage: "bell")
+                .lineLimit(2)
+            Button {
+                modelo.avisoTrabajo = nil
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+            }
+            .buttonStyle(.borderless)
+            .accessibilityLabel(Text("Cerrar aviso"))
         } else if case .listo(let mensaje) = modelo.fase {
             Label {
                 Text(mensaje)

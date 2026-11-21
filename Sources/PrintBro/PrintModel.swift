@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import UserNotifications
 import PrintBroCore
 
 enum Paginas: Hashable {
@@ -389,12 +390,16 @@ final class PrintModel {
             return
         }
         let entrada = EntradaHistorial(archivo: archivo, configuracion: configuracionActual())
+        let idAntes = Seguimiento.ultimoId(de: impresora)
         guard dobleFaz else {
             fase = .enviando
             let servicio = self.servicio
             let trabajoFinal = trabajo
             enSegundoPlano({ try servicio.imprimir(trabajoFinal) }) { [weak self] ok in
-                if ok { self?.registrar(entrada) }
+                if ok {
+                    self?.registrar(entrada)
+                    self?.seguir(despuesDe: idAntes, archivo: archivo.lastPathComponent)
+                }
                 // lp ya copió el archivo a la cola de CUPS: el temporal se puede borrar.
                 self?.borrarTemporales()
                 self?.fase = ok ? .listo(String(localized: "Listo: el trabajo se mandó a la impresora.")) : .nada
@@ -409,7 +414,10 @@ final class PrintModel {
             let caja = Caja(valor: nuevo)
             enSegundoPlano({ try caja.valor.empezar() }) { [weak self] ok in
                 // Se registra cuando ya salió la primera tanda.
-                if ok { self?.registrar(entrada) }
+                if ok {
+                    self?.registrar(entrada)
+                    self?.seguir(despuesDe: idAntes, archivo: archivo.lastPathComponent)
+                }
                 self?.sincronizarDuplex()
             }
         } catch {
@@ -428,7 +436,77 @@ final class PrintModel {
         duplex.ordenInverso = ordenInverso
         fase = .imprimiendoPares
         let caja = Caja(valor: duplex)
-        enSegundoPlano({ try caja.valor.continuar() }) { [weak self] _ in self?.sincronizarDuplex() }
+        let idAntes = Seguimiento.ultimoId(de: impresora)
+        let nombre = archivo?.lastPathComponent ?? ""
+        enSegundoPlano({ try caja.valor.continuar() }) { [weak self] ok in
+            if ok { self?.seguir(despuesDe: idAntes, archivo: nombre) }
+            self?.sincronizarDuplex()
+        }
+    }
+
+    // MARK: Avisos de trabajos terminados
+
+    private struct SinPermisoDeNotificaciones: Error {}
+
+    /// id del trabajo → (cola, nombre del archivo que eligió el usuario).
+    private var seguidos: [Int: (impresora: String, archivo: String)] = [:]
+    private var tareaSeguimiento: Task<Void, Never>?
+    /// Aviso dentro de la ventana cuando las notificaciones del sistema no están disponibles.
+    var avisoTrabajo: String?
+
+    private func seguir(despuesDe id: Int, archivo: String) {
+        if simulacion {
+            // No hay trabajo real en CUPS: se manda el aviso igual para probar las notificaciones.
+            notificar(String(localized: "Impresión terminada"),
+                      String(localized: "«\(archivo)» ya salió de la impresora (simulación)."))
+            return
+        }
+        for trabajo in Seguimiento.nuevos(PrinterService.trabajos(de: impresora, activos: false), despuesDe: id) {
+            seguidos[trabajo.id] = (impresora, archivo)
+        }
+        guard tareaSeguimiento == nil, !seguidos.isEmpty else { return }
+        tareaSeguimiento = Task { [weak self] in
+            while let self, !self.seguidos.isEmpty {
+                try? await Task.sleep(for: .seconds(2))
+                self.revisarSeguidos()
+            }
+            self?.tareaSeguimiento = nil
+        }
+    }
+
+    private func revisarSeguidos() {
+        for (id, dato) in seguidos {
+            let trabajos = PrinterService.trabajos(de: dato.impresora, activos: false)
+            guard let trabajo = trabajos.first(where: { $0.id == id }) else {
+                seguidos[id] = nil  // CUPS ya no lo tiene: no hay nada que avisar
+                continue
+            }
+            if let aviso = Seguimiento.aviso(para: trabajo.estado, archivo: dato.archivo) {
+                seguidos[id] = nil
+                notificar(aviso.titulo, aviso.cuerpo)
+            }
+        }
+    }
+
+    /// Notificación del sistema; si no se puede (app firmada ad-hoc, permiso negado), aviso en la ventana.
+    private func notificar(_ titulo: String, _ cuerpo: String) {
+        Task {
+            do {
+                let centro = UNUserNotificationCenter.current()
+                guard try await centro.requestAuthorization(options: [.alert, .sound]) else {
+                    throw SinPermisoDeNotificaciones()
+                }
+                let contenido = UNMutableNotificationContent()
+                contenido.title = titulo
+                contenido.body = cuerpo
+                contenido.sound = .default
+                try await centro.add(UNNotificationRequest(identifier: UUID().uuidString, content: contenido, trigger: nil))
+                FileHandle.standardError.write(Data("[notificación] enviada: \(titulo)\n".utf8))
+            } catch {
+                FileHandle.standardError.write(Data("[notificación] no disponible (\(error)); aviso en la ventana\n".utf8))
+                avisoTrabajo = "\(titulo). \(cuerpo)"
+            }
+        }
     }
 
     func cancelarDuplex() {

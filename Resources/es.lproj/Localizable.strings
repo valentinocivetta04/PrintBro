@@ -30,6 +30,7 @@
 "Cargar" = "Cargar";
 "Cargar preset" = "Cargar preset";
 "Cargá papel en la bandeja." = "Cargá papel en la bandeja.";
+"Cerrar aviso" = "Cerrar aviso";
 "Cerrá la tapa de la impresora." = "Cerrá la tapa de la impresora.";
 "Cierra el documento elegido" = "Cierra el documento elegido";
 "Cola" = "Cola";
@@ -66,6 +67,8 @@
 "Guardar…" = "Guardar…";
 "Historial" = "Historial";
 "Horizontal" = "Horizontal";
+"Impresión cancelada" = "Impresión cancelada";
+"Impresión terminada" = "Impresión terminada";
 "Impresora" = "Impresora";
 "Impresora pausada" = "Impresora pausada";
 "Impresora predeterminada" = "Impresora predeterminada";
@@ -77,6 +80,7 @@
 "Imprimir (⌘P)" = "Imprimir (⌘P)";
 "Imprimir las pares en orden inverso" = "Imprimir las pares en orden inverso";
 "La cola no está aceptando trabajos." = "La cola no está aceptando trabajos.";
+"La impresión falló" = "La impresión falló";
 "La impresora no imprime de los dos lados sola. PrintBro manda primero las páginas impares. Cuando terminan, girás la pila, la volvés a poner en la bandeja y tocás Continuar para imprimir las pares." = "La impresora no imprime de los dos lados sola. PrintBro manda primero las páginas impares. Cuando terminan, girás la pila, la volvés a poner en la bandeja y tocás Continuar para imprimir las pares.";
 "La predeterminada del sistema" = "La predeterminada del sistema";
 "Lista" = "Lista";
@@ -116,6 +120,7 @@
 "Revisá que esté prendida y en la misma red WiFi que la Mac." = "Revisá que esté prendida y en la misma red WiFi que la Mac.";
 "Se actualiza cada 2 segundos." = "Se actualiza cada 2 segundos.";
 "Se cancelan también los trabajos que no mandaste desde PrintBro." = "Se cancelan también los trabajos que no mandaste desde PrintBro.";
+"Se canceló «%@»." = "Se canceló «%@».";
 "Si el documento tiene una cantidad impar de páginas, la última hoja queda sin dorso." = "Si el documento tiene una cantidad impar de páginas, la última hoja queda sin dorso.";
 "Sin avisos." = "Sin avisos.";
 "Sin conexión" = "Sin conexión";
@@ -138,4 +143,7 @@
 "Vista previa del texto" = "Vista previa del texto";
 "Volver a buscar impresoras" = "Volver a buscar impresoras";
 "Zona para soltar un archivo" = "Zona para soltar un archivo";
+"«%@» no se pudo imprimir. Revisá la impresora." = "«%@» no se pudo imprimir. Revisá la impresora.";
+"«%@» ya salió de la impresora (simulación)." = "«%@» ya salió de la impresora (simulación).";
+"«%@» ya salió de la impresora." = "«%@» ya salió de la impresora.";
 "¿Cancelar todos los trabajos de la cola?" = "¿Cancelar todos los trabajos de la cola?";
