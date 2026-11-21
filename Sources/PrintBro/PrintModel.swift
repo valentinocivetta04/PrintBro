@@ -490,7 +490,7 @@ final class PrintModel {
                       String(localized: "«\(archivo)» ya salió de la impresora (simulación)."))
             return
         }
-        for trabajo in Seguimiento.nuevos(PrinterService.trabajos(de: impresora, activos: false), despuesDe: id) {
+        for trabajo in PrinterService.trabajos(de: impresora, activos: false) where trabajo.id > id {
             seguidos[trabajo.id] = (impresora, archivo)
         }
         guard tareaSeguimiento == nil, !seguidos.isEmpty else { return }

@@ -8,10 +8,6 @@ public enum Seguimiento {
         PrinterService.trabajos(de: impresora, activos: false).map(\.id).max() ?? 0
     }
 
-    public static func nuevos(_ trabajos: [TrabajoCola], despuesDe id: Int) -> [TrabajoCola] {
-        trabajos.filter { $0.id > id }
-    }
-
     /// Título y texto de la notificación, o nil si el trabajo todavía no terminó.
     public static func aviso(para estado: EstadoTrabajo, archivo: String) -> (titulo: String, cuerpo: String)? {
         switch estado {
