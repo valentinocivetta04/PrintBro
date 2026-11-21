@@ -64,9 +64,9 @@ struct OpcionesView: View {
 
             Section("Diseño") {
                 Picker("Orientación", selection: $modelo.orientacion) {
-                    Text("Automática").tag(OrientacionElegida.automatica)
-                    Text("Vertical").tag(OrientacionElegida.vertical)
-                    Text("Horizontal").tag(OrientacionElegida.horizontal)
+                    Text("Automática").tag(Orientacion?.none)
+                    Text("Vertical").tag(Orientacion?.some(.vertical))
+                    Text("Horizontal").tag(Orientacion?.some(.horizontal))
                 }
                 if !modelo.tamanios.isEmpty {
                     Picker("Tamaño de papel", selection: $modelo.tamanioPapel) {

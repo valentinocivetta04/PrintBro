@@ -7,10 +7,6 @@ enum Paginas: Hashable {
     case todas, rango
 }
 
-enum OrientacionElegida: Hashable {
-    case automatica, vertical, horizontal
-}
-
 enum Fase: Equatable {
     case nada
     case enviando
@@ -61,7 +57,8 @@ final class PrintModel {
     var copias = 1
     var paginas = Paginas.todas
     var rango = ""
-    var orientacion = OrientacionElegida.automatica
+    /// nil es "Automática".
+    var orientacion: Orientacion?
     var tamanioPapel = ""
     var paginasPorHoja = 1
     var valoresDriver: [String: String] = [:]
@@ -221,11 +218,7 @@ final class PrintModel {
         c.impresora = impresora
         c.copias = copias
         c.rangoPaginas = paginas == .rango ? rango : nil
-        c.orientacion = switch orientacion {
-        case .automatica: nil
-        case .vertical: .vertical
-        case .horizontal: .horizontal
-        }
+        c.orientacion = orientacion
         c.tamanioPapel = tamanioPapel.isEmpty ? nil : tamanioPapel
         c.paginasPorHoja = paginasPorHoja
         c.opcionesDriver = valoresDriver
@@ -248,11 +241,7 @@ final class PrintModel {
         } else {
             paginas = .todas
         }
-        orientacion = switch c.orientacion {
-        case nil: .automatica
-        case .vertical: .vertical
-        case .horizontal: .horizontal
-        }
+        orientacion = c.orientacion
         if let papel = c.tamanioPapel, tamanios.contains(papel) { tamanioPapel = papel }
         for opcion in opcionesExtra {
             if let valor = c.opcionesDriver[opcion.clave], opcion.valores.contains(valor) {
@@ -582,11 +571,7 @@ final class PrintModel {
         if paginas == .rango {
             trabajo.rangoPaginas = try RangoPaginas.validar(rango, total: paginasDocumento)
         }
-        trabajo.orientacion = switch orientacion {
-        case .automatica: nil
-        case .vertical: .vertical
-        case .horizontal: .horizontal
-        }
+        trabajo.orientacion = orientacion
         trabajo.tamanioPapel = tamanioPapel.isEmpty ? nil : tamanioPapel
         trabajo.paginasPorHoja = paginasPorHoja
         // PageSize va aparte (tamanioPapel); del resto solo lo que el usuario cambió.
