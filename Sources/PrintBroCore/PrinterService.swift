@@ -22,35 +22,32 @@ public struct PrinterService: Sendable {
         self.runner = runner
     }
 
-    /// Lista las colas con la API C de CUPS: no depende del idioma del sistema.
-    public static func impresoras() -> [Impresora] {
+    /// Todas las colas con sus opciones, leídas con la API C de CUPS: no depende del idioma del sistema.
+    private static func destinos() -> [(nombre: String, predeterminada: Bool, opciones: [String: String])] {
         var dests: UnsafeMutablePointer<cups_dest_t>?
         let cantidad = cupsGetDests(&dests)
         defer { cupsFreeDests(cantidad, dests) }
         guard let dests else { return [] }
         return (0..<Int(cantidad)).map { i in
             let d = dests[i]
-            let modelo = cupsGetOption("printer-make-and-model", d.num_options, d.options)
-            return Impresora(
-                nombre: String(cString: d.name),
-                predeterminada: d.is_default != 0,
-                marcaYModelo: modelo.map { String(cString: $0) } ?? ""
-            )
+            var opciones: [String: String] = [:]
+            for j in 0..<Int(d.num_options) {
+                opciones[String(cString: d.options[j].name)] = String(cString: d.options[j].value)
+            }
+            return (String(cString: d.name), d.is_default != 0, opciones)
         }
     }
 
-    /// Estado actual de una cola (printer-state, printer-state-reasons...) con la API C de CUPS.
-    public static func estado(de nombre: String) -> EstadoImpresora? {
-        var dests: UnsafeMutablePointer<cups_dest_t>?
-        let cantidad = cupsGetDests(&dests)
-        defer { cupsFreeDests(cantidad, dests) }
-        guard let dest = cupsGetDest(nombre, nil, cantidad, dests) else { return nil }
-        var opciones: [String: String] = [:]
-        for i in 0..<Int(dest.pointee.num_options) {
-            let opcion = dest.pointee.options[i]
-            opciones[String(cString: opcion.name)] = String(cString: opcion.value)
+    public static func impresoras() -> [Impresora] {
+        destinos().map {
+            Impresora(nombre: $0.nombre, predeterminada: $0.predeterminada,
+                      marcaYModelo: $0.opciones["printer-make-and-model"] ?? "")
         }
-        return EstadoImpresora(nombre: nombre, opciones: opciones)
+    }
+
+    /// Estado actual de una cola (printer-state, printer-state-reasons...).
+    public static func estado(de nombre: String) -> EstadoImpresora? {
+        destinos().first { $0.nombre == nombre }.map { EstadoImpresora(nombre: nombre, opciones: $0.opciones) }
     }
 
     /// Opciones que ofrece el driver de la cola (lpoptions -l).
