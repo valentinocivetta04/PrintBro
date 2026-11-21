@@ -18,6 +18,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         true
     }
 
+    func applicationWillTerminate(_ notification: Notification) {
+        modelo.borrarTemporalesAlSalir()
+    }
+
     // Sin esto, macOS no muestra la notificación si PrintBro está adelante.
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter,
                                             willPresent notification: UNNotification) async

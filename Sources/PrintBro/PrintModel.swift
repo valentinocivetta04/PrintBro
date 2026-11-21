@@ -169,6 +169,7 @@ final class PrintModel {
             return
         }
         imprimiendoPaginaPrueba = true
+        paginaPruebaPendiente = url
         let servicio = self.servicio
         var paraEnviar = PrintJob(archivo: url, impresora: impresora)
         paraEnviar.titulo = String(localized: "Página de prueba")
@@ -176,6 +177,7 @@ final class PrintModel {
         let idAntes = Seguimiento.ultimoId(de: impresora)
         enSegundoPlano({ try servicio.imprimir(trabajo) }) { [weak self] ok in
             try? FileManager.default.removeItem(at: url)
+            self?.paginaPruebaPendiente = nil
             self?.imprimiendoPaginaPrueba = false
             if ok { self?.seguir(despuesDe: idAntes, archivo: String(localized: "Página de prueba")) }
         }
@@ -452,6 +454,16 @@ final class PrintModel {
             borrarTemporales()
             mensajeError = error.localizedDescription
         }
+    }
+
+    /// PDF de la página de prueba mientras lp lo está mandando.
+    private var paginaPruebaPendiente: URL?
+
+    /// Al cerrar la app: borra lo que quedó si se cerró en medio de un trabajo (por ejemplo,
+    /// esperando el giro del doble faz).
+    func borrarTemporalesAlSalir() {
+        borrarTemporales()
+        if let url = paginaPruebaPendiente { try? FileManager.default.removeItem(at: url) }
     }
 
     private func borrarTemporales() {
