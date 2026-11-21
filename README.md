@@ -55,17 +55,35 @@ PRINTBRO_DRY_RUN=1 ./PrintBro.app/Contents/MacOS/PrintBro
 
 La opción "Imprimir las pares en orden inverso" viene activada porque con mi forma de girar la pila es la que deja cada página par en el dorso correcto. Si vos girás la pila de otra manera, probá desactivarla. La app se acuerda de lo que elijas.
 
-Con una cantidad impar de páginas la última hoja queda sin dorso, y la app lo avisa antes de que gires la pila. El doble faz imprime el documento entero y una sola copia, así que desactiva el rango y las copias mientras está prendido.
+Con una cantidad impar de páginas la última hoja queda sin dorso, y la app lo avisa antes de que gires la pila. Ese caso todavía no lo probé en papel. El doble faz imprime el documento entero y una sola copia, así que desactiva el rango y las copias mientras está prendido.
 
 ## Folleto
 
 Con "Folleto" la app arma un PDF temporal con dos páginas por cara, en orden de folleto (para 8 páginas: 8 y 1, 2 y 7, 6 y 3, 4 y 5), y lo imprime con doble faz. Al terminar doblás la pila al medio. El PDF original no se toca y el temporal se borra cuando termina o cancelás el trabajo.
 
+El folleto todavía no lo probé en papel, así que no sé si las caras pares salen derechas o de cabeza.
+
+## Qué probé en papel
+
+Con mi HL-1210W probé esto:
+
+- Doble faz de un PDF de 4 páginas con las pares en orden inverso: cada hoja salió con la 1 y la 2 atrás, y la 3 con la 4 atrás, todo derecho.
+- Que CUPS aplica `page-set` después de `number-up`: con 2 páginas por hoja, la primera tanda sacó la 1 y la 2 en la misma cara.
+- Mandar la página de prueba y cancelarla desde la pantalla Cola antes de que saliera.
+
+Todavía no probé:
+
+- Doble faz con una cantidad impar de páginas.
+- La pasada de las pares con varias páginas por hoja.
+- El folleto.
+- Imprimir imágenes y texto plano.
+- Los avisos de sin papel, atasco, tapa abierta, impresora pausada y sin conexión. El único que vi con la impresora de verdad es el de tóner bajo.
+
 ## Problemas comunes
 
 ### Los trabajos figuran como completados pero no sale nada
 
-Me pasó con una cola que tenía un driver equivocado (DYMO). La app lee el driver de la cola y muestra un aviso arriba si no es de Brother. La solución es borrar la cola y volver a agregar la impresora con el driver de Brother.
+Me pasó con una cola que tenía un driver equivocado (DYMO). La app lee el driver de la cola y, si no es de Brother, lo avisa en la pantalla Impresora. La solución es borrar la cola y volver a agregar la impresora con el driver de Brother.
 
 ### La impresora está pausada
 
@@ -81,7 +99,7 @@ Es lo esperable con un documento de páginas impares en doble faz.
 
 ### No aparecen notificaciones
 
-Como la app está firmada ad-hoc, macOS no la deja mandar notificaciones. Cuando termina o falla un trabajo, el aviso aparece abajo en la ventana.
+En mi Mac, macOS rechaza las notificaciones de PrintBro con el error "Notifications are not allowed for this application". Sospecho que es porque la app está firmada ad-hoc, pero no lo confirmé. Por eso, cuando termina o falla un trabajo, el aviso aparece abajo en la ventana.
 
 ## Limitaciones
 
