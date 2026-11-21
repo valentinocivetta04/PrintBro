@@ -15,7 +15,8 @@ public enum Motivo: Equatable, Sendable {
         case aviso, error
     }
 
-    /// Lee un código como "toner-low-report". Los sufijos -report/-warning/-error solo cambian la gravedad.
+    /// Lee un código como "toner-low-report". Se ignoran los sufijos -report/-warning/-error:
+    /// la gravedad sale del tipo de motivo, no del sufijo.
     public init(codigo: String) {
         var base = codigo
         for sufijo in ["-report", "-warning", "-error"] where base.hasSuffix(sufijo) {
