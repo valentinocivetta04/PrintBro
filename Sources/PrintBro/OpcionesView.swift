@@ -9,12 +9,13 @@ struct OpcionesView: View {
         Form {
             Section("Presets") {
                 HStack {
-                    Menu("Cargar preset") {
+                    Menu("Cargar") {
                         ForEach(modelo.presets) { preset in
                             Button(preset.nombre) { modelo.cargarPreset(preset) }
                         }
                     }
                     .disabled(modelo.presets.isEmpty)
+                    .accessibilityLabel(Text("Cargar preset"))
                     Button("Guardar…") { modelo.pedirNombrePreset() }
                         .accessibilityLabel(Text("Guardar la configuración como preset"))
                     Menu("Borrar") {
