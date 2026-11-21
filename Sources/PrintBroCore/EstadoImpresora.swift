@@ -110,17 +110,13 @@ public enum EstadoGeneral: Equatable, Sendable {
 }
 
 public struct EstadoImpresora: Equatable, Sendable {
-    public var nombre: String
-    public var driver: String
     public var uri: String
     public var aceptaTrabajos: Bool
     public var general: EstadoGeneral
     public var motivos: [Motivo]
 
     /// Arma el estado desde las opciones del destino de CUPS (cupsGetDests). Sin texto localizado.
-    public init(nombre: String, opciones: [String: String]) {
-        self.nombre = nombre
-        driver = opciones["printer-make-and-model"] ?? ""
+    public init(opciones: [String: String]) {
         uri = opciones["device-uri"] ?? ""
         aceptaTrabajos = opciones["printer-is-accepting-jobs"] != "false"
         motivos = Motivo.lista(opciones["printer-state-reasons"] ?? "")

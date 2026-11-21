@@ -15,11 +15,10 @@ let opcionesRealesBrother: [String: String] = [
 ]
 
 @Test func estadoRealDeEstaImpresora() {
-    let estado = EstadoImpresora(nombre: "Brother_HL_1210W_series", opciones: opcionesRealesBrother)
+    let estado = EstadoImpresora(opciones: opcionesRealesBrother)
     #expect(estado.general == .lista)
     #expect(estado.motivos == [.tonerBajo])
     #expect(estado.motivos[0].gravedad == .aviso)
-    #expect(estado.driver == "Brother HL-1210W series CUPS")
     #expect(estado.uri.hasPrefix("dnssd://Brother"))
     #expect(estado.aceptaTrabajos)
 }
@@ -68,13 +67,13 @@ func mapeaMotivosEstandar(codigo: String, esperado: Motivo) {
 func estadoGeneralPorPrinterState(valor: String, esperado: EstadoGeneral) {
     var opciones = opcionesRealesBrother
     opciones["printer-state"] = valor
-    #expect(EstadoImpresora(nombre: "B", opciones: opciones).general == esperado)
+    #expect(EstadoImpresora(opciones: opciones).general == esperado)
 }
 
 @Test func offlineGanaSobrePrinterState() {
     var opciones = opcionesRealesBrother
     opciones["printer-state-reasons"] = "offline-report"
-    let estado = EstadoImpresora(nombre: "B", opciones: opciones)
+    let estado = EstadoImpresora(opciones: opciones)
     #expect(estado.general == .sinConexion)
     #expect(estado.general.titulo == "Sin conexión")
 }

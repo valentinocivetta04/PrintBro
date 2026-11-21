@@ -47,7 +47,7 @@ public struct PrinterService: Sendable {
 
     /// Estado actual de una cola (printer-state, printer-state-reasons...).
     public static func estado(de nombre: String) -> EstadoImpresora? {
-        destinos().first { $0.nombre == nombre }.map { EstadoImpresora(nombre: nombre, opciones: $0.opciones) }
+        destinos().first { $0.nombre == nombre }.map { EstadoImpresora(opciones: $0.opciones) }
     }
 
     /// Opciones que ofrece el driver de la cola (lpoptions -l).
