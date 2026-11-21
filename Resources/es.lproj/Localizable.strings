@@ -14,7 +14,10 @@
 "Automática" = "Automática";
 "Avanzado" = "Avanzado";
 "Ayuda de PrintBro" = "Ayuda de PrintBro";
+"Borrar" = "Borrar";
+"Borrar un preset" = "Borrar un preset";
 "Cancelar" = "Cancelar";
+"Cargar preset" = "Cargar preset";
 "Cierra el documento elegido" = "Cierra el documento elegido";
 "Cola" = "Cola";
 "Cola de impresión" = "Cola de impresión";
@@ -36,6 +39,11 @@
 "Esperá a que termine de salir la primera tanda antes de sacar las hojas." = "Esperá a que termine de salir la primera tanda antes de sacar las hojas.";
 "Folleto (doblado al medio)" = "Folleto (doblado al medio)";
 "Girá las hojas, volvelas a poner en la bandeja y tocá Continuar" = "Girá las hojas, volvelas a poner en la bandeja y tocá Continuar";
+"Guarda impresora, copias, diseño, doble faz y opciones avanzadas. Si ya existe uno con ese nombre, lo reemplaza." = "Guarda impresora, copias, diseño, doble faz y opciones avanzadas. Si ya existe uno con ese nombre, lo reemplaza.";
+"Guardar" = "Guardar";
+"Guardar la configuración como preset" = "Guardar la configuración como preset";
+"Guardar preset" = "Guardar preset";
+"Guardar…" = "Guardar…";
 "Horizontal" = "Horizontal";
 "Impresora" = "Impresora";
 "Impresora predeterminada" = "Impresora predeterminada";
@@ -58,12 +66,14 @@
 "No se pudo completar" = "No se pudo completar";
 "No se pudo mostrar la vista previa" = "No se pudo mostrar la vista previa";
 "Nombre" = "Nombre";
+"Nombre del preset" = "Nombre del preset";
 "Opciones que ofrece el driver" = "Opciones que ofrece el driver";
 "Opciones que ofrece el driver de la impresora, con los nombres que trae el driver." = "Opciones que ofrece el driver de la impresora, con los nombres que trae el driver.";
 "Orientación" = "Orientación";
 "PDF, imagen (PNG, JPG, HEIC) o texto plano." = "PDF, imagen (PNG, JPG, HEIC) o texto plano.";
 "Por ahora podés ver los trabajos en Configuración del Sistema > Impresoras y escáneres." = "Por ahora podés ver los trabajos en Configuración del Sistema > Impresoras y escáneres.";
 "Predeterminada del sistema" = "Predeterminada del sistema";
+"Presets" = "Presets";
 "Primero salen las impares. Después girás las hojas y salen las pares." = "Primero salen las impares. Después girás las hojas y salen las pares.";
 "Páginas" = "Páginas";
 "Páginas por hoja" = "Páginas por hoja";

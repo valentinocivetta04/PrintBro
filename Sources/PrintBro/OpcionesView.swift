@@ -7,6 +7,26 @@ struct OpcionesView: View {
     var body: some View {
         @Bindable var modelo = modelo
         Form {
+            Section("Presets") {
+                HStack {
+                    Menu("Cargar preset") {
+                        ForEach(modelo.presets) { preset in
+                            Button(preset.nombre) { modelo.cargarPreset(preset) }
+                        }
+                    }
+                    .disabled(modelo.presets.isEmpty)
+                    Button("Guardar…") { modelo.pedirNombrePreset() }
+                        .accessibilityLabel(Text("Guardar la configuración como preset"))
+                    Menu("Borrar") {
+                        ForEach(modelo.presets) { preset in
+                            Button(preset.nombre, role: .destructive) { modelo.borrarPreset(preset) }
+                        }
+                    }
+                    .disabled(modelo.presets.isEmpty)
+                    .accessibilityLabel(Text("Borrar un preset"))
+                }
+            }
+
             Section("Impresora") {
                 Picker("Impresora", selection: $modelo.impresora) {
                     ForEach(modelo.impresoras, id: \.nombre) { impresora in
@@ -96,6 +116,13 @@ struct OpcionesView: View {
         }
         .formStyle(.grouped)
         .disabled(modelo.ocupado)
+        .alert("Guardar preset", isPresented: $modelo.pidiendoNombrePreset) {
+            TextField("Nombre del preset", text: $modelo.nombrePreset)
+            Button("Guardar") { modelo.guardarPreset() }
+            Button("Cancelar", role: .cancel) {}
+        } message: {
+            Text("Guarda impresora, copias, diseño, doble faz y opciones avanzadas. Si ya existe uno con ese nombre, lo reemplaza.")
+        }
     }
 
     private func valor(de clave: String) -> Binding<String> {

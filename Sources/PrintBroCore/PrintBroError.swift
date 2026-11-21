@@ -11,9 +11,12 @@ public enum PrintBroError: LocalizedError, Equatable {
     case duplexConVariasPorHoja
     case estadoInvalido
     case rangoInvalido(String)
+    case presetSinNombre
 
     public var errorDescription: String? {
         switch self {
+        case .presetSinNombre:
+            "Poné un nombre para el preset."
         case .rangoInvalido(let detalle):
             detalle
         case .convertirAPDF(let ext):

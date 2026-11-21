@@ -97,6 +97,10 @@ final class PrintModel {
     private(set) var fase = Fase.nada
     var mensajeError: String?
     var mostrarImportador = false
+    private let almacenPresets = PresetStore()
+    private(set) var presets: [Preset] = []
+    var pidiendoNombrePreset = false
+    var nombrePreset = ""
     // Estado visual del arrastre. Va acá y no en @State porque la macro de @State
     // (SwiftUIMacros) no viene con Command Line Tools.
     var arrastrandoEncima = false
@@ -108,6 +112,81 @@ final class PrintModel {
         ordenInverso = UserDefaults.standard.object(forKey: Self.claveOrdenInverso) as? Bool ?? true
         impresoraPreferida = UserDefaults.standard.string(forKey: Self.claveImpresoraPreferida) ?? ""
         recargarImpresoras()
+        presets = almacenPresets.todos()
+    }
+
+    // MARK: Configuración, presets
+
+    func configuracionActual() -> Configuracion {
+        var c = Configuracion()
+        c.impresora = impresora
+        c.copias = copias
+        c.rangoPaginas = paginas == .rango ? rango : nil
+        c.orientacion = switch orientacion {
+        case .automatica: nil
+        case .vertical: .vertical
+        case .horizontal: .horizontal
+        }
+        c.tamanioPapel = tamanioPapel.isEmpty ? nil : tamanioPapel
+        c.paginasPorHoja = paginasPorHoja
+        c.opcionesDriver = valoresDriver
+        c.dobleFaz = dobleFaz
+        c.folleto = folleto
+        return c
+    }
+
+    /// Carga una configuración guardada. Lo que el driver actual no ofrece se ignora.
+    func aplicar(_ c: Configuracion) {
+        // Primero la impresora: al cambiarla se recargan las opciones del driver.
+        if impresoras.contains(where: { $0.nombre == c.impresora }) { impresora = c.impresora }
+        dobleFaz = c.dobleFaz
+        folleto = c.folleto
+        copias = c.copias
+        paginasPorHoja = PrintJob.paginasPorHojaPosibles.contains(c.paginasPorHoja) ? c.paginasPorHoja : 1
+        if let r = c.rangoPaginas {
+            paginas = .rango
+            rango = r
+        } else {
+            paginas = .todas
+        }
+        orientacion = switch c.orientacion {
+        case nil: .automatica
+        case .vertical: .vertical
+        case .horizontal: .horizontal
+        }
+        if let papel = c.tamanioPapel, tamanios.contains(papel) { tamanioPapel = papel }
+        for opcion in opcionesExtra {
+            if let valor = c.opcionesDriver[opcion.clave], opcion.valores.contains(valor) {
+                valoresDriver[opcion.clave] = valor
+            }
+        }
+    }
+
+    func pedirNombrePreset() {
+        nombrePreset = ""
+        pidiendoNombrePreset = true
+    }
+
+    func guardarPreset() {
+        do {
+            try almacenPresets.guardar(Preset(nombre: nombrePreset, configuracion: configuracionActual()))
+            presets = almacenPresets.todos()
+        } catch {
+            mensajeError = error.localizedDescription
+        }
+    }
+
+    func cargarPreset(_ preset: Preset) {
+        aplicar(preset.configuracion)
+    }
+
+    func borrarPreset(_ preset: Preset) {
+        do {
+            try almacenPresets.borrar(nombre: preset.nombre)
+            presets = almacenPresets.todos()
+        } catch {
+            mensajeError = error.localizedDescription
+        }
     }
 
     // MARK: Datos derivados

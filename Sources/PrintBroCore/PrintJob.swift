@@ -1,6 +1,6 @@
 import Foundation
 
-public enum Orientacion: Sendable {
+public enum Orientacion: String, Sendable, Codable {
     case vertical, horizontal
 }
 
