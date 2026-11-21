@@ -16,11 +16,6 @@ struct ContentView: View {
             .navigationSplitViewColumnWidth(min: 160, ideal: 180)
         } detail: {
             detalle
-                .safeAreaInset(edge: .top, spacing: 0) {
-                    if let aviso = modelo.avisoDriver {
-                        DriverBannerView(mensaje: aviso)
-                    }
-                }
         }
         .navigationTitle(AppInfo.nombre)
         .fileImporter(isPresented: $modelo.mostrarImportador,
