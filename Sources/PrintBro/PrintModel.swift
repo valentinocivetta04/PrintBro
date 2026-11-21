@@ -97,6 +97,8 @@ final class PrintModel {
     private(set) var fase = Fase.nada
     var mensajeError: String?
     var mostrarImportador = false
+    private let almacenHistorial = HistorialStore()
+    private(set) var historial: [EntradaHistorial] = []
     private let almacenPresets = PresetStore()
     private(set) var presets: [Preset] = []
     var pidiendoNombrePreset = false
@@ -113,6 +115,30 @@ final class PrintModel {
         impresoraPreferida = UserDefaults.standard.string(forKey: Self.claveImpresoraPreferida) ?? ""
         recargarImpresoras()
         presets = almacenPresets.todos()
+        historial = almacenHistorial.todas()
+    }
+
+    // MARK: Historial
+
+    private func registrar(_ entrada: EntradaHistorial) {
+        do {
+            try almacenHistorial.agregar(entrada)
+            historial = almacenHistorial.todas()
+        } catch {
+            mensajeError = error.localizedDescription
+        }
+    }
+
+    /// Vuelve a mandar un trabajo del historial con las mismas opciones.
+    func reimprimir(_ entrada: EntradaHistorial) {
+        guard FileManager.default.fileExists(atPath: entrada.archivo.path) else {
+            mensajeError = PrintBroError.archivoNoEncontrado(entrada.archivo.lastPathComponent).localizedDescription
+            return
+        }
+        abrir(entrada.archivo)
+        guard archivo == entrada.archivo else { return }
+        aplicar(entrada.configuracion)
+        imprimir()
     }
 
     // MARK: Configuración, presets
@@ -318,11 +344,13 @@ final class PrintModel {
             mensajeError = error.localizedDescription
             return
         }
+        let entrada = EntradaHistorial(archivo: archivo, configuracion: configuracionActual())
         guard dobleFaz else {
             fase = .enviando
             let servicio = self.servicio
             let trabajoFinal = trabajo
             enSegundoPlano({ try servicio.imprimir(trabajoFinal) }) { [weak self] ok in
+                if ok { self?.registrar(entrada) }
                 // lp ya copió el archivo a la cola de CUPS: el temporal se puede borrar.
                 self?.borrarTemporales()
                 self?.fase = ok ? .listo(String(localized: "Listo: el trabajo se mandó a la impresora.")) : .nada
@@ -335,7 +363,11 @@ final class PrintModel {
             duplex = nuevo
             fase = .imprimiendoImpares
             let caja = Caja(valor: nuevo)
-            enSegundoPlano({ try caja.valor.empezar() }) { [weak self] _ in self?.sincronizarDuplex() }
+            enSegundoPlano({ try caja.valor.empezar() }) { [weak self] ok in
+                // Se registra cuando ya salió la primera tanda.
+                if ok { self?.registrar(entrada) }
+                self?.sincronizarDuplex()
+            }
         } catch {
             borrarTemporales()
             mensajeError = error.localizedDescription

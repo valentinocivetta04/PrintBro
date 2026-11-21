@@ -37,6 +37,7 @@ struct ContentView: View {
     @ViewBuilder private var detalle: some View {
         switch modelo.seccion ?? .imprimir {
         case .imprimir: ImprimirView()
+        case .historial: HistorialView()
         case .cola: ColaView()
         case .impresora: ImpresoraView()
         }

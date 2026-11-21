@@ -13,9 +13,12 @@ public enum PrintBroError: LocalizedError, Equatable {
     case rangoInvalido(String)
     case presetSinNombre
     case imagenIlegible
+    case archivoNoEncontrado(String)
 
     public var errorDescription: String? {
         switch self {
+        case .archivoNoEncontrado(let nombre):
+            "No se encontró «\(nombre)». Puede que lo hayas movido o borrado."
         case .imagenIlegible:
             "No se pudo leer la imagen."
         case .presetSinNombre:

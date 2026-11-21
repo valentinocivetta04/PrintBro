@@ -8,6 +8,7 @@
 "Abre el selector de archivos" = "Abre el selector de archivos";
 "Abrir…" = "Abrir…";
 "Aceptar" = "Aceptar";
+"Acá vas a ver los últimos 20 trabajos que mandes desde PrintBro." = "Acá vas a ver los últimos 20 trabajos que mandes desde PrintBro.";
 "Advertencia: %@" = "Advertencia: %@";
 "Agregá la impresora en Configuración del Sistema > Impresoras y escáneres." = "Agregá la impresora en Configuración del Sistema > Impresoras y escáneres.";
 "Archivos de Word, Excel o Pages" = "Archivos de Word, Excel o Pages";
@@ -44,6 +45,7 @@
 "Guardar la configuración como preset" = "Guardar la configuración como preset";
 "Guardar preset" = "Guardar preset";
 "Guardar…" = "Guardar…";
+"Historial" = "Historial";
 "Horizontal" = "Horizontal";
 "Impresora" = "Impresora";
 "Impresora predeterminada" = "Impresora predeterminada";
@@ -80,6 +82,8 @@
 "Rango" = "Rango";
 "Rango de páginas" = "Rango de páginas";
 "Rango inválido: %@" = "Rango inválido: %@";
+"Reimprimir" = "Reimprimir";
+"Reimprimir %@" = "Reimprimir %@";
 "Reordena las páginas para doblar las hojas al medio" = "Reordena las páginas para doblar las hojas al medio";
 "Si el documento tiene una cantidad impar de páginas, la última hoja queda sin dorso." = "Si el documento tiene una cantidad impar de páginas, la última hoja queda sin dorso.";
 "Solo cambia la que elige PrintBro al abrir. No toca la configuración del sistema." = "Solo cambia la que elige PrintBro al abrir. No toca la configuración del sistema.";
@@ -88,6 +92,7 @@
 "Sí" = "Sí";
 "Tamaño de papel" = "Tamaño de papel";
 "Todas" = "Todas";
+"Todavía no hay trabajos" = "Todavía no hay trabajos";
 "Todavía no hay vista de la cola" = "Todavía no hay vista de la cola";
 "Vertical" = "Vertical";
 "Vista previa de la imagen" = "Vista previa de la imagen";
@@ -95,6 +100,3 @@
 "Vista previa del texto" = "Vista previa del texto";
 "Volver a buscar impresoras" = "Volver a buscar impresoras";
 "Zona para soltar un archivo" = "Zona para soltar un archivo";
-"gearshape" = "gearshape";
-"printer" = "printer";
-"tray.full" = "tray.full";
