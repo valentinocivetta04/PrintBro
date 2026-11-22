@@ -8,20 +8,20 @@ Versión 0.1.0 (21 de noviembre de 2026). [Descargar](https://github.com/valenti
 
 ## El problema
 
-Tengo una Brother HL-1210W: láser, monocromática, por WiFi, que solo imprime y no tiene doble faz automático. Quería imprimir de los dos lados y elegir la calidad, pero la app oficial de Brother para Mac (iPrint&Scan) no me ofrecía doble faz ni opciones de calidad para este modelo. Probé desde la terminal con `lp`, mandando primero las páginas impares y después las pares, hasta encontrar la combinación que deja cada página par en el dorso correcto con mi forma de girar la pila. Lo armé primero como un script de bash y después lo pasé a una app de verdad.
+Tengo una Brother HL-1210W: láser, monocromática, por WiFi, que solo imprime y no tiene doble faz automático. Quería imprimir de los dos lados y elegir la calidad, pero la app oficial de Brother para Mac (iPrint&Scan) no me ofrecía doble faz ni opciones de calidad para este modelo. Probé desde la terminal con `lp`, mandando primero las páginas impares y después las pares, hasta encontrar la combinación que deja cada página par en el dorso correcto con mi forma de girar la pila. Lo armé primero como un script de bash y después lo pasé a una app nativa.
 
 ## Lo que hice
 
 PrintBro le habla directamente a CUPS, el sistema de impresión de macOS, y automatiza el doble faz manual: imprime las hojas impares, me avisa que dé vuelta la pila y después imprime las pares.
 
 - Doble faz manual. Las impares salen con `page-set=odd` y las pares con `page-set=even` y `outputorder=reverse`, que viene activado porque con mi forma de girar la pila es lo que deja cada par en el dorso correcto. Si el documento tiene una cantidad impar de caras, avisa que la última hoja va a quedar sin dorso.
-- Las opciones propias del driver (resolución, ahorro de tóner, tipo de papel, densidad, etc.) tal como las devuelve `lpoptions -l`, sin agregar ni inventar ninguna.
+- Las opciones propias del driver (resolución, ahorro de tóner, tipo de papel, densidad, etc.) tal como las devuelve `lpoptions -l`.
 - Copias, rango de páginas (con validación), orientación, tamaño de papel (A4 por defecto si el driver lo ofrece) y 1, 2, 4, 6 o 9 páginas por hoja.
 - Folleto: reordena las páginas en un PDF temporal, dos por cara, para doblar la pila al medio.
 - PDF, imágenes (PNG, JPG y HEIC) y texto plano. Las imágenes se pasan a un PDF temporal y se ajustan a la hoja.
 - Vista previa del PDF con miniaturas de las páginas.
 - Cola de impresión que se actualiza cada 2 segundos mientras la mirás, con botones para cancelar un trabajo o todos.
-- Estado de la impresora con avisos en español: tóner bajo, sin tóner, sin papel, atasco, tapa abierta, pausada o sin conexión. El tóner bajo también aparece en una franja arriba de la pantalla de impresión, sin bloquear nada.
+- Estado de la impresora con avisos en español: tóner bajo, sin tóner, sin papel, atasco, tapa abierta, pausada o sin conexión. El tóner bajo también aparece en una franja arriba de la pantalla de impresión y se puede seguir imprimiendo.
 - Presets con nombre e historial de los últimos 20 trabajos, con un botón para reimprimir.
 - Modo de prueba (`PRINTBRO_DRY_RUN=1`) que no manda nada a la impresora.
 
@@ -132,7 +132,7 @@ Me pasó antes de instalar el driver correcto: la cola tenía un PPD equivocado 
 
 ### Tóner bajo
 
-Mi impresora lo reporta como `toner-low-report`: la luz naranja titila, pero sigue imprimiendo bien. PrintBro lo muestra como "Tóner bajo" sin frenar nada.
+Mi impresora lo reporta como `toner-low-report`: la luz naranja titila, pero sigue imprimiendo bien. PrintBro lo muestra como "Tóner bajo" y deja imprimir igual.
 
 ### La impresora está pausada
 
@@ -166,14 +166,14 @@ PrintBro/
 Algunas decisiones y por qué las tomé:
 
 - El doble faz es una máquina de estados (`idle`, `imprimiendoImpares`, `esperandoGiro`, `imprimiendoPares`, `listo`, `cancelado`) en `DuplexManual`. Así cancelar o reintentar después de un error tiene un comportamiento definido, y lo puedo probar sin papel.
-- Los comandos se lanzan con `Process` y los argumentos van en un arreglo, nunca armados en un string de shell. Un archivo con espacios, comillas o `;` en el nombre llega a `lp` como un solo argumento, y hay un test para eso.
+- Los comandos se lanzan con `Process` y los argumentos van en un arreglo, sin pasar por una shell. Un archivo con espacios, comillas o `;` en el nombre llega a `lp` como un solo argumento, y hay un test para eso.
 - Mi Mac está en español y `lpstat` devuelve texto traducido, así que no parseo texto localizado. Impresoras, estado y cola salen de la API de CUPS (`cupsGetDests`, `cupsGetJobs2`). De `lpoptions -l` uso la estructura de cada línea y no la etiqueta, y de `lp` y `cancel` solo miro el código de salida.
 - No tengo Xcode, solo Command Line Tools, y ahí no viene el plugin de macros de `@State`. Por eso el estado de la interfaz vive en un modelo `@Observable`, y los textos van en un `Localizable.strings` en vez de un `.xcstrings`.
 - Los tests no tocan la impresora: usan un `FakeRunner` que guarda los comandos que se hubieran ejecutado y devuelve la respuesta que le pido, así puedo comprobar los argumentos exactos de `lp` y `cancel`. Algunos usan salidas reales capturadas en mi Mac. Hoy son 72 y pasan con `./test.sh`.
 
 ## Limitaciones y qué falta
 
-- Probé en papel el doble faz de un PDF de 4 páginas con orden inverso, que CUPS aplica `page-set` después de `number-up` (con 2 por hoja, la primera tanda sacó las páginas 1 y 2 en la misma cara) y cancelar la página de prueba desde la Cola antes de que saliera.
+- Probé en papel tres cosas: el doble faz de un PDF de 4 páginas con orden inverso, que CUPS aplica `page-set` después de `number-up` (con 2 por hoja, la primera tanda sacó las páginas 1 y 2 en la misma cara), y cancelar la página de prueba desde la Cola antes de que saliera.
 - Todavía no probé en papel: un documento de 3 páginas (impar) con orden inverso, 2 páginas por hoja con doble faz completo, y el folleto de 8 páginas (no sé si las caras pares salen derechas o de cabeza). Tampoco imprimí imágenes ni texto plano, y de los avisos de estado solo vi el de tóner bajo.
 - La probé con una sola impresora, la mía. Las opciones avanzadas cambian con cada driver.
 - La app está firmada ad-hoc, sin cuenta de desarrollador de Apple.
