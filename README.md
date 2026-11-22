@@ -54,7 +54,7 @@ También podés intentar abrirla una vez y después buscar el botón "Abrir igua
 - macOS 14 o posterior.
 - Las Command Line Tools de Apple (`xcode-select --install`). No hace falta Xcode.
 - Una Brother HL-1210W en la misma red.
-- El driver "Brother HL-1210W series CUPS". Se baja de la página de soporte de Brother eligiendo macOS 26.x como sistema: el paquete que aparece para macOS 27 es solo iPrint&Scan y no trae este driver.
+- El driver "Brother HL-1210W series CUPS". Está en la [página de descargas de Brother para la HL-1210W en macOS 26](https://support.brother.com/g/b/downloadlist.aspx?c=es&lang=es&prod=hl1210w_eu_as&os=10088), en Controladores > "Controlador de impresora" (versión 1.5.0, incluye el controlador CUPS). Para macOS 27 Brother no publica este driver, solo el paquete completo, el firmware e iPrint&Scan, así que uso el de macOS 26, que funciona en mi Mac con macOS 27. El link es de la región España del sitio de Brother, porque en la de Latinoamérica este modelo no aparece.
 - La impresora agregada en Configuración del Sistema > Impresoras y escáneres con ese driver. En mi Mac la cola se llama `Brother_HL_1210W_series`.
 
 ## Instalación
@@ -66,7 +66,7 @@ También podés intentar abrirla una vez y después buscar el botón "Abrir igua
    cd PrintBro
    ```
 
-2. Instalá el driver de Brother (ver Requisitos) y agregá la impresora desde Configuración del Sistema > Impresoras y escáneres.
+2. Bajá e instalá el [controlador de impresora de Brother](https://support.brother.com/g/b/downloadlist.aspx?c=es&lang=es&prod=hl1210w_eu_as&os=10088) (ver Requisitos) y agregá la impresora desde Configuración del Sistema > Impresoras y escáneres.
 
 3. Compilá. Esto arma `PrintBro.app` en la carpeta del proyecto, con el ícono y firmada ad-hoc:
 
