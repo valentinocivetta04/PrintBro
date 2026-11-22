@@ -37,6 +37,18 @@ Tomadas con la app en modo de prueba, sin imprimir.
 
 <p align="center"><img src="docs/captura-impresora.jpg" width="720" alt="Pantalla Impresora con el estado y el aviso de tóner bajo"></p>
 
+## Descargar
+
+Si no querés compilarla, bajá `PrintBro-0.1.0.dmg` de la [página de versiones](https://github.com/valentinocivetta04/PrintBro/releases/latest), abrilo y arrastrá PrintBro a Aplicaciones. Está compilada solo para Macs con chip Apple (M1 o posterior).
+
+Como está firmada ad-hoc, macOS la bloquea la primera vez que la abrís. Para habilitarla:
+
+```bash
+xattr -dr com.apple.quarantine /Applications/PrintBro.app
+```
+
+También podés intentar abrirla una vez y después buscar el botón "Abrir igual" en Configuración del Sistema > Privacidad y seguridad. En los dos casos necesitás el driver de Brother y la impresora agregada (ver Requisitos).
+
 ## Requisitos
 
 - macOS 14 o posterior.
