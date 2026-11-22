@@ -4,7 +4,7 @@
 
 App de Mac para imprimir en una Brother HL-1210W con doble faz manual y con todas las opciones que trae el driver.
 
-Versión 0.1.0, del 21 de noviembre de 2026. La uso para imprimir mis cosas: el doble faz de un PDF par con orden inverso está probado en papel, y otros casos todavía no (los detallo en [Limitaciones](#limitaciones-y-qué-falta)).
+Versión 0.1.0 (21 de noviembre de 2026). [Descargar](https://github.com/valentinocivetta04/PrintBro/releases/latest)
 
 ## El problema
 
