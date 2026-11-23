@@ -17,7 +17,6 @@ struct FranjaAvisosView: View {
                     Image(systemName: motivo.simbolo)
                         .foregroundStyle(motivo.gravedad == .error ? Estilo.Paleta.errorIcono : Estilo.Paleta.avisoIcono)
                 }
-                .foregroundStyle(Estilo.Paleta.texto)
                 .lineLimit(1)
                 .accessibilityElement(children: .combine)
             }
