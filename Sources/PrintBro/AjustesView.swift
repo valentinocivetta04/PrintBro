@@ -11,8 +11,9 @@ struct AjustesView: View {
             } header: {
                 Text("Doble faz manual").etiquetaSeccion()
             } footer: {
-                Text("Con tu forma de girar la pila, esta opción deja cada página par en el dorso correcto.")
+                Text("Con tu forma de girar la pila, esta opción deja cada página par en el dorso correcto.").pieSeccion()
             }
+            .filaSuperficie()
 
             Section {
                 Picker("Impresora predeterminada", selection: $modelo.impresoraPreferida) {
@@ -24,10 +25,13 @@ struct AjustesView: View {
             } header: {
                 Text("Impresora").etiquetaSeccion()
             } footer: {
-                Text("Solo cambia la que elige PrintBro al abrir. No toca la configuración del sistema.")
+                Text("Solo cambia la que elige PrintBro al abrir. No toca la configuración del sistema.").pieSeccion()
             }
+            .filaSuperficie()
         }
         .formStyle(.grouped)
+        .scrollContentBackground(.hidden)
+        .fondoPagina()
         .frame(width: 480)
         .fixedSize(horizontal: false, vertical: true)
     }

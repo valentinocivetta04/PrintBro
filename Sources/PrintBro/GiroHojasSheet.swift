@@ -6,23 +6,23 @@ struct GiroHojasSheet: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Estilo.Espacio.medio) {
             Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90")
-                .font(.largeTitle)
-                .foregroundStyle(.tint)
+                .font(Estilo.Tipo.titulo)
+                .foregroundStyle(Estilo.Paleta.primario)
                 .accessibilityHidden(true)
 
             Text("Girá las hojas, volvelas a poner en la bandeja y tocá Continuar")
-                .font(.headline)
+                .fontWeight(.semibold)
                 .fixedSize(horizontal: false, vertical: true)
 
             Text("Esperá a que termine de salir la primera tanda antes de sacar las hojas.")
-                .foregroundStyle(.secondary)
+                .textoAtenuado()
                 .fixedSize(horizontal: false, vertical: true)
 
             if case .esperandoGiro(let aviso?) = modelo.fase {
                 Label {
                     Text(aviso)
                 } icon: {
-                    Image(systemName: "exclamationmark.triangle.fill").symbolRenderingMode(.multicolor)
+                    Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Estilo.Paleta.acento)
                 }
                 .fixedSize(horizontal: false, vertical: true)
                 .tarjeta()
@@ -33,12 +33,12 @@ struct GiroHojasSheet: View {
                 Button("Cancelar", role: .cancel) { modelo.cancelarDuplex() }
                     .keyboardShortcut(.cancelAction)
                     .accessibilityHint(Text("No imprime las hojas pares"))
+                    .buttonStyle(.secundario)
                 Button("Continuar") { modelo.continuarDuplex() }
                     .keyboardShortcut(.defaultAction)
                     .accessibilityHint(Text("Imprime las hojas pares"))
+                    .buttonStyle(.primario)
             }
-            .controlSize(.large)
-            .bordeControl()
         }
         .padding(Estilo.Espacio.grande)
         .frame(width: 440)

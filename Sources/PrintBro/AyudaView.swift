@@ -5,7 +5,7 @@ struct AyudaView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: Estilo.Espacio.medio) {
                 Text("Cómo usar PrintBro")
-                    .font(.title2.bold())
+                    .tituloPantalla()
                 VStack(alignment: .leading, spacing: Estilo.Espacio.chico) {
                     Text("1. Soltá un archivo en la ventana o elegilo con Archivo > Abrir… (⌘O).")
                     Text("2. Ajustá copias, páginas, orientación, papel y las opciones del driver.")
@@ -28,6 +28,6 @@ struct AyudaView: View {
             .padding(Estilo.Espacio.medio)
         }
         .frame(width: 460, height: 420)
-        .fondoBarraLateral()
+        .fondoPagina()
     }
 }

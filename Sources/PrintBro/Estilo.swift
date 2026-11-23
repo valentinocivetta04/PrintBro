@@ -281,9 +281,4 @@ extension View {
     func textoAtenuado() -> some View {
         foregroundStyle(Estilo.Paleta.textoAtenuado)
     }
-
-    /// Botones nativos con el radio de controles (se va cuando todas las vistas usen BotonEstilo).
-    func bordeControl() -> some View {
-        buttonBorderShape(.roundedRectangle(radius: Estilo.Radio.control))
-    }
 }
