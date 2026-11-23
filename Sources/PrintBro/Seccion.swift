@@ -1,6 +1,6 @@
 import Foundation
 
-enum Seccion: String, CaseIterable, Identifiable, Hashable {
+enum Seccion: CaseIterable, Identifiable {
     case imprimir, historial, cola, impresora
 
     var id: Self { self }

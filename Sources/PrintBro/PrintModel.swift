@@ -3,7 +3,7 @@ import Observation
 import UserNotifications
 import PrintBroCore
 
-enum Paginas: Hashable {
+enum Paginas {
     case todas, rango
 }
 
@@ -45,7 +45,7 @@ final class PrintModel {
     let simulacion: Bool
     private let servicio: PrinterService
 
-    var seccion: Seccion? = .imprimir
+    var seccion = Seccion.imprimir
     private(set) var impresoras: [Impresora] = []
     var impresora = "" {
         didSet { if impresora != oldValue { cargarOpciones() } }

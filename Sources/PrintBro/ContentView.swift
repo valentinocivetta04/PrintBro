@@ -8,7 +8,7 @@ struct ContentView: View {
         NavigationSplitView {
             // Selección propia: la del sistema pinta texto oscuro sobre violeta oscuro (poco contraste).
             List(Seccion.allCases) { seccion in
-                let elegida = (modelo.seccion ?? .imprimir) == seccion
+                let elegida = modelo.seccion == seccion
                 Button {
                     modelo.seccion = seccion
                 } label: {
@@ -36,7 +36,7 @@ struct ContentView: View {
             .navigationSplitViewColumnWidth(min: 160, ideal: 180)
         } detail: {
             VStack(alignment: .leading, spacing: 0) {
-                Text((modelo.seccion ?? .imprimir).titulo)
+                Text(modelo.seccion.titulo)
                     .tituloPantalla()
                     .padding(.horizontal, Estilo.Espacio.medio)
                     .padding(.top, Estilo.Espacio.chico)
@@ -61,7 +61,7 @@ struct ContentView: View {
     }
 
     @ViewBuilder private var detalle: some View {
-        switch modelo.seccion ?? .imprimir {
+        switch modelo.seccion {
         case .imprimir: ImprimirView()
         case .historial: HistorialView()
         case .cola: ColaView()
