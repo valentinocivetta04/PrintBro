@@ -1,8 +1,8 @@
 import AppKit
 import SwiftUI
 
-/// Tokens de design.md ("macOS Vibrancy") con la paleta violeta.
-/// Estructura literal del archivo (transparencias, radios, tipografía); solo cambian los colores.
+/// Tokens del sistema visual: referencia "macOS Vibrancy" con paleta violeta y escala compacta.
+/// Las vistas toman colores, radios, espacios y tipografía de acá.
 enum Estilo {
     /// Cada token tiene un valor claro y uno oscuro, y se resuelve según la apariencia de la ventana.
     enum Paleta {
@@ -51,7 +51,7 @@ enum Estilo {
         }
     }
 
-    /// Radios: chips 8, botones y controles 10, tarjetas 14.
+    /// Radios: chips y botones 8, cajas de aviso 10, tarjetas y paneles 14.
     enum Radio {
         static let chip: CGFloat = 8
         static let control: CGFloat = 10
@@ -296,7 +296,7 @@ extension View {
             .lineSpacing(Estilo.Tipo.interlineadoCuerpo)
     }
 
-    /// Fondo de página: bg #dfe6ee.
+    /// Fondo de página (Paleta.fondo).
     func fondoPagina() -> some View {
         background { Estilo.Paleta.fondo.ignoresSafeArea() }
     }
@@ -318,7 +318,7 @@ extension View {
                                tinte: Estilo.Paleta.tintePanel))
     }
 
-    /// card: surface, radio 14, padding 24, sombra sutil.
+    /// Tarjeta: superficie, radio 14, relleno 16, sombra sutil.
     func tarjeta() -> some View {
         modifier(Superficie(color: Estilo.Paleta.superficie, relleno: Estilo.Espacio.tarjeta, anchoCompleto: true))
     }
@@ -328,7 +328,7 @@ extension View {
         modifier(Superficie(color: Estilo.Paleta.superficieFuerte, relleno: 0, anchoCompleto: false))
     }
 
-    /// "label-caps": 12 pt, semibold, mayúsculas, tracking 0.72 pt, text-muted.
+    /// Etiqueta de sección: 11 pt, semibold, mayúsculas, tracking 0.06em, texto atenuado.
     func etiquetaSeccion() -> some View {
         font(Estilo.Tipo.etiqueta)
             .textCase(.uppercase)
