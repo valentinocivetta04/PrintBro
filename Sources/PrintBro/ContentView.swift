@@ -13,6 +13,8 @@ struct ContentView: View {
                     Image(systemName: seccion.simbolo)
                 }
             }
+            .scrollContentBackground(.hidden)
+            .fondoBarraLateral()
             .navigationSplitViewColumnWidth(min: 160, ideal: 180)
         } detail: {
             detalle

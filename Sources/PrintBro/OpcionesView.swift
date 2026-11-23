@@ -7,7 +7,7 @@ struct OpcionesView: View {
     var body: some View {
         @Bindable var modelo = modelo
         Form {
-            Section("Presets") {
+            Section {
                 HStack {
                     Menu("Cargar") {
                         ForEach(modelo.presets) { preset in
@@ -26,14 +26,19 @@ struct OpcionesView: View {
                     .disabled(modelo.presets.isEmpty)
                     .accessibilityLabel(Text("Borrar un preset"))
                 }
+                .bordeControl()
+            } header: {
+                Text("Presets").etiquetaSeccion()
             }
 
-            Section("Impresora") {
+            Section {
                 Picker("Impresora", selection: $modelo.impresora) {
                     ForEach(modelo.impresoras, id: \.nombre) { impresora in
                         Text(impresora.nombreVisible).tag(impresora.nombre)
                     }
                 }
+            } header: {
+                Text("Impresora").etiquetaSeccion()
             }
 
             Section {
@@ -50,7 +55,7 @@ struct OpcionesView: View {
                     TextField("Rango de páginas", text: $modelo.rango, prompt: Text("Ej.: 1-3, 5, 8-10"))
                 }
             } header: {
-                Text("Copias y páginas")
+                Text("Copias y páginas").etiquetaSeccion()
             } footer: {
                 if let error = modelo.errorRango {
                     Label {
@@ -62,7 +67,7 @@ struct OpcionesView: View {
                 }
             }
 
-            Section("Diseño") {
+            Section {
                 Picker("Orientación", selection: $modelo.orientacion) {
                     Text("Automática").tag(Orientacion?.none)
                     Text("Vertical").tag(Orientacion?.some(.vertical))
@@ -77,6 +82,8 @@ struct OpcionesView: View {
                     ForEach(PrintJob.paginasPorHojaPosibles, id: \.self) { Text($0, format: .number).tag($0) }
                 }
                 .disabled(modelo.folleto)
+            } header: {
+                Text("Diseño").etiquetaSeccion()
             }
 
             Section {
@@ -88,7 +95,7 @@ struct OpcionesView: View {
                     .disabled(!modelo.esPDF)
                     .accessibilityHint(Text("Reordena las páginas para doblar las hojas al medio"))
             } header: {
-                Text("Doble faz manual")
+                Text("Doble faz manual").etiquetaSeccion()
             } footer: {
                 if modelo.archivo != nil && !modelo.esPDF {
                     Text("Solo disponible para PDF.")
@@ -109,13 +116,15 @@ struct OpcionesView: View {
                         .help(opcion.clave)
                     }
                 } header: {
-                    Text("Avanzado")
+                    Text("Avanzado").etiquetaSeccion()
                 } footer: {
                     Text("Opciones que ofrece el driver de la impresora, con los nombres que trae el driver.")
                 }
             }
         }
         .formStyle(.grouped)
+        // Deja ver el material de la columna entre las tarjetas del formulario.
+        .scrollContentBackground(.hidden)
         .disabled(modelo.ocupado)
         .alert("Guardar preset", isPresented: $modelo.pidiendoNombrePreset) {
             TextField("Nombre del preset", text: $modelo.nombrePreset)

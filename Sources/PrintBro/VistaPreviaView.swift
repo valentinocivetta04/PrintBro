@@ -6,7 +6,7 @@ struct VistaPreviaView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HStack(spacing: 8) {
+            HStack(spacing: Estilo.Espacio.chico) {
                 Image(systemName: "doc")
                     .foregroundStyle(.secondary)
                     .accessibilityHidden(true)
@@ -22,8 +22,9 @@ struct VistaPreviaView: View {
                     }
                 }
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
+            .padding(.horizontal, Estilo.Espacio.medio)
+            .padding(.vertical, Estilo.Espacio.chico)
+            .fondoEncabezado()
             .accessibilityElement(children: .combine)
 
             Divider()

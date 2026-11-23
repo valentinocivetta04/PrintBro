@@ -6,7 +6,7 @@ struct FranjaAvisosView: View {
     let motivos: [Motivo]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: Estilo.Espacio.chico / 2) {
             ForEach(Array(motivos.enumerated()), id: \.offset) { _, motivo in
                 Label {
                     Text(motivo.titulo).fontWeight(.medium)
@@ -22,9 +22,9 @@ struct FranjaAvisosView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 16)
-        .padding(.vertical, 6)
-        .background(.bar)
+        .padding(.horizontal, Estilo.Espacio.medio)
+        .padding(.vertical, Estilo.Espacio.chico)
+        .fondoEncabezado()
         .overlay(alignment: .bottom) { Divider() }
     }
 }

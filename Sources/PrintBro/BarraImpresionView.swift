@@ -17,9 +17,10 @@ struct BarraImpresionView: View {
                 .help("Imprimir (⌘P)")
         }
         .controlSize(.large)
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
-        .background(.bar)
+        .bordeControl()
+        .padding(.horizontal, Estilo.Espacio.medio)
+        .padding(.vertical, Estilo.Espacio.chico)
+        .fondoEncabezado()
         .overlay(alignment: .top) { Divider() }
     }
 

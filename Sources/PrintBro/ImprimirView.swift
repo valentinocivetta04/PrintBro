@@ -23,6 +23,7 @@ struct ImprimirView: View {
 
             OpcionesView()
                 .frame(width: 350)
+                .fondoBarraLateral()
         }
         .safeAreaInset(edge: .top, spacing: 0) {
             if let motivos = modelo.estadoImpresora?.motivos, !motivos.isEmpty {

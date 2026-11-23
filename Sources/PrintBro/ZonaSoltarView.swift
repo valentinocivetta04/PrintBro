@@ -15,10 +15,14 @@ struct ZonaSoltarView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
-            RoundedRectangle(cornerRadius: 12)
-                .strokeBorder(resaltada ? Color.accentColor : Color.secondary.opacity(0.4),
-                              style: StrokeStyle(lineWidth: 2, dash: resaltada ? [] : [6]))
-                .padding(20)
+            let forma = RoundedRectangle(cornerRadius: Estilo.Radio.tarjeta, style: .continuous)
+            forma
+                .fill(resaltada ? Color.accentColor.opacity(0.08) : Color.clear)
+                .overlay {
+                    forma.strokeBorder(resaltada ? Color.accentColor : Color.secondary.opacity(0.4),
+                                       style: StrokeStyle(lineWidth: 2, dash: resaltada ? [] : [6]))
+                }
+                .padding(Estilo.Espacio.grande)
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel(Text("Zona para soltar un archivo"))
