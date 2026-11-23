@@ -24,14 +24,10 @@ struct ContentView: View {
                     .padding(.top, Estilo.Espacio.chico)
                 detalle
             }
-            // Debajo de la barra del sistema va el material propio; el resto es bg.
-            .background {
-                VStack(spacing: 0) {
-                    Color.clear.frame(height: 0).fondoEncabezado()
-                    LineaBorde()
-                    Estilo.Paleta.fondo
-                }
-            }
+            // Barra superior y contenido son una sola superficie: bg debajo de la barra del sistema
+            // y una línea de borde de 1 pt entre las dos.
+            .background { Estilo.Paleta.fondo.ignoresSafeArea() }
+            .overlay(alignment: .top) { LineaBorde() }
             .toolbarBackground(.hidden, for: .windowToolbar)
         }
         .navigationTitle("PrintBro")
