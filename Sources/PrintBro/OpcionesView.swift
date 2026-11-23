@@ -67,9 +67,10 @@ struct OpcionesView: View {
                     Label {
                         Text(error)
                     } icon: {
-                        Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Estilo.Paleta.acento)
+                        Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Estilo.Paleta.errorIcono)
                     }
                     .foregroundStyle(Estilo.Paleta.texto)
+                    .cajaAviso(Estilo.Paleta.peligro)
                     .accessibilityLabel(Text("Rango inválido: \(error)"))
                 }
             }

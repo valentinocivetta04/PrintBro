@@ -7,15 +7,20 @@ struct MotivoView: View {
 
     var body: some View {
         Label {
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 0) {
                 Text(motivo.titulo).fontWeight(.medium)
                 Text(motivo.accion)
                     .textoAtenuado()
             }
         } icon: {
             Image(systemName: motivo.simbolo)
-                .foregroundStyle(Estilo.Paleta.acento)
+                .foregroundStyle(esError ? Estilo.Paleta.errorIcono : Estilo.Paleta.avisoIcono)
         }
         .accessibilityElement(children: .combine)
+        .filaAviso(esError ? Estilo.Paleta.peligro : Estilo.Paleta.aviso)
+    }
+
+    private var esError: Bool {
+        motivo.gravedad == .error
     }
 }

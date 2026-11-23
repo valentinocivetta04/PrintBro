@@ -27,8 +27,9 @@ struct ImpresoraView: View {
                             Label {
                                 Text(aviso)
                             } icon: {
-                                Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Estilo.Paleta.acento)
+                                Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Estilo.Paleta.avisoIcono)
                             }
+                            .filaAviso(Estilo.Paleta.aviso)
                         } else {
                             Label("El driver es de Brother.", systemImage: "checkmark.seal")
                         }

@@ -22,10 +22,10 @@ struct GiroHojasSheet: View {
                 Label {
                     Text(aviso)
                 } icon: {
-                    Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Estilo.Paleta.acento)
+                    Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Estilo.Paleta.avisoIcono)
                 }
                 .fixedSize(horizontal: false, vertical: true)
-                .tarjeta()
+                .cajaAviso(Estilo.Paleta.aviso)
             }
 
             HStack {
