@@ -22,6 +22,13 @@ enum Estilo {
         /// El HUD oscuro es más claro que los otros materiales (#605e6b medido con 0.6): lleva más tinte.
         static let tintePanel = par(.hex(0xe8e2f4, 0.5), .hex(0x1c1530, 0.85))
         static let sombra = par(.negro(0.08), .negro(0.3))
+        /// Advertencias (tóner bajo, driver ajeno, hoja sin dorso): relleno y borde.
+        static let aviso = par(.hex(0xffcc00), .hex(0xffd60a))
+        /// Ícono de advertencia: #ffcc00 da 1.1:1 sobre su relleno en claro; #997a00 es el ámbar
+        /// más claro que llega a 3:1.
+        static let avisoIcono = par(.hex(0x997a00), .hex(0xffd60a))
+        /// Ícono de error: el rojo en claro da 2.2:1 sobre su relleno; #e20c00 llega a 3:1.
+        static let errorIcono = par(.hex(0xe20c00), .hex(0xff453a))
         /// on-primary, on-accent y on-surface: negro en design.md.
         static let sobreColor = par(.hex(0x000000), .hex(0x000000))
 
@@ -52,27 +59,43 @@ enum Estilo {
         static let tarjeta: CGFloat = 14
     }
 
+    /// Escala compacta (desvío deliberado de los tamaños web de design.md).
     enum Espacio {
         static let chico: CGFloat = 8
         static let medio: CGFloat = 16
+        /// Entre secciones de un panel.
+        static let seccion: CGFloat = 24
         static let grande: CGFloat = 32
-        /// Padding de "card" en design.md.
-        static let tarjeta: CGFloat = 24
+        static let tarjeta: CGFloat = 16
         static let borde: CGFloat = 1
         static let anilloFoco: CGFloat = 2
+        /// Alto mínimo de una fila de opciones.
+        static let fila: CGFloat = 32
+    }
+
+    /// Botones compactos (28 pt) y de acción de la barra inferior y la hoja (32 pt).
+    enum Boton {
+        static let altoCompacto: CGFloat = 28
+        static let rellenoCompacto: CGFloat = 14
+        static let altoAccion: CGFloat = 32
+        static let rellenoAccion: CGFloat = 18
+        static let radio: CGFloat = 8
     }
 
     enum Tipo {
-        /// h1: 4rem = 64 pt, peso 700, interlineado 1.05.
-        static let tamanioTitulo: CGFloat = 64
+        /// Título de pantalla: 24 pt bold, interlineado 1.2.
+        static let tamanioTitulo: CGFloat = 24
         static let titulo = Font.system(size: tamanioTitulo, weight: .bold)
-        static let interlineadoTitulo = extra(tamanioTitulo, alto: 1.05)
-        /// body-md: 1rem = 16 pt, peso 400, interlineado 1.6.
-        static let tamanioCuerpo: CGFloat = 16
+        static let interlineadoTitulo = extra(tamanioTitulo, alto: 1.2)
+        /// Cuerpo: 13 pt, interlineado 1.4.
+        static let tamanioCuerpo: CGFloat = 13
         static let cuerpo = Font.system(size: tamanioCuerpo, weight: .regular)
-        static let interlineadoCuerpo = extra(tamanioCuerpo, alto: 1.6)
-        /// label-caps: 0.75rem = 12 pt, peso 600, tracking 0.06em.
-        static let tamanioEtiqueta: CGFloat = 12
+        static let interlineadoCuerpo = extra(tamanioCuerpo, alto: 1.4)
+        static let boton = Font.system(size: tamanioCuerpo, weight: .medium)
+        /// Texto secundario: 12 pt.
+        static let secundario = Font.system(size: 12, weight: .regular)
+        /// label-caps: 11 pt, peso 600, tracking 0.06em.
+        static let tamanioEtiqueta: CGFloat = 11
         static let etiqueta = Font.system(size: tamanioEtiqueta, weight: .semibold)
         static let trackingEtiqueta = tamanioEtiqueta * 0.06
 
@@ -91,12 +114,13 @@ enum Estilo {
         static let desplazamiento: CGFloat = 2
     }
 
-    /// Halo neón de los botones de peligro: una sombra ancha y tenue y otra pegada al borde.
+    /// Luz de neón fina de todos los botones, del color de su relleno: una sombra difusa y otra
+    /// pegada al borde, sin desplazamiento.
     enum Neon {
-        static let opacidadAncha = 0.55
-        static let radioAncho: CGFloat = 8
-        static let opacidadBorde = 0.8
-        static let radioBorde: CGFloat = 2
+        static let opacidadAncha = 0.35
+        static let radioAncho: CGFloat = 5
+        static let opacidadBorde = 0.6
+        static let radioBorde: CGFloat = 1
         /// El halo crece con el hover y se achica al presionar.
         static let escalaHover: CGFloat = 1.3
         static let escalaPresionado: CGFloat = 0.6
@@ -106,10 +130,12 @@ enum Estilo {
         static let brilloHover = 0.06
         static let brilloPresionado = -0.08
         static let opacidadDeshabilitado = 0.4
+        /// Fila seleccionada de la barra lateral: primario translúcido.
+        static let opacidadSeleccion = 0.26
+        /// Relleno y borde de advertencias y errores.
+        static let opacidadRellenoAviso = 0.2
+        static let opacidadBordeAviso = 0.5
     }
-
-    /// Título de pantalla: si 64 pt no entra, se achica hasta la mitad como mucho.
-    static let escalaMinimaTitulo: CGFloat = 0.5
 }
 
 /// Línea de 1 pt con el color border, en lugar de Divider (que usa el color del sistema).
@@ -187,14 +213,14 @@ private struct Superficie: ViewModifier {
     }
 }
 
-/// button-primary / button-secondary: fondo de color, texto negro, radio 10, padding 16.
-/// Con neon (botones de cancelar o borrar) suma un halo del mismo color.
+/// Botón con relleno de color, texto negro y luz de neón fina del mismo color.
+/// Compacto (28 pt) por defecto; de acción (32 pt) en la barra inferior y la hoja de giro.
 struct BotonEstilo: ButtonStyle {
     let fondo: Color
-    var neon = false
+    var accion = false
 
     func makeBody(configuration: Configuration) -> some View {
-        CuerpoBoton(configuration: configuration, fondo: fondo, neon: neon)
+        CuerpoBoton(configuration: configuration, fondo: fondo, accion: accion)
     }
 }
 
@@ -206,24 +232,24 @@ private final class Hover: ObservableObject {
 private struct CuerpoBoton: View {
     let configuration: ButtonStyleConfiguration
     let fondo: Color
-    let neon: Bool
+    let accion: Bool
     @StateObject private var hover = Hover()
     @Environment(\.isEnabled) private var habilitado
     @Environment(\.isFocused) private var enfocado
 
     var body: some View {
-        let forma = RoundedRectangle(cornerRadius: Estilo.Radio.control, style: .continuous)
+        let forma = RoundedRectangle(cornerRadius: Estilo.Boton.radio, style: .continuous)
         configuration.label
-            .font(Estilo.Tipo.cuerpo)
+            .font(Estilo.Tipo.boton)
+            .lineSpacing(0)
             .foregroundStyle(Estilo.Paleta.sobreColor)
-            .padding(Estilo.Espacio.medio)
+            .padding(.horizontal, accion ? Estilo.Boton.rellenoAccion : Estilo.Boton.rellenoCompacto)
+            .frame(height: accion ? Estilo.Boton.altoAccion : Estilo.Boton.altoCompacto)
             .background {
-                // Sin animación: el halo cambia de golpe entre estados (respeta "Reducir movimiento").
+                // Sin animación: la luz cambia de golpe entre estados (respeta "Reducir movimiento").
                 forma.fill(fondo)
-                    .shadow(color: neon ? fondo.opacity(Estilo.Neon.opacidadAncha) : .clear,
-                            radius: Estilo.Neon.radioAncho * escalaHalo)
-                    .shadow(color: neon ? fondo.opacity(Estilo.Neon.opacidadBorde) : .clear,
-                            radius: Estilo.Neon.radioBorde * escalaHalo)
+                    .shadow(color: fondo.opacity(Estilo.Neon.opacidadAncha), radius: Estilo.Neon.radioAncho * escalaHalo)
+                    .shadow(color: fondo.opacity(Estilo.Neon.opacidadBorde), radius: Estilo.Neon.radioBorde * escalaHalo)
             }
             .brightness(brillo)
             .overlay {
@@ -251,8 +277,10 @@ private struct CuerpoBoton: View {
 extension ButtonStyle where Self == BotonEstilo {
     static var primario: BotonEstilo { BotonEstilo(fondo: Estilo.Paleta.primario) }
     static var secundario: BotonEstilo { BotonEstilo(fondo: Estilo.Paleta.acento) }
-    /// Cancelar, rechazar, borrar o descartar: rojo con halo neón.
-    static var peligro: BotonEstilo { BotonEstilo(fondo: Estilo.Paleta.peligro, neon: true) }
+    /// Cancelar, rechazar, borrar o descartar.
+    static var peligro: BotonEstilo { BotonEstilo(fondo: Estilo.Paleta.peligro) }
+    static var primarioAccion: BotonEstilo { BotonEstilo(fondo: Estilo.Paleta.primario, accion: true) }
+    static var peligroAccion: BotonEstilo { BotonEstilo(fondo: Estilo.Paleta.peligro, accion: true) }
 }
 
 extension View {
@@ -314,7 +342,6 @@ extension View {
         font(Estilo.Tipo.titulo)
             .lineSpacing(Estilo.Tipo.interlineadoTitulo)
             .lineLimit(1)
-            .minimumScaleFactor(Estilo.escalaMinimaTitulo)
             .foregroundStyle(Estilo.Paleta.texto)
             .accessibilityAddTraits(.isHeader)
     }
@@ -331,7 +358,32 @@ extension View {
         listRowBackground(Estilo.Paleta.superficie)
     }
 
+    /// Texto secundario: 12 pt, text-muted.
     func textoAtenuado() -> some View {
         foregroundStyle(Estilo.Paleta.textoAtenuado)
+            .font(Estilo.Tipo.secundario)
+    }
+
+    /// Advertencia (amarillo) o error (rojo): relleno suave, borde de 1 pt; el texto queda en su color normal.
+    func cajaAviso(_ color: Color) -> some View {
+        let forma = RoundedRectangle(cornerRadius: Estilo.Radio.control, style: .continuous)
+        return padding(.horizontal, Estilo.Espacio.medio)
+            .padding(.vertical, Estilo.Espacio.chico)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .foregroundStyle(Estilo.Paleta.texto)
+            .background(forma.fill(color.opacity(Estilo.Estado.opacidadRellenoAviso)))
+            .overlay {
+                forma.strokeBorder(color.opacity(Estilo.Estado.opacidadBordeAviso), lineWidth: Estilo.Espacio.borde)
+            }
+    }
+
+    /// Fila de Form con fondo de advertencia o error (un Form no deja bordear una sola fila).
+    func filaAviso(_ color: Color) -> some View {
+        listRowBackground(color.opacity(Estilo.Estado.opacidadRellenoAviso))
+    }
+
+    /// Filas de opciones de al menos 32 pt.
+    func filasCompactas() -> some View {
+        environment(\.defaultMinListRowHeight, Estilo.Espacio.fila)
     }
 }
