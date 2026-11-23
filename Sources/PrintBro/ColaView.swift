@@ -32,7 +32,6 @@ struct ColaView: View {
                     .width(150)
                 }
                 .scrollContentBackground(.hidden)
-                .clipShape(RoundedRectangle(cornerRadius: Estilo.Radio.tarjeta, style: .continuous))
                 .panel()
                 .padding(Estilo.Espacio.medio)
             }

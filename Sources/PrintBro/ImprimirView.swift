@@ -13,7 +13,6 @@ struct ImprimirView: View {
                 }
             }
             .frame(minWidth: Estilo.Medida.anchoMinimoVistaPrevia, maxWidth: .infinity, maxHeight: .infinity)
-            .clipShape(RoundedRectangle(cornerRadius: Estilo.Radio.tarjeta, style: .continuous))
             .panel()
             .dropDestination(for: URL.self) { urls, _ in
                 guard let url = urls.first else { return false }
@@ -23,7 +22,6 @@ struct ImprimirView: View {
 
             OpcionesView()
                 .frame(width: Estilo.Medida.anchoOpciones)
-                .clipShape(RoundedRectangle(cornerRadius: Estilo.Radio.tarjeta, style: .continuous))
                 .panel()
         }
         .padding(Estilo.Espacio.medio)
