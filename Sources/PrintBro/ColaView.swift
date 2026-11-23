@@ -11,7 +11,7 @@ struct ColaView: View {
                 ContentUnavailableView {
                     Label("No hay trabajos en la cola", systemImage: "tray")
                 } description: {
-                    Text("Cuando mandes algo a imprimir, va a aparecer acá hasta que termine.")
+                    Text("Cuando mandes algo a imprimir, va a aparecer acá hasta que termine.").textoAtenuado()
                 }
             } else {
                 Table(modelo.trabajosCola, selection: $modelo.seleccionCola) {
@@ -31,6 +31,10 @@ struct ColaView: View {
                     }
                     .width(150)
                 }
+                .scrollContentBackground(.hidden)
+                .clipShape(RoundedRectangle(cornerRadius: Estilo.Radio.tarjeta, style: .continuous))
+                .panel()
+                .padding(Estilo.Espacio.medio)
             }
         }
         // Sin esto el estado vacío no ocupa todo el alto y la barra queda en el medio.
@@ -38,20 +42,20 @@ struct ColaView: View {
         .safeAreaInset(edge: .bottom, spacing: 0) {
             HStack {
                 Text("Se actualiza cada 2 segundos.")
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
+                    .textoAtenuado()
                 Spacer()
                 Button("Cancelar trabajo") { modelo.cancelarSeleccionados() }
                     .disabled(modelo.seleccionCola.isEmpty)
                     .accessibilityHint(Text("Cancela los trabajos seleccionados"))
+                    .buttonStyle(.secundario)
                 Button("Cancelar todos", role: .destructive) { modelo.confirmandoCancelarTodos = true }
                     .disabled(modelo.trabajosCola.isEmpty)
+                    .buttonStyle(.secundario)
             }
-            .bordeControl()
             .padding(.horizontal, Estilo.Espacio.medio)
             .padding(.vertical, Estilo.Espacio.chico)
             .fondoEncabezado()
-            .overlay(alignment: .top) { Divider() }
+            .overlay(alignment: .top) { LineaBorde() }
         }
         .confirmationDialog("¿Cancelar todos los trabajos de la cola?", isPresented: $modelo.confirmandoCancelarTodos) {
             Button("Cancelar todos", role: .destructive) { modelo.cancelarTodos() }

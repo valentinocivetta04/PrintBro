@@ -27,7 +27,7 @@ struct ImpresoraView: View {
                             Label {
                                 Text(aviso)
                             } icon: {
-                                Image(systemName: "exclamationmark.triangle.fill").symbolRenderingMode(.multicolor)
+                                Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Estilo.Paleta.acento)
                             }
                         } else {
                             Label("El driver es de Brother.", systemImage: "checkmark.seal")
@@ -35,6 +35,7 @@ struct ImpresoraView: View {
                     } header: {
                         Text("Cola de impresión").etiquetaSeccion()
                     }
+                    .filaSuperficie()
 
                     if let estado = modelo.estadoImpresora {
                         Section {
@@ -53,19 +54,23 @@ struct ImpresoraView: View {
                         } header: {
                             Text("Estado").etiquetaSeccion()
                         }
+                        .filaSuperficie()
                     }
 
                     Section {
                         HStack {
                             Button("Imprimir página de prueba") { modelo.confirmandoPaginaPrueba = true }
                                 .disabled(modelo.imprimiendoPaginaPrueba)
+                                .buttonStyle(.secundario)
                             if modelo.imprimiendoPaginaPrueba { ProgressView().controlSize(.small) }
                         }
                         Button("Volver a buscar impresoras") { modelo.recargarImpresoras() }
+                            .buttonStyle(.secundario)
                     }
-                    .bordeControl()
+                    .filaSuperficie()
                 }
                 .formStyle(.grouped)
+                .scrollContentBackground(.hidden)
                 .alert("¿Imprimir una página de prueba?", isPresented: $modelo.confirmandoPaginaPrueba) {
                     Button("Imprimir") { modelo.imprimirPaginaPrueba() }
                     Button("Cancelar", role: .cancel) {}
@@ -76,9 +81,10 @@ struct ImpresoraView: View {
                 ContentUnavailableView {
                     Label("No hay impresoras", systemImage: "printer")
                 } description: {
-                    Text("Agregá la impresora en Configuración del Sistema > Impresoras y escáneres.")
+                    Text("Agregá la impresora en Configuración del Sistema > Impresoras y escáneres.").textoAtenuado()
                 } actions: {
                     Button("Volver a buscar impresoras") { modelo.recargarImpresoras() }
+                        .buttonStyle(.primario)
                 }
             }
         }
