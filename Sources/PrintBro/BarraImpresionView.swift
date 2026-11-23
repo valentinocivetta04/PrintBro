@@ -9,7 +9,7 @@ struct BarraImpresionView: View {
             estado
             Spacer()
             Button("Cancelar", role: .cancel) { modelo.cancelar() }
-                .buttonStyle(.secundario)
+                .buttonStyle(.peligro)
                 .disabled(modelo.archivo == nil || modelo.ocupado)
                 .accessibilityHint(Text("Cierra el documento elegido"))
             Button("Imprimir") { modelo.imprimir() }

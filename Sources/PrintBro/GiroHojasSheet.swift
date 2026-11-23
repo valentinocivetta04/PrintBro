@@ -33,7 +33,7 @@ struct GiroHojasSheet: View {
                 Button("Cancelar", role: .cancel) { modelo.cancelarDuplex() }
                     .keyboardShortcut(.cancelAction)
                     .accessibilityHint(Text("No imprime las hojas pares"))
-                    .buttonStyle(.secundario)
+                    .buttonStyle(.peligro)
                 Button("Continuar") { modelo.continuarDuplex() }
                     .keyboardShortcut(.defaultAction)
                     .accessibilityHint(Text("Imprime las hojas pares"))

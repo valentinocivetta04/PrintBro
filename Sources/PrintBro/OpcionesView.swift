@@ -29,7 +29,7 @@ struct OpcionesView: View {
                     .disabled(modelo.presets.isEmpty)
                     .accessibilityLabel(Text("Borrar un preset"))
                     .menuStyle(.button)
-                    .buttonStyle(.secundario)
+                    .buttonStyle(.peligro)
                 }
             } header: {
                 Text("Presets").etiquetaSeccion()

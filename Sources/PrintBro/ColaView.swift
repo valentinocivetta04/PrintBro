@@ -47,10 +47,10 @@ struct ColaView: View {
                 Button("Cancelar trabajo") { modelo.cancelarSeleccionados() }
                     .disabled(modelo.seleccionCola.isEmpty)
                     .accessibilityHint(Text("Cancela los trabajos seleccionados"))
-                    .buttonStyle(.secundario)
+                    .buttonStyle(.peligro)
                 Button("Cancelar todos", role: .destructive) { modelo.confirmandoCancelarTodos = true }
                     .disabled(modelo.trabajosCola.isEmpty)
-                    .buttonStyle(.secundario)
+                    .buttonStyle(.peligro)
             }
             .padding(.horizontal, Estilo.Espacio.medio)
             .padding(.vertical, Estilo.Espacio.chico)
