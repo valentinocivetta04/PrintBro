@@ -89,6 +89,17 @@ enum Estilo {
         static let desplazamiento: CGFloat = 2
     }
 
+    /// Halo neón de los botones de peligro: una sombra ancha y tenue y otra pegada al borde.
+    enum Neon {
+        static let opacidadAncha = 0.55
+        static let radioAncho: CGFloat = 8
+        static let opacidadBorde = 0.8
+        static let radioBorde: CGFloat = 2
+        /// El halo crece con el hover y se achica al presionar.
+        static let escalaHover: CGFloat = 1.3
+        static let escalaPresionado: CGFloat = 0.6
+    }
+
     enum Estado {
         static let brilloHover = 0.06
         static let brilloPresionado = -0.08
@@ -174,11 +185,13 @@ private struct Superficie: ViewModifier {
 }
 
 /// button-primary / button-secondary: fondo de color, texto negro, radio 10, padding 16.
+/// Con neon (botones de cancelar o borrar) suma un halo del mismo color.
 struct BotonEstilo: ButtonStyle {
     let fondo: Color
+    var neon = false
 
     func makeBody(configuration: Configuration) -> some View {
-        CuerpoBoton(configuration: configuration, fondo: fondo)
+        CuerpoBoton(configuration: configuration, fondo: fondo, neon: neon)
     }
 }
 
@@ -190,6 +203,7 @@ private final class Hover: ObservableObject {
 private struct CuerpoBoton: View {
     let configuration: ButtonStyleConfiguration
     let fondo: Color
+    let neon: Bool
     @StateObject private var hover = Hover()
     @Environment(\.isEnabled) private var habilitado
     @Environment(\.isFocused) private var enfocado
@@ -200,7 +214,14 @@ private struct CuerpoBoton: View {
             .font(Estilo.Tipo.cuerpo)
             .foregroundStyle(Estilo.Paleta.sobreColor)
             .padding(Estilo.Espacio.medio)
-            .background(forma.fill(fondo))
+            .background {
+                // Sin animación: el halo cambia de golpe entre estados (respeta "Reducir movimiento").
+                forma.fill(fondo)
+                    .shadow(color: neon ? fondo.opacity(Estilo.Neon.opacidadAncha) : .clear,
+                            radius: Estilo.Neon.radioAncho * escalaHalo)
+                    .shadow(color: neon ? fondo.opacity(Estilo.Neon.opacidadBorde) : .clear,
+                            radius: Estilo.Neon.radioBorde * escalaHalo)
+            }
             .brightness(brillo)
             .overlay {
                 if enfocado {
@@ -213,6 +234,11 @@ private struct CuerpoBoton: View {
             .onHover { hover.activo = $0 }
     }
 
+    private var escalaHalo: CGFloat {
+        if configuration.isPressed { return Estilo.Neon.escalaPresionado }
+        return hover.activo && habilitado ? Estilo.Neon.escalaHover : 1
+    }
+
     private var brillo: Double {
         if configuration.isPressed { return Estilo.Estado.brilloPresionado }
         return hover.activo && habilitado ? Estilo.Estado.brilloHover : 0
@@ -222,6 +248,8 @@ private struct CuerpoBoton: View {
 extension ButtonStyle where Self == BotonEstilo {
     static var primario: BotonEstilo { BotonEstilo(fondo: Estilo.Paleta.primario) }
     static var secundario: BotonEstilo { BotonEstilo(fondo: Estilo.Paleta.acento) }
+    /// Cancelar, rechazar, borrar o descartar: rojo con halo neón.
+    static var peligro: BotonEstilo { BotonEstilo(fondo: Estilo.Paleta.peligro, neon: true) }
 }
 
 extension View {
