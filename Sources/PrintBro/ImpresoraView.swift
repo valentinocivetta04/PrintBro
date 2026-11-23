@@ -9,7 +9,7 @@ struct ImpresoraView: View {
         Group {
             if let impresora = modelo.impresoraActual {
                 Form {
-                    Section("Cola de impresión") {
+                    Section {
                         LabeledContent("Nombre", value: impresora.nombre)
                         LabeledContent("Driver", value: impresora.marcaYModelo)
                         if let estado = modelo.estadoImpresora {
@@ -32,10 +32,12 @@ struct ImpresoraView: View {
                         } else {
                             Label("El driver es de Brother.", systemImage: "checkmark.seal")
                         }
+                    } header: {
+                        Text("Cola de impresión").etiquetaSeccion()
                     }
 
                     if let estado = modelo.estadoImpresora {
-                        Section("Estado") {
+                        Section {
                             LabeledContent("Estado") {
                                 Label(estado.general.titulo, systemImage: estado.general.simbolo)
                             }
@@ -48,6 +50,8 @@ struct ImpresoraView: View {
                             ForEach(Array(estado.motivos.enumerated()), id: \.offset) { _, motivo in
                                 MotivoView(motivo: motivo)
                             }
+                        } header: {
+                            Text("Estado").etiquetaSeccion()
                         }
                     }
 
@@ -59,6 +63,7 @@ struct ImpresoraView: View {
                         }
                         Button("Volver a buscar impresoras") { modelo.recargarImpresoras() }
                     }
+                    .bordeControl()
                 }
                 .formStyle(.grouped)
                 .alert("¿Imprimir una página de prueba?", isPresented: $modelo.confirmandoPaginaPrueba) {

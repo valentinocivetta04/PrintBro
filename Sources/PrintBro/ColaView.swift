@@ -47,9 +47,10 @@ struct ColaView: View {
                 Button("Cancelar todos", role: .destructive) { modelo.confirmandoCancelarTodos = true }
                     .disabled(modelo.trabajosCola.isEmpty)
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 10)
-            .background(.bar)
+            .bordeControl()
+            .padding(.horizontal, Estilo.Espacio.medio)
+            .padding(.vertical, Estilo.Espacio.chico)
+            .fondoEncabezado()
             .overlay(alignment: .top) { Divider() }
         }
         .confirmationDialog("¿Cancelar todos los trabajos de la cola?", isPresented: $modelo.confirmandoCancelarTodos) {
