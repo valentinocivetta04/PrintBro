@@ -4,7 +4,7 @@
 
 App de Mac para imprimir en una Brother HL-1210W con doble faz manual y con todas las opciones que trae el driver.
 
-Versión 0.1.0 (21 de noviembre de 2026). [Descargar](https://github.com/valentinocivetta04/PrintBro/releases/latest)
+Versión 0.2.0 (23 de noviembre de 2026). [Descargar](https://github.com/valentinocivetta04/PrintBro/releases/latest) · Qué cambió en cada versión: [CHANGELOG](CHANGELOG.md)
 
 ## El problema
 
@@ -39,7 +39,7 @@ Tomadas con la app en modo de prueba, sin imprimir.
 
 ## Descargar
 
-Si no querés compilarla, bajá `PrintBro-0.1.0.dmg` de la [página de versiones](https://github.com/valentinocivetta04/PrintBro/releases/latest), abrilo y arrastrá PrintBro a Aplicaciones. Está compilada solo para Macs con chip Apple (M1 o posterior).
+Si no querés compilarla, bajá `PrintBro-0.2.0.dmg` de la [página de versiones](https://github.com/valentinocivetta04/PrintBro/releases/latest), abrilo y arrastrá PrintBro a Aplicaciones. Está compilada solo para Macs con chip Apple (M1 o posterior).
 
 Como está firmada ad-hoc, macOS la bloquea la primera vez que la abrís. Para habilitarla:
 
