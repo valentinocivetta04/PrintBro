@@ -4,7 +4,7 @@ struct GiroHojasSheet: View {
     @Environment(PrintModel.self) private var modelo
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: Estilo.Espacio.medio) {
             Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90")
                 .font(.largeTitle)
                 .foregroundStyle(.tint)
@@ -25,6 +25,7 @@ struct GiroHojasSheet: View {
                     Image(systemName: "exclamationmark.triangle.fill").symbolRenderingMode(.multicolor)
                 }
                 .fixedSize(horizontal: false, vertical: true)
+                .tarjeta()
             }
 
             HStack {
@@ -36,9 +37,11 @@ struct GiroHojasSheet: View {
                     .keyboardShortcut(.defaultAction)
                     .accessibilityHint(Text("Imprime las hojas pares"))
             }
-            .padding(.top, 6)
+            .controlSize(.large)
+            .bordeControl()
         }
-        .padding(24)
+        .padding(Estilo.Espacio.grande)
         .frame(width: 440)
+        .fondoPanel()
     }
 }

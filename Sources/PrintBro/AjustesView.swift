@@ -9,7 +9,7 @@ struct AjustesView: View {
             Section {
                 Toggle("Imprimir las pares en orden inverso", isOn: $modelo.ordenInverso)
             } header: {
-                Text("Doble faz manual")
+                Text("Doble faz manual").etiquetaSeccion()
             } footer: {
                 Text("Con tu forma de girar la pila, esta opción deja cada página par en el dorso correcto.")
             }
@@ -22,7 +22,7 @@ struct AjustesView: View {
                     }
                 }
             } header: {
-                Text("Impresora")
+                Text("Impresora").etiquetaSeccion()
             } footer: {
                 Text("Solo cambia la que elige PrintBro al abrir. No toca la configuración del sistema.")
             }
