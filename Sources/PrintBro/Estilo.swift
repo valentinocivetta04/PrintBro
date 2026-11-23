@@ -225,10 +225,9 @@ extension ButtonStyle where Self == BotonEstilo {
 }
 
 extension View {
-    /// Raíz de cada ventana: solo claro, texto #1d1d1f, body-md y controles en azul primario.
+    /// Raíz de cada ventana: texto, body-md y controles en violeta primario. Sigue el modo del sistema.
     func estiloApp() -> some View {
-        preferredColorScheme(.light)
-            .tint(Estilo.Paleta.primario)
+        tint(Estilo.Paleta.primario)
             // El segundo nivel es el que usan las vistas nativas para el texto secundario.
             .foregroundStyle(Estilo.Paleta.texto, Estilo.Paleta.textoAtenuado)
             .font(Estilo.Tipo.cuerpo)

@@ -6,9 +6,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
     // Vive acá para que exista antes de que llegue un archivo abierto desde Finder.
     let modelo = PrintModel()
 
-    func applicationWillFinishLaunching(_ notification: Notification) {
-        // La paleta de design.md es solo clara: no sigue el modo oscuro del sistema.
-        NSApp.appearance = NSAppearance(named: .aqua)
+    override init() {
+        // Acento violeta (5 = púrpura) para lo que pinta el sistema, como la selección de la
+        // barra lateral, que no toma .tint. Va al dominio de registro: no se guarda ni pisa
+        // un acento que el usuario haya elegido en Ajustes.
+        UserDefaults.standard.register(defaults: ["AppleAccentColor": 5])
+        super.init()
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
