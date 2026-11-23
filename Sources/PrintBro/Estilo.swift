@@ -206,10 +206,10 @@ private struct Superficie: ViewModifier {
     func body(content: Content) -> some View {
         let forma = RoundedRectangle(cornerRadius: Estilo.Radio.tarjeta, style: .continuous)
         content
-            // Recorta lo de adentro (tabla, PDF, Form) a las esquinas redondeadas.
-            .clipShape(forma)
             .padding(relleno)
             .frame(maxWidth: anchoCompleto ? .infinity : nil, alignment: .leading)
+            // Recorta lo de adentro (tabla, PDF, Form) a las esquinas redondeadas.
+            .clipShape(forma)
             .foregroundStyle(Estilo.Paleta.texto)
             .background {
                 // La sombra va en una base opaca de bg: si no, se ve a través de la superficie translúcida.
