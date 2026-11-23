@@ -19,6 +19,8 @@ enum Estilo {
         static let velo = par(.blanco(0.4), .blanco(0.06))
         /// Tiñe de violeta los materiales del sistema, que solos son grises.
         static let tinte = par(.hex(0xe8e2f4, 0.5), .hex(0x1c1530, 0.6))
+        /// El HUD oscuro es más claro que los otros materiales (#605e6b medido con 0.6): lleva más tinte.
+        static let tintePanel = par(.hex(0xe8e2f4, 0.5), .hex(0x1c1530, 0.85))
         static let sombra = par(.negro(0.08), .negro(0.3))
         /// on-primary, on-accent y on-surface: negro en design.md.
         static let sobreColor = par(.hex(0x000000), .hex(0x000000))
@@ -141,6 +143,7 @@ private struct FondoMaterial: ViewModifier {
     let material: NSVisualEffectView.Material
     let mezcla: NSVisualEffectView.BlendingMode
     let velo: Color
+    var tinte = Estilo.Paleta.tinte
     @Environment(\.accessibilityReduceTransparency) private var sinTransparencia
 
     func body(content: Content) -> some View {
@@ -150,7 +153,7 @@ private struct FondoMaterial: ViewModifier {
                 if !sinTransparencia {
                     MaterialSistema(material: material, mezcla: mezcla)
                 }
-                Estilo.Paleta.tinte
+                tinte
                 velo
             }
             .ignoresSafeArea()
@@ -282,7 +285,8 @@ extension View {
     /// Paneles flotantes (hoja de giro): material .hudWindow + velo surface-strong.
     /// Con el scrim (0.4) quedaba gris (#e2e2e3 medido); con 0.78 se acerca a surface sobre bg.
     func fondoPanel() -> some View {
-        modifier(FondoMaterial(material: .hudWindow, mezcla: .behindWindow, velo: Estilo.Paleta.superficieFuerte))
+        modifier(FondoMaterial(material: .hudWindow, mezcla: .behindWindow, velo: Estilo.Paleta.superficieFuerte,
+                               tinte: Estilo.Paleta.tintePanel))
     }
 
     /// card: surface, radio 14, padding 24, sombra sutil.
