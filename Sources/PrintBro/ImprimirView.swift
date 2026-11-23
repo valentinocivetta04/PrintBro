@@ -4,7 +4,7 @@ struct ImprimirView: View {
     @Environment(PrintModel.self) private var modelo
 
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: Estilo.Espacio.medio) {
             Group {
                 if let archivo = modelo.archivo {
                     VistaPreviaView(archivo: archivo)
@@ -13,18 +13,20 @@ struct ImprimirView: View {
                 }
             }
             .frame(minWidth: 380, maxWidth: .infinity, maxHeight: .infinity)
+            .clipShape(RoundedRectangle(cornerRadius: Estilo.Radio.tarjeta, style: .continuous))
+            .panel()
             .dropDestination(for: URL.self) { urls, _ in
                 guard let url = urls.first else { return false }
                 modelo.abrir(url)
                 return true
             } isTargeted: { modelo.arrastrandoEncima = $0 }
 
-            Divider()
-
             OpcionesView()
                 .frame(width: 350)
-                .fondoBarraLateral()
+                .clipShape(RoundedRectangle(cornerRadius: Estilo.Radio.tarjeta, style: .continuous))
+                .panel()
         }
+        .padding(Estilo.Espacio.medio)
         .safeAreaInset(edge: .top, spacing: 0) {
             if let motivos = modelo.estadoImpresora?.motivos, !motivos.isEmpty {
                 FranjaAvisosView(motivos: motivos)

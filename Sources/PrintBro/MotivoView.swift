@@ -10,12 +10,11 @@ struct MotivoView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(motivo.titulo).fontWeight(.medium)
                 Text(motivo.accion)
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
+                    .textoAtenuado()
             }
         } icon: {
             Image(systemName: motivo.simbolo)
-                .foregroundStyle(motivo.gravedad == .error ? Color.red : Color.orange)
+                .foregroundStyle(Estilo.Paleta.acento)
         }
         .accessibilityElement(children: .combine)
     }

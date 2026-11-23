@@ -78,6 +78,13 @@ enum Estilo {
     static let escalaMinimaTitulo: CGFloat = 0.5
 }
 
+/// Línea de 1 pt con el color border, en lugar de Divider (que usa el color del sistema).
+struct LineaBorde: View {
+    var body: some View {
+        Estilo.Paleta.borde.frame(height: Estilo.Espacio.borde)
+    }
+}
+
 /// NSVisualEffectView: SwiftUI no deja elegir .sidebar / .headerView / .hudWindow.
 struct MaterialSistema: NSViewRepresentable {
     let material: NSVisualEffectView.Material
@@ -107,9 +114,8 @@ private struct FondoMaterial: ViewModifier {
     func body(content: Content) -> some View {
         content.background {
             ZStack {
-                if sinTransparencia {
-                    Estilo.Paleta.fondo
-                } else {
+                Estilo.Paleta.fondo
+                if !sinTransparencia {
                     MaterialSistema(material: material, mezcla: mezcla)
                 }
                 velo
@@ -125,16 +131,21 @@ private struct Superficie: ViewModifier {
     let radio: CGFloat
     let relleno: CGFloat
     let sombra: Bool
+    /// Las tarjetas ocupan todo el ancho; los paneles respetan el ancho que les dan.
+    let anchoCompleto: Bool
 
     func body(content: Content) -> some View {
         let forma = RoundedRectangle(cornerRadius: radio, style: .continuous)
         content
             .padding(relleno)
+            .frame(maxWidth: anchoCompleto ? .infinity : nil, alignment: .leading)
             .foregroundStyle(Estilo.Paleta.texto)
             .background {
-                forma.fill(color)
+                // La sombra va en una base opaca de bg: si no, se ve a través de la superficie translúcida.
+                forma.fill(Estilo.Paleta.fondo)
                     .shadow(color: sombra ? Estilo.Sombra.color : .clear,
                             radius: Estilo.Sombra.radio, y: Estilo.Sombra.desplazamiento)
+                    .overlay { forma.fill(color) }
             }
             .overlay { forma.strokeBorder(Estilo.Paleta.borde, lineWidth: Estilo.Espacio.borde) }
     }
@@ -196,7 +207,8 @@ extension View {
     func estiloApp() -> some View {
         preferredColorScheme(.light)
             .tint(Estilo.Paleta.primario)
-            .foregroundStyle(Estilo.Paleta.texto)
+            // El segundo nivel es el que usan las vistas nativas para el texto secundario.
+            .foregroundStyle(Estilo.Paleta.texto, Estilo.Paleta.textoAtenuado)
             .font(Estilo.Tipo.cuerpo)
             .lineSpacing(Estilo.Tipo.interlineadoCuerpo)
     }
@@ -212,25 +224,28 @@ extension View {
     }
 
     /// Barras de arriba y abajo: material .headerView + velo surface.
+    /// .behindWindow porque design.md pide que la barra muestree el escritorio; con .withinWindow
+    /// no toma el contenido de SwiftUI y quedaba casi blanca (#fcfdfd medido).
     func fondoEncabezado() -> some View {
-        modifier(FondoMaterial(material: .headerView, mezcla: .withinWindow, velo: Estilo.Paleta.superficie))
+        modifier(FondoMaterial(material: .headerView, mezcla: .behindWindow, velo: Estilo.Paleta.superficie))
     }
 
-    /// Paneles flotantes (hoja de giro): material .hudWindow + scrim.
+    /// Paneles flotantes (hoja de giro): material .hudWindow + velo surface-strong.
+    /// Con el scrim (0.4) quedaba gris (#e2e2e3 medido); con 0.78 se acerca a surface sobre bg.
     func fondoPanel() -> some View {
-        modifier(FondoMaterial(material: .hudWindow, mezcla: .behindWindow, velo: Estilo.Paleta.velo))
+        modifier(FondoMaterial(material: .hudWindow, mezcla: .behindWindow, velo: Estilo.Paleta.superficieFuerte))
     }
 
     /// card: surface, radio 14, padding 24, sombra sutil.
     func tarjeta() -> some View {
         modifier(Superficie(color: Estilo.Paleta.superficie, radio: Estilo.Radio.tarjeta,
-                            relleno: Estilo.Espacio.tarjeta, sombra: true))
+                            relleno: Estilo.Espacio.tarjeta, sombra: true, anchoCompleto: true))
     }
 
     /// Panel grande (opciones, tabla de la cola): surface-strong, sin padding propio.
     func panel() -> some View {
         modifier(Superficie(color: Estilo.Paleta.superficieFuerte, radio: Estilo.Radio.tarjeta,
-                            relleno: 0, sombra: true))
+                            relleno: 0, sombra: true, anchoCompleto: false))
     }
 
     /// "label-caps": 12 pt, semibold, mayúsculas, tracking 0.72 pt, text-muted.
@@ -249,6 +264,18 @@ extension View {
             .minimumScaleFactor(Estilo.escalaMinimaTitulo)
             .foregroundStyle(Estilo.Paleta.texto)
             .accessibilityAddTraits(.isHeader)
+    }
+
+    /// Texto al pie de una sección de Form: text-muted, alineado a la izquierda.
+    func pieSeccion() -> some View {
+        textoAtenuado()
+            .multilineTextAlignment(.leading)
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    /// Filas de Form sobre surface en lugar del gris del sistema.
+    func filaSuperficie() -> some View {
+        listRowBackground(Estilo.Paleta.superficie)
     }
 
     func textoAtenuado() -> some View {

@@ -8,7 +8,7 @@ struct VistaPreviaView: View {
         VStack(spacing: 0) {
             HStack(spacing: Estilo.Espacio.chico) {
                 Image(systemName: "doc")
-                    .foregroundStyle(.secondary)
+                    .textoAtenuado()
                     .accessibilityHidden(true)
                 Text(archivo.lastPathComponent)
                     .lineLimit(1)
@@ -16,9 +16,9 @@ struct VistaPreviaView: View {
                 Spacer()
                 if let paginas = modelo.paginasDocumento {
                     if paginas == 1 {
-                        Text("1 página").foregroundStyle(.secondary)
+                        Text("1 página").textoAtenuado()
                     } else {
-                        Text("\(paginas) páginas").foregroundStyle(.secondary)
+                        Text("\(paginas) páginas").textoAtenuado()
                     }
                 }
             }
@@ -27,7 +27,7 @@ struct VistaPreviaView: View {
             .fondoEncabezado()
             .accessibilityElement(children: .combine)
 
-            Divider()
+            LineaBorde()
 
             contenido
         }
@@ -43,7 +43,7 @@ struct VistaPreviaView: View {
             if let texto = try? String(contentsOf: archivo, encoding: .utf8) {
                 ScrollView {
                     Text(texto)
-                        .font(.body.monospaced())
+                        .font(Estilo.Tipo.cuerpo.monospaced())
                         .textSelection(.enabled)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
@@ -51,7 +51,7 @@ struct VistaPreviaView: View {
                 .accessibilityLabel(Text("Vista previa del texto"))
             } else {
                 ContentUnavailableView("No se pudo mostrar la vista previa", systemImage: "eye.slash",
-                                       description: Text("No se pudo leer el archivo como texto UTF-8."))
+                                       description: Text("No se pudo leer el archivo como texto UTF-8.").foregroundStyle(Estilo.Paleta.textoAtenuado))
             }
         default:
             if let imagen = NSImage(contentsOf: archivo) {

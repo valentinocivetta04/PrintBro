@@ -17,7 +17,21 @@ struct ContentView: View {
             .fondoBarraLateral()
             .navigationSplitViewColumnWidth(min: 160, ideal: 180)
         } detail: {
-            detalle
+            VStack(alignment: .leading, spacing: 0) {
+                Text((modelo.seccion ?? .imprimir).titulo)
+                    .tituloPantalla()
+                    .padding(.horizontal, Estilo.Espacio.medio)
+                detalle
+            }
+            // Debajo de la barra del sistema va el material propio; el resto es bg.
+            .background {
+                VStack(spacing: 0) {
+                    Color.clear.frame(height: 0).fondoEncabezado()
+                    LineaBorde()
+                    Estilo.Paleta.fondo
+                }
+            }
+            .toolbarBackground(.hidden, for: .windowToolbar)
         }
         .navigationTitle("PrintBro")
         .fileImporter(isPresented: $modelo.mostrarImportador,

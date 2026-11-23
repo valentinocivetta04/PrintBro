@@ -11,12 +11,12 @@ struct FranjaAvisosView: View {
                 Label {
                     Text(motivo.titulo).fontWeight(.medium)
                         + Text(verbatim: " · ")
-                        + Text(motivo.accion).foregroundStyle(.secondary)
+                        + Text(motivo.accion).foregroundStyle(Estilo.Paleta.textoAtenuado)
                 } icon: {
                     Image(systemName: motivo.simbolo)
-                        .foregroundStyle(motivo.gravedad == .error ? Color.red : Color.orange)
+                        .foregroundStyle(Estilo.Paleta.acento)
                 }
-                .font(.callout)
+                .foregroundStyle(Estilo.Paleta.texto)
                 .lineLimit(1)
                 .accessibilityElement(children: .combine)
             }
@@ -25,6 +25,6 @@ struct FranjaAvisosView: View {
         .padding(.horizontal, Estilo.Espacio.medio)
         .padding(.vertical, Estilo.Espacio.chico)
         .fondoEncabezado()
-        .overlay(alignment: .bottom) { Divider() }
+        .overlay(alignment: .bottom) { LineaBorde() }
     }
 }

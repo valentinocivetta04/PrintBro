@@ -9,19 +9,18 @@ struct BarraImpresionView: View {
             estado
             Spacer()
             Button("Cancelar", role: .cancel) { modelo.cancelar() }
+                .buttonStyle(.secundario)
                 .disabled(modelo.archivo == nil || modelo.ocupado)
                 .accessibilityHint(Text("Cierra el documento elegido"))
             Button("Imprimir") { modelo.imprimir() }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(.primario)
                 .disabled(!modelo.puedeImprimir)
                 .help("Imprimir (⌘P)")
         }
-        .controlSize(.large)
-        .bordeControl()
         .padding(.horizontal, Estilo.Espacio.medio)
         .padding(.vertical, Estilo.Espacio.chico)
         .fondoEncabezado()
-        .overlay(alignment: .top) { Divider() }
+        .overlay(alignment: .top) { LineaBorde() }
     }
 
     @ViewBuilder private var estado: some View {
@@ -33,10 +32,12 @@ struct BarraImpresionView: View {
         } else if let aviso = modelo.avisoTrabajo {
             Label(aviso, systemImage: "bell")
                 .lineLimit(2)
+                .foregroundStyle(Estilo.Paleta.texto)
             Button {
                 modelo.avisoTrabajo = nil
             } label: {
                 Image(systemName: "xmark.circle.fill")
+                    .foregroundStyle(Estilo.Paleta.textoAtenuado)
             }
             .buttonStyle(.borderless)
             .accessibilityLabel(Text("Cerrar aviso"))
@@ -44,11 +45,11 @@ struct BarraImpresionView: View {
             Label {
                 Text(mensaje)
             } icon: {
-                Image(systemName: "checkmark.circle.fill").foregroundStyle(.green)
+                Image(systemName: "checkmark.circle.fill").foregroundStyle(Estilo.Paleta.primario)
             }
         } else if modelo.simulacion {
             Label("Modo simulación: no se imprime nada", systemImage: "testtube.2")
-                .foregroundStyle(.secondary)
+                .textoAtenuado()
         }
     }
 }

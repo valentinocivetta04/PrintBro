@@ -16,7 +16,10 @@ struct OpcionesView: View {
                     }
                     .disabled(modelo.presets.isEmpty)
                     .accessibilityLabel(Text("Cargar preset"))
+                    .menuStyle(.button)
+                    .buttonStyle(.secundario)
                     Button("Guardar…") { modelo.pedirNombrePreset() }
+                        .buttonStyle(.secundario)
                         .accessibilityLabel(Text("Guardar la configuración como preset"))
                     Menu("Borrar") {
                         ForEach(modelo.presets) { preset in
@@ -25,11 +28,13 @@ struct OpcionesView: View {
                     }
                     .disabled(modelo.presets.isEmpty)
                     .accessibilityLabel(Text("Borrar un preset"))
+                    .menuStyle(.button)
+                    .buttonStyle(.secundario)
                 }
-                .bordeControl()
             } header: {
                 Text("Presets").etiquetaSeccion()
             }
+            .filaSuperficie()
 
             Section {
                 Picker("Impresora", selection: $modelo.impresora) {
@@ -40,6 +45,7 @@ struct OpcionesView: View {
             } header: {
                 Text("Impresora").etiquetaSeccion()
             }
+            .filaSuperficie()
 
             Section {
                 Stepper("Copias: \(modelo.copias)", value: $modelo.copias, in: 1...99)
@@ -61,11 +67,13 @@ struct OpcionesView: View {
                     Label {
                         Text(error)
                     } icon: {
-                        Image(systemName: "exclamationmark.triangle.fill").symbolRenderingMode(.multicolor)
+                        Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Estilo.Paleta.acento)
                     }
+                    .foregroundStyle(Estilo.Paleta.texto)
                     .accessibilityLabel(Text("Rango inválido: \(error)"))
                 }
             }
+            .filaSuperficie()
 
             Section {
                 Picker("Orientación", selection: $modelo.orientacion) {
@@ -85,6 +93,7 @@ struct OpcionesView: View {
             } header: {
                 Text("Diseño").etiquetaSeccion()
             }
+            .filaSuperficie()
 
             Section {
                 Toggle("Doble faz manual", isOn: $modelo.dobleFaz)
@@ -98,13 +107,14 @@ struct OpcionesView: View {
                 Text("Doble faz manual").etiquetaSeccion()
             } footer: {
                 if modelo.archivo != nil && !modelo.esPDF {
-                    Text("Solo disponible para PDF.")
+                    Text("Solo disponible para PDF.").pieSeccion()
                 } else if modelo.folleto {
-                    Text("Dos páginas por cara, en hojas apaisadas. Al terminar, doblá la pila al medio.")
+                    Text("Dos páginas por cara, en hojas apaisadas. Al terminar, doblá la pila al medio.").pieSeccion()
                 } else {
-                    Text("Primero salen las impares. Después girás las hojas y salen las pares.")
+                    Text("Primero salen las impares. Después girás las hojas y salen las pares.").pieSeccion()
                 }
             }
+            .filaSuperficie()
 
             if !modelo.opciones.isEmpty {
                 // Una fila por opción que devuelve lpoptions -l, sin agregar ni sacar nada.
@@ -118,13 +128,15 @@ struct OpcionesView: View {
                 } header: {
                     Text("Avanzado").etiquetaSeccion()
                 } footer: {
-                    Text("Opciones que ofrece el driver de la impresora, con los nombres que trae el driver.")
+                    Text("Opciones que ofrece el driver de la impresora, con los nombres que trae el driver.").pieSeccion()
                 }
+                .filaSuperficie()
             }
         }
         .formStyle(.grouped)
         // Deja ver el material de la columna entre las tarjetas del formulario.
         .scrollContentBackground(.hidden)
+        .foregroundStyle(Estilo.Paleta.texto)
         .disabled(modelo.ocupado)
         .alert("Guardar preset", isPresented: $modelo.pidiendoNombrePreset) {
             TextField("Nombre del preset", text: $modelo.nombrePreset)

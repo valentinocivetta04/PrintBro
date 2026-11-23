@@ -36,7 +36,8 @@ final class ContenedorPDF: NSView {
         pdfView.displayMode = .singlePageContinuous
         miniaturas.pdfView = pdfView
         miniaturas.thumbnailSize = CGSize(width: 76, height: 100)
-        miniaturas.backgroundColor = .controlBackgroundColor
+        miniaturas.backgroundColor = NSColor(Estilo.Paleta.fondo)
+        pdfView.backgroundColor = NSColor(Estilo.Paleta.fondo)
         miniaturas.setAccessibilityLabel(String(localized: "Miniaturas de las páginas"))
         separador.boxType = .separator
         addSubview(miniaturas)
