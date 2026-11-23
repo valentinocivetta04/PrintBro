@@ -13,7 +13,7 @@ public enum EstadoDuplex: Sendable, Equatable {
 
 /// Doble faz manual: primero impares, el usuario gira la pila, después pares.
 public final class DuplexManual {
-    static let claveOrdenInverso = "duplexOrdenInversoPares"
+    public static let claveOrdenInverso = "duplexOrdenInversoPares"
 
     public private(set) var estado = EstadoDuplex.idle
     public let trabajo: PrintJob

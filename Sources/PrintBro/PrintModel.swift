@@ -38,8 +38,6 @@ private struct Caja<T>: @unchecked Sendable {
 @MainActor
 @Observable
 final class PrintModel {
-    // Misma clave que usa DuplexManual para recordar el orden inverso.
-    static let claveOrdenInverso = "duplexOrdenInversoPares"
     static let claveImpresoraPreferida = "impresoraPreferida"
 
     let simulacion: Bool
@@ -85,7 +83,7 @@ final class PrintModel {
     /// PDFs temporales (folleto, imágenes convertidas). Se borran al terminar el trabajo.
     private var temporales: [URL] = []
     var ordenInverso: Bool {
-        didSet { UserDefaults.standard.set(ordenInverso, forKey: Self.claveOrdenInverso) }
+        didSet { UserDefaults.standard.set(ordenInverso, forKey: DuplexManual.claveOrdenInverso) }
     }
     var impresoraPreferida: String {
         didSet {
@@ -117,7 +115,7 @@ final class PrintModel {
     init() {
         simulacion = ProcessInfo.processInfo.environment["PRINTBRO_DRY_RUN"] == "1"
         servicio = PrinterService(runner: simulacion ? DryRunRunner() : ProcessRunner())
-        ordenInverso = UserDefaults.standard.object(forKey: Self.claveOrdenInverso) as? Bool ?? true
+        ordenInverso = UserDefaults.standard.object(forKey: DuplexManual.claveOrdenInverso) as? Bool ?? true
         impresoraPreferida = UserDefaults.standard.string(forKey: Self.claveImpresoraPreferida) ?? ""
         recargarImpresoras()
         presets = almacenPresets.todos()
