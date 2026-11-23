@@ -4,7 +4,7 @@ Acá anoto lo que cambia en cada versión de PrintBro. El formato sigue [Keep a 
 
 ## [0.2.0] - 2026-11-23
 
-Esta versión cambia solo la interfaz. La parte que imprime (doble faz, folleto, opciones del driver, cola y estado de la impresora) es la misma de la 0.1.0: no toqué `Sources/PrintBroCore` ni los tests, que siguen siendo 72.
+Esta versión cambia solo la interfaz. La parte que imprime (doble faz, folleto, opciones del driver, cola y estado de la impresora) funciona igual que en la 0.1.0. En `Sources/PrintBroCore` solo cambió una línea: la clave del orden inverso ahora es pública para no repetirla en la app. Los tests siguen siendo 72.
 
 ### Agregado
 
