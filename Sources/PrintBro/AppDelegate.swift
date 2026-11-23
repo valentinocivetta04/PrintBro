@@ -8,9 +8,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
 
     override init() {
         // Acento violeta (5 = púrpura) para lo que pinta el sistema, como la selección de la
-        // barra lateral, que no toma .tint. Va al dominio de registro: no se guarda ni pisa
-        // un acento que el usuario haya elegido en Ajustes.
-        UserDefaults.standard.register(defaults: ["AppleAccentColor": 5])
+        // barra lateral, que no toma .tint. Se guarda en las preferencias de PrintBro, no en
+        // las globales: el resto de la Mac sigue con su acento.
+        UserDefaults.standard.set(5, forKey: "AppleAccentColor")
         super.init()
     }
 
