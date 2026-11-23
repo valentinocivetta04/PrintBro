@@ -6,12 +6,30 @@ struct ContentView: View {
     var body: some View {
         @Bindable var modelo = modelo
         NavigationSplitView {
-            List(Seccion.allCases, selection: $modelo.seccion) { seccion in
-                Label {
-                    Text(seccion.titulo)
-                } icon: {
-                    Image(systemName: seccion.simbolo)
+            // Selección propia: la del sistema pinta texto oscuro sobre violeta oscuro (poco contraste).
+            List(Seccion.allCases) { seccion in
+                let elegida = (modelo.seccion ?? .imprimir) == seccion
+                Button {
+                    modelo.seccion = seccion
+                } label: {
+                    Label {
+                        Text(seccion.titulo)
+                    } icon: {
+                        Image(systemName: seccion.simbolo)
+                    }
+                    .foregroundStyle(Estilo.Paleta.texto)
+                    .padding(.horizontal, Estilo.Espacio.chico)
+                    .frame(maxWidth: .infinity, minHeight: Estilo.Boton.altoCompacto, alignment: .leading)
+                    .background {
+                        if elegida {
+                            RoundedRectangle(cornerRadius: Estilo.Radio.chip, style: .continuous)
+                                .fill(Estilo.Paleta.primario.opacity(Estilo.Estado.opacidadSeleccion))
+                        }
+                    }
+                    .contentShape(Rectangle())
                 }
+                .buttonStyle(.plain)
+                .accessibilityAddTraits(elegida ? .isSelected : [])
             }
             .scrollContentBackground(.hidden)
             .fondoBarraLateral()
