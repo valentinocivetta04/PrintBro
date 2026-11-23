@@ -156,9 +156,9 @@ struct LineaBorde: View {
 }
 
 /// NSVisualEffectView: SwiftUI no deja elegir .sidebar / .headerView / .hudWindow.
+/// Siempre .behindWindow: muestrea el escritorio (con .withinWindow no toma el contenido de SwiftUI).
 struct MaterialSistema: NSViewRepresentable {
     let material: NSVisualEffectView.Material
-    let mezcla: NSVisualEffectView.BlendingMode
 
     func makeNSView(context: Context) -> NSVisualEffectView {
         let vista = NSVisualEffectView()
@@ -170,14 +170,13 @@ struct MaterialSistema: NSViewRepresentable {
 
     func updateNSView(_ vista: NSVisualEffectView, context: Context) {
         vista.material = material
-        vista.blendingMode = mezcla
+        vista.blendingMode = .behindWindow
     }
 }
 
 /// Material del sistema + tinte violeta + velo. Con "Reducir transparencia" queda sobre bg, sólido.
 private struct FondoMaterial: ViewModifier {
     let material: NSVisualEffectView.Material
-    let mezcla: NSVisualEffectView.BlendingMode
     let velo: Color
     var tinte = Estilo.Paleta.tinte
     @Environment(\.accessibilityReduceTransparency) private var sinTransparencia
@@ -187,7 +186,7 @@ private struct FondoMaterial: ViewModifier {
             ZStack {
                 Estilo.Paleta.fondo
                 if !sinTransparencia {
-                    MaterialSistema(material: material, mezcla: mezcla)
+                    MaterialSistema(material: material)
                 }
                 tinte
                 velo
@@ -310,20 +309,18 @@ extension View {
 
     /// Barra lateral: material .sidebar que muestrea el escritorio + velo surface.
     func fondoBarraLateral() -> some View {
-        modifier(FondoMaterial(material: .sidebar, mezcla: .behindWindow, velo: Estilo.Paleta.superficie))
+        modifier(FondoMaterial(material: .sidebar, velo: Estilo.Paleta.superficie))
     }
 
     /// Barras de arriba y abajo: material .headerView + velo surface.
-    /// .behindWindow porque design.md pide que la barra muestree el escritorio; con .withinWindow
-    /// no toma el contenido de SwiftUI y quedaba casi blanca (#fcfdfd medido).
     func fondoEncabezado() -> some View {
-        modifier(FondoMaterial(material: .headerView, mezcla: .behindWindow, velo: Estilo.Paleta.superficie))
+        modifier(FondoMaterial(material: .headerView, velo: Estilo.Paleta.superficie))
     }
 
     /// Paneles flotantes (hoja de giro): material .hudWindow + velo surface-strong.
     /// Con el scrim (0.4) quedaba gris (#e2e2e3 medido); con 0.78 se acerca a surface sobre bg.
     func fondoPanel() -> some View {
-        modifier(FondoMaterial(material: .hudWindow, mezcla: .behindWindow, velo: Estilo.Paleta.superficieFuerte,
+        modifier(FondoMaterial(material: .hudWindow, velo: Estilo.Paleta.superficieFuerte,
                                tinte: Estilo.Paleta.tintePanel))
     }
 
