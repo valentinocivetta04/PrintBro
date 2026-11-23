@@ -24,10 +24,11 @@ PrintBro le habla directamente a CUPS, el sistema de impresión de macOS, y auto
 - Estado de la impresora con avisos en español: tóner bajo, sin tóner, sin papel, atasco, tapa abierta, pausada o sin conexión. El tóner bajo también aparece en una franja arriba de la pantalla de impresión y se puede seguir imprimiendo.
 - Presets con nombre e historial de los últimos 20 trabajos, con un botón para reimprimir.
 - Modo de prueba (`PRINTBRO_DRY_RUN=1`) que no manda nada a la impresora.
+- Interfaz con el estilo de vidrio translúcido de macOS, en violeta, que sigue el modo claro u oscuro del sistema.
 
 ## Capturas
 
-Tomadas con la app en modo de prueba, sin imprimir.
+Tomadas con la app en modo de prueba, sin imprimir. Las cuatro primeras están en modo claro y la última en oscuro.
 
 <p align="center"><img src="docs/captura-imprimir.jpg" width="720" alt="Pantalla Imprimir con un PDF de 3 páginas cargado"></p>
 
@@ -36,6 +37,8 @@ Tomadas con la app en modo de prueba, sin imprimir.
 <p align="center"><img src="docs/captura-avanzado.jpg" width="720" alt="Opciones de doble faz y opciones avanzadas del driver"></p>
 
 <p align="center"><img src="docs/captura-impresora.jpg" width="720" alt="Pantalla Impresora con el estado y el aviso de tóner bajo"></p>
+
+<p align="center"><img src="docs/captura-oscuro.jpg" width="720" alt="Pantalla Imprimir en modo oscuro con un PDF de 3 páginas cargado"></p>
 
 ## Descargar
 
@@ -157,7 +160,7 @@ PrintBro/
 ├── test.sh               corre los tests con Command Line Tools
 ├── Sources/
 │   ├── PrintBroCore/     lógica: CUPS, lp, doble faz, folleto, estado, presets
-│   └── PrintBro/         interfaz SwiftUI y el modelo de la app
+│   └── PrintBro/         interfaz SwiftUI, el modelo de la app y Estilo.swift
 ├── Tests/PrintBroTests/  72 tests, sin impresora
 ├── Resources/            textos en español e ícono
 └── docs/                 ícono y capturas del README
@@ -171,6 +174,12 @@ Algunas decisiones y por qué las tomé:
 - No tengo Xcode, solo Command Line Tools, y ahí no viene el plugin de macros de `@State`. Por eso el estado de la interfaz vive en un modelo `@Observable`, y los textos van en un `Localizable.strings` en vez de un `.xcstrings`.
 - Los tests no tocan la impresora: usan un `FakeRunner` que guarda los comandos que se hubieran ejecutado y devuelve la respuesta que le pido, así puedo comprobar los argumentos exactos de `lp` y `cancel`. Algunos usan salidas reales capturadas en mi Mac. Hoy son 72 y pasan con `./test.sh`.
 
+### Diseño
+
+El sistema visual parte de una referencia del estilo vibrancy de macOS: barras y paneles con materiales translúcidos que dejan ver el escritorio desenfocado. La adapté con una paleta violeta, un valor claro y otro oscuro para cada color, y tamaños más chicos que los de la referencia, que estaban pensados para web. Los materiales son los del sistema (`NSVisualEffectView`) con un tinte violeta encima, y con "Reducir transparencia" activado pasan a un fondo sólido.
+
+Todos los tokens (colores, radios, espaciado, tipografía, tamaños de botón y la luz de los botones) están en `Sources/PrintBro/Estilo.swift`, y las vistas los toman de ahí en lugar de tener números sueltos. Para cambiar un color o un tamaño se toca solo ese archivo.
+
 ## Limitaciones y qué falta
 
 - Probé en papel tres cosas: el doble faz de un PDF de 4 páginas con orden inverso, que CUPS aplica `page-set` después de `number-up` (con 2 por hoja, la primera tanda sacó las páginas 1 y 2 en la misma cara), y cancelar la página de prueba desde la Cola antes de que saliera.
@@ -182,7 +191,7 @@ Algunas decisiones y por qué las tomé:
 
 ## English summary
 
-PrintBro is a native macOS app (SwiftUI, Swift Package, no external dependencies) I built to use my Brother HL-1210W laser printer, which has no automatic duplex. Brother's own Mac app didn't give me duplex or quality settings for this model, so PrintBro talks to CUPS directly. It automates manual duplex: it prints the odd pages, asks you to flip the stack, then prints the even pages in reverse order. It also exposes every option the driver reports, shows the print queue and printer status, and has a dry-run mode for testing without paper. Only part of it is verified on paper so far; see the limitations section above.
+PrintBro is a native macOS app (SwiftUI, Swift Package, no external dependencies) I built to use my Brother HL-1210W laser printer, which has no automatic duplex. Brother's own Mac app didn't give me duplex or quality settings for this model, so PrintBro talks to CUPS directly. It automates manual duplex: it prints the odd pages, asks you to flip the stack, then prints the even pages in reverse order. It also exposes every option the driver reports, shows the print queue and printer status, and has a dry-run mode for testing without paper. The interface uses macOS translucent materials with a violet palette and follows the system's light or dark mode. Only part of it is verified on paper so far; see the limitations section above.
 
 ## Autor
 
