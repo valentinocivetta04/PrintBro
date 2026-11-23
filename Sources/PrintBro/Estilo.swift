@@ -16,7 +16,6 @@ enum Estilo {
         static let primario = par(.hex(0xaf52de), .hex(0xbf5af2))
         static let acento = par(.hex(0x7d7aff), .hex(0x7d7aff))
         static let peligro = par(.hex(0xff3b30), .hex(0xff453a))
-        static let velo = par(.blanco(0.4), .blanco(0.06))
         /// Tiñe de violeta los materiales del sistema, que solos son grises.
         static let tinte = par(.hex(0xe8e2f4, 0.5), .hex(0x1c1530, 0.6))
         /// El HUD oscuro es más claro que los otros materiales (#605e6b medido con 0.6): lleva más tinte.
@@ -89,14 +88,12 @@ enum Estilo {
         static let rellenoCompacto: CGFloat = 14
         static let altoAccion: CGFloat = 32
         static let rellenoAccion: CGFloat = 18
-        static let radio: CGFloat = 8
     }
 
     enum Tipo {
         /// Título de pantalla: 24 pt bold, interlineado 1.2.
         static let tamanioTitulo: CGFloat = 24
         static let titulo = Font.system(size: tamanioTitulo, weight: .bold)
-        static let interlineadoTitulo = extra(tamanioTitulo, alto: 1.2)
         /// Cuerpo: 13 pt, interlineado 1.4.
         static let tamanioCuerpo: CGFloat = 13
         static let cuerpo = Font.system(size: tamanioCuerpo, weight: .regular)
@@ -119,7 +116,6 @@ enum Estilo {
 
     /// Criterio propio: design.md pide sombras pero no da valores.
     enum Sombra {
-        static let color = Estilo.Paleta.sombra
         static let radio: CGFloat = 12
         static let desplazamiento: CGFloat = 2
     }
@@ -214,7 +210,7 @@ private struct Superficie: ViewModifier {
             .background {
                 // La sombra va en una base opaca de bg: si no, se ve a través de la superficie translúcida.
                 forma.fill(Estilo.Paleta.fondo)
-                    .shadow(color: Estilo.Sombra.color, radius: Estilo.Sombra.radio, y: Estilo.Sombra.desplazamiento)
+                    .shadow(color: Estilo.Paleta.sombra, radius: Estilo.Sombra.radio, y: Estilo.Sombra.desplazamiento)
                     .overlay { forma.fill(color) }
             }
             .overlay { forma.strokeBorder(Estilo.Paleta.borde, lineWidth: Estilo.Espacio.borde) }
@@ -246,10 +242,9 @@ private struct CuerpoBoton: View {
     @Environment(\.isFocused) private var enfocado
 
     var body: some View {
-        let forma = RoundedRectangle(cornerRadius: Estilo.Boton.radio, style: .continuous)
+        let forma = RoundedRectangle(cornerRadius: Estilo.Radio.chip, style: .continuous)
         configuration.label
             .font(Estilo.Tipo.boton)
-            .lineSpacing(0)
             .foregroundStyle(Estilo.Paleta.sobreColor)
             .padding(.horizontal, accion ? Estilo.Boton.rellenoAccion : Estilo.Boton.rellenoCompacto)
             .frame(height: accion ? Estilo.Boton.altoAccion : Estilo.Boton.altoCompacto)
@@ -344,7 +339,6 @@ extension View {
     /// h1 de cada pantalla.
     func tituloPantalla() -> some View {
         font(Estilo.Tipo.titulo)
-            .lineSpacing(Estilo.Tipo.interlineadoTitulo)
             .lineLimit(1)
             .foregroundStyle(Estilo.Paleta.texto)
             .accessibilityAddTraits(.isHeader)
