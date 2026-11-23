@@ -6,6 +6,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
     // Vive acá para que exista antes de que llegue un archivo abierto desde Finder.
     let modelo = PrintModel()
 
+    func applicationWillFinishLaunching(_ notification: Notification) {
+        // La paleta de design.md es solo clara: no sigue el modo oscuro del sistema.
+        NSApp.appearance = NSAppearance(named: .aqua)
+    }
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         UNUserNotificationCenter.current().delegate = self
     }

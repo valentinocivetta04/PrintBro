@@ -8,18 +8,21 @@ struct PrintBroApp: App {
         Window("PrintBro", id: "principal") {
             ContentView()
                 .environment(delegate.modelo)
+                .estiloApp()
         }
         .defaultSize(width: 1080, height: 720)
         .commands { PrintBroCommands(modelo: delegate.modelo) }
 
         Window("Ayuda de PrintBro", id: "ayuda") {
             AyudaView()
+                .estiloApp()
         }
         .windowResizability(.contentSize)
 
         Settings {
             AjustesView()
                 .environment(delegate.modelo)
+                .estiloApp()
         }
     }
 }
