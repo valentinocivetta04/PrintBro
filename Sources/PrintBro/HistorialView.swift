@@ -13,7 +13,7 @@ struct HistorialView: View {
             }
         } else {
             ScrollView {
-                LazyVStack(spacing: Estilo.Espacio.chico) {
+                LazyVStack(spacing: Estilo.Espacio.medio) {
                     ForEach(modelo.historial) { entrada in
                         fila(entrada)
                     }
@@ -28,7 +28,7 @@ struct HistorialView: View {
             Image(systemName: "doc")
                 .textoAtenuado()
                 .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 0) {
                 Text(entrada.archivo.lastPathComponent)
                     .lineLimit(1)
                     .truncationMode(.middle)

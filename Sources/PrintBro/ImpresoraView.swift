@@ -71,6 +71,7 @@ struct ImpresoraView: View {
                     .filaSuperficie()
                 }
                 .formStyle(.grouped)
+                .filasCompactas()
                 .scrollContentBackground(.hidden)
                 .alert("¿Imprimir una página de prueba?", isPresented: $modelo.confirmandoPaginaPrueba) {
                     Button("Imprimir") { modelo.imprimirPaginaPrueba() }

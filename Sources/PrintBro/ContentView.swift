@@ -21,6 +21,7 @@ struct ContentView: View {
                 Text((modelo.seccion ?? .imprimir).titulo)
                     .tituloPantalla()
                     .padding(.horizontal, Estilo.Espacio.medio)
+                    .padding(.top, Estilo.Espacio.chico)
                 detalle
             }
             // Debajo de la barra del sistema va el material propio; el resto es bg.

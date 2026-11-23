@@ -73,6 +73,16 @@ enum Estilo {
         static let fila: CGFloat = 32
     }
 
+    /// Medidas fijas de columnas y ventanas.
+    enum Medida {
+        static let anchoMinimoVistaPrevia: CGFloat = 380
+        static let anchoOpciones: CGFloat = 350
+        static let anchoAjustes: CGFloat = 480
+        static let anchoAyuda: CGFloat = 460
+        static let altoAyuda: CGFloat = 420
+        static let anchoHoja: CGFloat = 440
+    }
+
     /// Botones compactos (28 pt) y de acción de la barra inferior y la hoja (32 pt).
     enum Boton {
         static let altoCompacto: CGFloat = 28

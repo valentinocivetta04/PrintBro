@@ -135,6 +135,7 @@ struct OpcionesView: View {
             }
         }
         .formStyle(.grouped)
+        .filasCompactas()
         // Deja ver el material de la columna entre las tarjetas del formulario.
         .scrollContentBackground(.hidden)
         .foregroundStyle(Estilo.Paleta.texto)

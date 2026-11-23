@@ -12,7 +12,7 @@ struct ImprimirView: View {
                     ZonaSoltarView(resaltada: modelo.arrastrandoEncima)
                 }
             }
-            .frame(minWidth: 380, maxWidth: .infinity, maxHeight: .infinity)
+            .frame(minWidth: Estilo.Medida.anchoMinimoVistaPrevia, maxWidth: .infinity, maxHeight: .infinity)
             .clipShape(RoundedRectangle(cornerRadius: Estilo.Radio.tarjeta, style: .continuous))
             .panel()
             .dropDestination(for: URL.self) { urls, _ in
@@ -22,7 +22,7 @@ struct ImprimirView: View {
             } isTargeted: { modelo.arrastrandoEncima = $0 }
 
             OpcionesView()
-                .frame(width: 350)
+                .frame(width: Estilo.Medida.anchoOpciones)
                 .clipShape(RoundedRectangle(cornerRadius: Estilo.Radio.tarjeta, style: .continuous))
                 .panel()
         }
@@ -47,7 +47,9 @@ struct ImprimirView: View {
                     modelo.pedirArchivo()
                 } label: {
                     Label("Elegir archivo…", systemImage: "doc.badge.plus")
+                        .labelStyle(.iconOnly)
                 }
+                .buttonStyle(.secundario)
                 .help("Elegir archivo… (⌘O)")
             }
         }

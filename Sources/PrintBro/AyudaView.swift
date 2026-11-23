@@ -27,7 +27,7 @@ struct AyudaView: View {
             .fixedSize(horizontal: false, vertical: true)
             .padding(Estilo.Espacio.medio)
         }
-        .frame(width: 460, height: 420)
+        .frame(width: Estilo.Medida.anchoAyuda, height: Estilo.Medida.altoAyuda)
         .fondoPagina()
     }
 }

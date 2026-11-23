@@ -30,9 +30,10 @@ struct AjustesView: View {
             .filaSuperficie()
         }
         .formStyle(.grouped)
+        .filasCompactas()
         .scrollContentBackground(.hidden)
         .fondoPagina()
-        .frame(width: 480)
+        .frame(width: Estilo.Medida.anchoAjustes)
         .fixedSize(horizontal: false, vertical: true)
     }
 }
