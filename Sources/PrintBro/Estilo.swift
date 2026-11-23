@@ -1,24 +1,45 @@
 import AppKit
 import SwiftUI
 
-/// Tokens de design.md ("macOS Vibrancy") con los valores literales del archivo.
-/// La app es solo clara: estos colores no cambian con el modo oscuro.
+/// Tokens de design.md ("macOS Vibrancy") con la paleta violeta.
+/// Estructura literal del archivo (transparencias, radios, tipografía); solo cambian los colores.
 enum Estilo {
+    /// Cada token tiene un valor claro y uno oscuro, y se resuelve según la apariencia de la ventana.
     enum Paleta {
-        static let fondo = rgb(0xdf, 0xe6, 0xee)
-        static let superficie = Color(.sRGB, white: 1, opacity: 0.55)
-        static let superficieFuerte = Color(.sRGB, white: 1, opacity: 0.78)
-        static let borde = Color(.sRGB, white: 0, opacity: 0.08)
-        static let texto = rgb(0x1d, 0x1d, 0x1f)
-        static let textoAtenuado = rgb(0x1d, 0x1d, 0x1f, opacidad: 0.6)
-        static let primario = rgb(0x00, 0x7a, 0xff)
-        static let acento = rgb(0xff, 0x9f, 0x0a)
-        static let velo = Color(.sRGB, white: 1, opacity: 0.4)
+        static let fondo = par(.hex(0xe8e2f4), .hex(0x1c1530))
+        static let superficie = par(.blanco(0.55), .blanco(0.10))
+        static let superficieFuerte = par(.blanco(0.78), .blanco(0.16))
+        static let borde = par(.negro(0.08), .blanco(0.12))
+        static let texto = par(.hex(0x1d1d1f), .hex(0xf5f3fa))
+        /// En claro 0.64 en lugar de 0.6: con 0.6 daba 4.1:1 sobre el fondo (WCAG AA pide 4.5).
+        static let textoAtenuado = par(.hex(0x1d1d1f, 0.64), .hex(0xf5f3fa, 0.6))
+        static let primario = par(.hex(0xaf52de), .hex(0xbf5af2))
+        static let acento = par(.hex(0x7d7aff), .hex(0x7d7aff))
+        static let peligro = par(.hex(0xff3b30), .hex(0xff453a))
+        static let velo = par(.blanco(0.4), .blanco(0.06))
+        /// Tiñe de violeta los materiales del sistema, que solos son grises.
+        static let tinte = par(.hex(0xe8e2f4, 0.5), .hex(0x1c1530, 0.6))
+        static let sombra = par(.negro(0.08), .negro(0.3))
         /// on-primary, on-accent y on-surface: negro en design.md.
-        static let sobreColor = rgb(0x00, 0x00, 0x00)
+        static let sobreColor = par(.hex(0x000000), .hex(0x000000))
 
-        private static func rgb(_ r: Int, _ g: Int, _ b: Int, opacidad: Double = 1) -> Color {
-            Color(.sRGB, red: Double(r) / 255, green: Double(g) / 255, blue: Double(b) / 255, opacity: opacidad)
+        struct Tono: Sendable {
+            let rojo, verde, azul, alfa: Double
+
+            static func hex(_ valor: UInt32, _ alfa: Double = 1) -> Tono {
+                Tono(rojo: Double(valor >> 16 & 0xff) / 255, verde: Double(valor >> 8 & 0xff) / 255,
+                     azul: Double(valor & 0xff) / 255, alfa: alfa)
+            }
+            static func blanco(_ alfa: Double) -> Tono { Tono(rojo: 1, verde: 1, azul: 1, alfa: alfa) }
+            static func negro(_ alfa: Double) -> Tono { Tono(rojo: 0, verde: 0, azul: 0, alfa: alfa) }
+
+            var nsColor: NSColor { NSColor(srgbRed: rojo, green: verde, blue: azul, alpha: alfa) }
+        }
+
+        private static func par(_ claro: Tono, _ oscuro: Tono) -> Color {
+            Color(nsColor: NSColor(name: nil) { apariencia in
+                apariencia.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua ? oscuro.nsColor : claro.nsColor
+            })
         }
     }
 
@@ -63,7 +84,7 @@ enum Estilo {
 
     /// Criterio propio: design.md pide sombras pero no da valores.
     enum Sombra {
-        static let color = Color(.sRGB, white: 0, opacity: 0.08)
+        static let color = Estilo.Paleta.sombra
         static let radio: CGFloat = 12
         static let desplazamiento: CGFloat = 2
     }
@@ -104,7 +125,7 @@ struct MaterialSistema: NSViewRepresentable {
     }
 }
 
-/// Material del sistema + velo blanco. Con "Reducir transparencia" queda el mismo velo sobre bg, sólido.
+/// Material del sistema + tinte violeta + velo. Con "Reducir transparencia" queda sobre bg, sólido.
 private struct FondoMaterial: ViewModifier {
     let material: NSVisualEffectView.Material
     let mezcla: NSVisualEffectView.BlendingMode
@@ -118,6 +139,7 @@ private struct FondoMaterial: ViewModifier {
                 if !sinTransparencia {
                     MaterialSistema(material: material, mezcla: mezcla)
                 }
+                Estilo.Paleta.tinte
                 velo
             }
             .ignoresSafeArea()
