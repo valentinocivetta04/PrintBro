@@ -199,14 +199,12 @@ private struct FondoMaterial: ViewModifier {
 /// Superficie sobre bg: surface (0.55) o surface-strong (0.78), borde de 1 pt.
 private struct Superficie: ViewModifier {
     let color: Color
-    let radio: CGFloat
     let relleno: CGFloat
-    let sombra: Bool
     /// Las tarjetas ocupan todo el ancho; los paneles respetan el ancho que les dan.
     let anchoCompleto: Bool
 
     func body(content: Content) -> some View {
-        let forma = RoundedRectangle(cornerRadius: radio, style: .continuous)
+        let forma = RoundedRectangle(cornerRadius: Estilo.Radio.tarjeta, style: .continuous)
         content
             .padding(relleno)
             .frame(maxWidth: anchoCompleto ? .infinity : nil, alignment: .leading)
@@ -214,8 +212,7 @@ private struct Superficie: ViewModifier {
             .background {
                 // La sombra va en una base opaca de bg: si no, se ve a través de la superficie translúcida.
                 forma.fill(Estilo.Paleta.fondo)
-                    .shadow(color: sombra ? Estilo.Sombra.color : .clear,
-                            radius: Estilo.Sombra.radio, y: Estilo.Sombra.desplazamiento)
+                    .shadow(color: Estilo.Sombra.color, radius: Estilo.Sombra.radio, y: Estilo.Sombra.desplazamiento)
                     .overlay { forma.fill(color) }
             }
             .overlay { forma.strokeBorder(Estilo.Paleta.borde, lineWidth: Estilo.Espacio.borde) }
@@ -326,14 +323,12 @@ extension View {
 
     /// card: surface, radio 14, padding 24, sombra sutil.
     func tarjeta() -> some View {
-        modifier(Superficie(color: Estilo.Paleta.superficie, radio: Estilo.Radio.tarjeta,
-                            relleno: Estilo.Espacio.tarjeta, sombra: true, anchoCompleto: true))
+        modifier(Superficie(color: Estilo.Paleta.superficie, relleno: Estilo.Espacio.tarjeta, anchoCompleto: true))
     }
 
     /// Panel grande (opciones, tabla de la cola): surface-strong, sin padding propio.
     func panel() -> some View {
-        modifier(Superficie(color: Estilo.Paleta.superficieFuerte, radio: Estilo.Radio.tarjeta,
-                            relleno: 0, sombra: true, anchoCompleto: false))
+        modifier(Superficie(color: Estilo.Paleta.superficieFuerte, relleno: 0, anchoCompleto: false))
     }
 
     /// "label-caps": 12 pt, semibold, mayúsculas, tracking 0.72 pt, text-muted.
